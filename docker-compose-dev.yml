@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  taskoo.web:
+    build: ./infrastructure/docker/web/
+    container_name: taskoo.web
+    tty: true
+    ports:
+      - 3000:3000
+      - 6006:6006
+    command: >
+      bash -c "./scripts/run_dev.sh"
+    volumes:
+      - .:/opt/app/src
+
+  taskoo.firebase:
+    build: ./infrastructure/docker/firebase/
+    container_name: taskoo.firebase
+    tty: true
+    ports:
+      - 4000:4000
+      - 4400:4400
+      - 4500:4500
+      - 5000:5000
+      - 5001:5001
+      - 8080:8080
+      - 8085:8085
+      - 9005:9005
+      - 9099:9099
+      - 9199:9199
+      - 9229:9229
+    volumes:
+      - ./_shared_storage:/opt/app/src/_shared_storage
+      - ./infrastructure/firebase:/opt/app/src/infrastructure/firebase
+      - ./scripts:/opt/app/src/scripts
