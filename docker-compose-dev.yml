@@ -11,7 +11,7 @@ services:
     command: >
       bash -c "./scripts/run_dev.sh"
     volumes:
-      - .:/opt/app/src
+      - ./web:/opt/app/src
 
   taskoo.firebase:
     build: ./infrastructure/docker/firebase/
