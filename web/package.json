@@ -12,7 +12,7 @@
     "format": "next lint --fix --dir src",
     "prettier-watch": "onchange \"./src/**/*\" --exclude-path ./format/.prettierignore -- prettier --config ./format/.prettierrc.json --write --ignore-unknown {{changed}}",
     "#---サブツール---": "",
-    "test": "jest",
+    "test": "jest --config=./jest/jest.config.js",
     "storybook": "start-storybook -h 0.0.0.0 -p 6006 --quiet",
     "build-storybook": "build-storybook"
   },
