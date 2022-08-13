@@ -1,6 +1,7 @@
 # TASKOO
 
-[![Test & Deploy](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy.yml)
+[![Test & Deploy Web](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-web.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-web.yml)
+[![Test & Deploy Cloud Functions](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml)
 
 ## 起動
 
