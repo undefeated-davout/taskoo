@@ -32,4 +32,6 @@ services:
     volumes:
       - ./_shared_storage:/opt/app/src/_shared_storage
       - ./infrastructure/firebase:/opt/app/src/infrastructure/firebase
-      - ./scripts:/opt/app/src/scripts
+      - ./functions:/opt/app/src/functions
+      - ./.firebaserc:/opt/app/src/.firebaserc
+      - ./firebase.json:/opt/app/src/firebase.json

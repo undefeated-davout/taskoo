@@ -11,5 +11,5 @@ docker exec -it taskoo.firebase bash
 # 以下のコマンで[Firebase CLI が Google アカウントへのアクセスをリクエストしています]に許可
 firebase login
 # FES実行
-./scripts/run_firebase_emulators.sh
+./infrastructure/firebase/scripts/run_firebase_emulators.sh
 ```
