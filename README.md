@@ -1,5 +1,7 @@
 # TASKOO
 
+[![Run test](https://github.com/undefeated-davout/taskoo/actions/workflows/run-test.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/run-test.yml)
+
 ## 起動
 
 ```bash
