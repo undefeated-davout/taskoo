@@ -8,18 +8,13 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [16]
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16.x
           check-latest: true
 
       - uses: actions/cache@v3
@@ -29,12 +24,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-
 
+      - name: install yarn
+        run: npm install -g yarn
       - name: install
-        - run: yarn
-        - working-directory: ./web
+        run: yarn
+        working-directory: ./web
       - name: build build
-        - run: yarn build
-        - working-directory: ./web
+        run: yarn build
+        working-directory: ./web
       - name: test
-        - run: yarn test
-        - working-directory: ./web
+        run: yarn test
+        working-directory: ./web
