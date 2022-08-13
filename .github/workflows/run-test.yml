@@ -23,15 +23,25 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-
-
+      # インストール
       - name: install yarn
         run: npm install -g yarn
       - name: install
-        run: yarn
+        run: yarn --frozen-lockfile
         working-directory: ./web
+
+      # テスト
       - name: build build
         run: yarn build
         working-directory: ./web
       - name: test
         run: yarn test
         working-directory: ./web
+
+      # デプロイ
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TASKOO_DAVOUT_V1 }}'
+          channelId: live
+          projectId: taskoo-davout-v1
