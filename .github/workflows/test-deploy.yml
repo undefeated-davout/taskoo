@@ -41,6 +41,7 @@ jobs:
       # デプロイ
       - name: export
         run: yarn export
+        working-directory: ./web
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
