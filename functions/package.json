@@ -10,7 +10,7 @@
     "start": "yarn shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "prettier-watch": "onchange \"./**/*\" --exclude-path ./format/.prettierignore -- prettier --config ./format/.prettierrc.json --write --ignore-unknown {{changed}}"
+    "prettier-watch": "onchange \"./src/**/*\" --exclude-path ./format/.prettierignore -- prettier --config ./format/.prettierrc.json --write --ignore-unknown {{changed}}"
   },
   "engines": {
     "node": "16"
