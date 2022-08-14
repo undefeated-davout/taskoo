@@ -5,9 +5,12 @@ type HeadHelperProps = {
 };
 
 const HeadHelper = (props: HeadHelperProps) => {
+  const editedTitle = `${props.titleElem} | TASKOO`
   return (
     <Head>
-      <title>{props.titleElem} | TASKOO</title>
+      <title>{editedTitle}</title>
+      <meta name="description" content={editedTitle} />
+      <link rel="icon" href="/favicon.ico" />
     </Head>
   );
 };

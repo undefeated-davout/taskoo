@@ -1,17 +1,16 @@
-import HeadHelper from 'components/atoms/HeadHelper';
 import type { NextPage } from 'next';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+
+import HeadHelper from 'components/atoms/HeadHelper';
+import LoggedIn from 'components/templates/LoggedIn';
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <>
       <HeadHelper titleElem="Home"></HeadHelper>
-
-      <main className={styles.main}>
+      <LoggedIn>
         <p>test</p>
-      </main>
-    </div>
+      </LoggedIn>
+    </>
   );
 };
 
