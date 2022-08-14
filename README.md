@@ -2,7 +2,7 @@
 
 [![Test & Deploy Web](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-web.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-web.yml)
 
-[![Test & Deploy Cloud Functions](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml)
+[![Test & Deploy Functions](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml)
 
 ## 起動
 
