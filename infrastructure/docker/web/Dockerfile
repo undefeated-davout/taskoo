@@ -8,6 +8,7 @@ WORKDIR /opt/app/src
 
 EXPOSE 3000
 EXPOSE 6006
+EXPOSE 9229
 
 # ツール類
 RUN echo "alias ll='ls -lahF --color=auto'" >> ~/.bashrc

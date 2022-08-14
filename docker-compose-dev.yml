@@ -8,9 +8,11 @@ services:
     ports:
       - 3000:3000
       - 6006:6006
+      - 9229:9229
     command: >
       bash -c "cd ./web/ && ./scripts/run_dev.sh"
     volumes:
+      - ./.vscode:/opt/app/src/.vscode
       - ./.git:/opt/app/src/.git
       - ./.gitignore:/opt/app/src/.gitignore
       - ./web:/opt/app/src/web
@@ -28,6 +30,7 @@ services:
     command: >
       bash -c "./infrastructure/firebase/scripts/run_preprocess.sh"
     volumes:
+      - ./.vscode:/opt/app/src/.vscode
       - ./.git:/opt/app/src/.git
       - ./.gitignore:/opt/app/src/.gitignore
       - ./_shared_storage:/opt/app/src/_shared_storage
