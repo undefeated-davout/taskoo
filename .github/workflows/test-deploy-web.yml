@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  test-deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
