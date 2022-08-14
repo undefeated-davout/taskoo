@@ -1,5 +1,9 @@
 FROM node:16.16.0-bullseye-slim
 
+RUN apt update && apt install -y \
+  git \
+  && apt autoremove && apt autoclean
+
 WORKDIR /opt/app/src
 
 EXPOSE 3000

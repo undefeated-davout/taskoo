@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  taskoo.web:
+    build: ./infrastructure/docker/web/
+    container_name: taskoo.web
+    tty: true
+    ports:
+      - 3000:3000
+    command: >
+      bash -c "cd ./web/ && ./scripts/run.sh"
+    volumes:
+      - ./.git:/opt/app/src/.git
+      - ./.gitignore:/opt/app/src/.gitignore
+      - ./web:/opt/app/src/web

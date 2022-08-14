@@ -11,8 +11,8 @@
       "firebase-debug.*.log"
     ],
     "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint",
-      "npm --prefix \"$RESOURCE_DIR\" run build"
+      "yarn --cwd \"$RESOURCE_DIR\" lint",
+      "yarn --cwd \"$RESOURCE_DIR\" build"
     ],
     "source": "functions"
   },
@@ -24,7 +24,7 @@
       "**/node_modules/**"
     ]
   },
-  "storage": {
+  "#storage": {
     "rules": "infrastructure/firebase/storage.rules"
   },
   "emulators": {
@@ -40,19 +40,19 @@
       "host": "0.0.0.0",
       "port": 8080
     },
-    "hosting": {
+    "#hosting": {
       "host": "0.0.0.0",
       "port": 5000
     },
-    "pubsub": {
+    "#pubsub": {
       "host": "0.0.0.0",
       "port": 8085
     },
-    "storage": {
+    "#storage": {
       "host": "0.0.0.0",
       "port": 9199
     },
-    "eventarc": {
+    "#eventarc": {
       "host": "0.0.0.0",
       "port": 9299
     },

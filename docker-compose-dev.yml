@@ -9,9 +9,11 @@ services:
       - 3000:3000
       - 6006:6006
     command: >
-      bash -c "./scripts/run_dev.sh"
+      bash -c "cd ./web/ && ./scripts/run_dev.sh"
     volumes:
-      - ./web:/opt/app/src
+      - ./.git:/opt/app/src/.git
+      - ./.gitignore:/opt/app/src/.gitignore
+      - ./web:/opt/app/src/web
 
   taskoo.firebase:
     build: ./infrastructure/docker/firebase/
@@ -19,17 +21,15 @@ services:
     tty: true
     ports:
       - 4000:4000
-      - 4400:4400
-      - 4500:4500
-      - 5000:5000
       - 5001:5001
       - 8080:8080
-      - 8085:8085
       - 9005:9005
       - 9099:9099
-      - 9199:9199
-      - 9229:9229
+    command: >
+      bash -c "./infrastructure/firebase/scripts/run_preprocess.sh"
     volumes:
+      - ./.git:/opt/app/src/.git
+      - ./.gitignore:/opt/app/src/.gitignore
       - ./_shared_storage:/opt/app/src/_shared_storage
       - ./infrastructure/firebase:/opt/app/src/infrastructure/firebase
       - ./functions:/opt/app/src/functions
