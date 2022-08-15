@@ -8,7 +8,7 @@ on:
 
 jobs:
   check:
-    outpus:
+    outputs:
       diff: diff_web.outputs.diff
     steps:
       - uses: actions/checkout@v3
