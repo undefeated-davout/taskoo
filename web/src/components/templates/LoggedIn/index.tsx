@@ -26,6 +26,7 @@ const LoggedIn = (props: LoggedInProps) => {
         sx={{ flexGrow: 1, p: 1, height: '100vh', backgroundColor: 'gray' }}
       >
         <DrawerHeader />
+        {/* メインコンテンツ */}
         <Box
           sx={{
             p: 1,

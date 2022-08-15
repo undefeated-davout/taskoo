@@ -8,15 +8,15 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 
 type SideMenuListProps = {
-  listKey: string;
+  keyName: string;
   index: number;
   open: boolean;
 };
 
 const SideMenuList = (props: SideMenuListProps) => {
   return (
-    <ListItem key={props.listKey} disablePadding sx={{ display: 'block' }}>
-      <Link href={`/${props.listKey}`}>
+    <ListItem disablePadding sx={{ display: 'block' }}>
+      <Link href={`/${props.keyName}`}>
         <ListItemButton
           sx={{
             minHeight: 48,
@@ -34,7 +34,7 @@ const SideMenuList = (props: SideMenuListProps) => {
             {props.index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
           </ListItemIcon>
           <ListItemText
-            primary={props.listKey.toUpperCase()}
+            primary={props.keyName.toUpperCase()}
             primaryTypographyProps={{ fontSize: '0.8rem' }}
             sx={{ opacity: props.open ? 1 : 0 }}
           />

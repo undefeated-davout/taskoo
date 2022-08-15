@@ -66,7 +66,8 @@ const SideBar = (props: SideBarProps) => {
         {['focus', 'pomodoro', 'tasks', 'kanban', 'calendar'].map(
           (key, index) => (
             <SideMenuList
-              listKey={key}
+              key={key}
+              keyName={key}
               index={index}
               open={props.open}
             ></SideMenuList>
@@ -77,7 +78,8 @@ const SideBar = (props: SideBarProps) => {
       <List>
         {['logout'].map((key, index) => (
           <SideMenuList
-            listKey={key}
+            key={key}
+            keyName={key}
             index={index}
             open={props.open}
           ></SideMenuList>
