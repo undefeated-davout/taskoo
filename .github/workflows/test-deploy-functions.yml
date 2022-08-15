@@ -10,7 +10,7 @@ jobs:
   check-diff:
     runs-on: ubuntu-latest
     outputs:
-      diff: diff.outputs.diff
+      diff: ${{ diff.outputs.diff }
     steps:
       - uses: actions/checkout@v3
       - name: 差分があるかチェック
@@ -27,6 +27,7 @@ jobs:
     needs: check-diff
     if: needs.check-diff.outputs.diff
     steps:
+      - run: echo ${{ needs.check-diff.outputs.diff }}
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
