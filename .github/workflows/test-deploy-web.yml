@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  check:
+  check-diff:
     runs-on: ubuntu-latest
     outputs:
       diff: diff.outputs.diff
@@ -22,8 +22,8 @@ jobs:
 
   test-and-deploy:
     runs-on: ubuntu-latest
-    needs: check
-    if: needs.check.diff
+    needs: check-diff
+    if: needs.check-diff.diff
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
