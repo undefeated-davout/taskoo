@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  trailingSlash: true,
   compiler: (() => {
     let compilerConfig = {
       // styledComponentsの有効化
@@ -21,6 +20,18 @@ const nextConfig = {
     images: {
       unoptimized: true,
     },
+  },
+  trailingSlash: true,
+  exportPathMap: async function () {
+    return {
+      '/': { page: '/' },
+      '/login': { page: '/login' },
+      '/focus': { page: '/focus' },
+      '/pomodoro': { page: '/pomodoro' },
+      '/tasks': { page: '/tasks' },
+      '/kanban': { page: '/kanban' },
+      '/calendar': { page: '/kanban' },
+    }
   },
 };
 
