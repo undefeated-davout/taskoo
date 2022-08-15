@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,6 +12,7 @@ type LoggedInProps = {
 };
 
 const LoggedIn = (props: LoggedInProps) => {
+  const theme = useTheme();
   const [open, setOpen] = useState(true);
   const toggleSideBarOpen = () => setOpen(!open);
 
@@ -19,9 +21,24 @@ const LoggedIn = (props: LoggedInProps) => {
       <CssBaseline />
       <HeaderBar onClickEvent={toggleSideBarOpen}></HeaderBar>
       <SideBar open={open}></SideBar>
-      <Box component="main" sx={{ flexGrow: 1, p: 1 }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 1, height: '100vh', backgroundColor: 'gray' }}
+      >
         <DrawerHeader />
-        {props.children}
+        <Box
+          sx={{
+            p: 1,
+            height: `calc(100% - ${theme.spacing(7)})`,
+            [theme.breakpoints.up('sm')]: {
+              height: `calc(100% - ${theme.spacing(8)})`,
+            },
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+          }}
+        >
+          {props.children}
+        </Box>
       </Box>
     </Box>
   );
