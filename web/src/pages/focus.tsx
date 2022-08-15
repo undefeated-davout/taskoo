@@ -7,9 +7,7 @@ const Focus: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="FOCUS"></HeadHelper>
-      <LoggedIn>
-        <p>FOCUS</p>
-      </LoggedIn>
+      <LoggedIn>FOCUS</LoggedIn>
     </>
   );
 };

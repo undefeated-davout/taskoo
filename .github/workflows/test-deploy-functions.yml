@@ -18,8 +18,8 @@ jobs:
         uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
-            ./functions/**/*.ts
-            ./functions/**/*.json
+            functions/**/*.ts
+            functions/**/*.json
       - name: display diff
         run: echo ${{ env.GIT_DIFF }}
 

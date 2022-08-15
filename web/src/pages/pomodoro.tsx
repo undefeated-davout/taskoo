@@ -7,9 +7,7 @@ const Pomodoro: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="POMODORO"></HeadHelper>
-      <LoggedIn>
-        <p>POMODORO</p>
-      </LoggedIn>
+      <LoggedIn>POMODORO</LoggedIn>
     </>
   );
 };

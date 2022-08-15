@@ -7,9 +7,7 @@ const Calendar: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="CALENDAR"></HeadHelper>
-      <LoggedIn>
-        <p>CALENDAR</p>
-      </LoggedIn>
+      <LoggedIn>CALENDAR</LoggedIn>
     </>
   );
 };

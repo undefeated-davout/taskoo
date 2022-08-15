@@ -7,9 +7,7 @@ const Kanban: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="KANBAN"></HeadHelper>
-      <LoggedIn>
-        <p>KANBAN</p>
-      </LoggedIn>
+      <LoggedIn>KANBAN</LoggedIn>
     </>
   );
 };

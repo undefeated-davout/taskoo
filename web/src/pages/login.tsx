@@ -7,9 +7,7 @@ const Login: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="LOGIN"></HeadHelper>
-      <LoggedIn>
-        <p>LOGIN</p>
-      </LoggedIn>
+      <LoggedIn>LOGIN</LoggedIn>
     </>
   );
 };
