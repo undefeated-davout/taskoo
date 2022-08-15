@@ -10,7 +10,7 @@ jobs:
   check-diff:
     runs-on: ubuntu-latest
     outputs:
-      diff: ${{ diff.outputs.diff }
+      diff: ${{ diff.outputs.diff }}
     steps:
       - uses: actions/checkout@v3
       - name: 差分があるかチェック
