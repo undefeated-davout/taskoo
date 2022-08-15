@@ -5,7 +5,7 @@ type HeadHelperProps = {
 };
 
 const HeadHelper = (props: HeadHelperProps) => {
-  const editedTitle = `${props.titleElem} | TASKOO`
+  const editedTitle = `${props.titleElem} | TASKOO`;
   return (
     <Head>
       <title>{editedTitle}</title>
