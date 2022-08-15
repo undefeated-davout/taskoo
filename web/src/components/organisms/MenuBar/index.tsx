@@ -89,11 +89,16 @@ const MenuBar = (props: MenuBarProps) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ marginRight: 5 }}
+            sx={{ marginRight: 1 }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ fontWeight: 100 }}
+          >
             TASKOO
           </Typography>
         </Toolbar>
