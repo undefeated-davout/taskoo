@@ -12,38 +12,53 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: 差分があるかチェック
+        id: diff_functions
+        uses: technote-space/get-diff-action@v6
+        with:
+          PATTERNS: |
+            functions/**/*.ts
+            functions/**/*.json
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           check-latest: true
+        if: steps.diff_functions.outputs.diff
 
-      - name: Get yarn cache directory path
+      - name: get yarn cache path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
+        if: steps.diff_functions.outputs.diff
+      - name: get yarn cache
+        uses: actions/cache@v3
         id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-functions-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-functions-
+        if: steps.diff_functions.outputs.diff
 
-      # インストール
       - name: install yarn
         run: npm install -g yarn
+        if: steps.diff_functions.outputs.diff
 
       # Cloud Functionのビルド
-      - name: install
+      - name: yarn install
         run: yarn --frozen-lockfile
         working-directory: ./functions
+        if: steps.diff_functions.outputs.diff
       - name: build
         run: yarn build
         working-directory: ./functions
+        if: steps.diff_functions.outputs.diff
 
-      # Cloud Functionのデプロイ
-      - name: Deploy for Function
+      - name: deploy
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only functions --project=taskoo-davout-v1
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        if: steps.diff_functions.outputs.diff
