@@ -7,30 +7,34 @@ on:
   pull_request:
 
 jobs:
-  test-and-deploy:
+  check:
     runs-on: ubuntu-latest
-
+    outputs:
+      diff: diff.outputs.diff
     steps:
       - uses: actions/checkout@v3
-
       - name: 差分があるかチェック
-        id: diff_functions
+        id: diff
         uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
-            functions/**/*.ts
-            functions/**/*.json
+            ./functions/**/*.ts
+            ./functions/**/*.json
 
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    needs: check
+    if: needs.check.diff
+    steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           check-latest: true
-        if: steps.diff_functions.outputs.diff
 
       - name: get yarn cache path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-        if: steps.diff_functions.outputs.diff
       - name: get yarn cache
         uses: actions/cache@v3
         id: yarn-cache
@@ -39,21 +43,17 @@ jobs:
           key: ${{ runner.os }}-functions-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-functions-
-        if: steps.diff_functions.outputs.diff
 
       - name: install yarn
         run: npm install -g yarn
-        if: steps.diff_functions.outputs.diff
 
       # Cloud Functionのビルド
       - name: yarn install
         run: yarn --frozen-lockfile
         working-directory: ./functions
-        if: steps.diff_functions.outputs.diff
       - name: build
         run: yarn build
         working-directory: ./functions
-        if: steps.diff_functions.outputs.diff
 
       - name: deploy
         uses: w9jds/firebase-action@master
@@ -61,4 +61,3 @@ jobs:
           args: deploy --only functions --project=taskoo-davout-v1
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        if: steps.diff_functions.outputs.diff

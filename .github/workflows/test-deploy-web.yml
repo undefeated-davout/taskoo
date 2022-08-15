@@ -10,15 +10,15 @@ jobs:
   check:
     runs-on: ubuntu-latest
     outputs:
-      diff: diff_web.outputs.diff
+      diff: diff.outputs.diff
     steps:
       - uses: actions/checkout@v3
       - name: 差分があるかチェック
-        id: diff_web
+        id: diff
         uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
-            web/**/*
+            ./web/**/*
 
   test-and-deploy:
     runs-on: ubuntu-latest
@@ -30,12 +30,6 @@ jobs:
         with:
           node-version: 16.x
           check-latest: true
-      - name: 差分があるかチェック
-        id: diff_web
-        uses: technote-space/get-diff-action@v6
-        with:
-          PATTERNS: |
-            web/**/*
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
