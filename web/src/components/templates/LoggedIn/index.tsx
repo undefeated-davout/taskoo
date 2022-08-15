@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import HeaderBar from 'components/organisms/HeaderBar';
 import SideBar from 'components/organisms/SideBar';
 
@@ -6,10 +8,16 @@ type LoggedInProps = {
 };
 
 const LoggedIn = (props: LoggedInProps) => {
+  const [isSideBarOpen, setIsSideBarOpen] = useState(true);
+
+  const toggleSideBar = () => {
+    setIsSideBarOpen(!isSideBarOpen);
+  };
+
   return (
     <>
-      <HeaderBar></HeaderBar>
-      <SideBar></SideBar>
+      <HeaderBar clickMenuButton={toggleSideBar}></HeaderBar>
+      <SideBar isSideBarOpen={isSideBarOpen}></SideBar>
       <main>{props.children}</main>
     </>
   );

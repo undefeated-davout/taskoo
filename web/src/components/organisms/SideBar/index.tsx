@@ -2,19 +2,18 @@ import * as React from 'react';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import Divider from '@mui/material/Divider';
 
-// const drawerWidth = 240;
-
-type SideBarProps = {};
+type SideBarProps = {
+  isSideBarOpen: boolean;
+};
 
 const SideBar = (props: SideBarProps) => {
   const list = () => (
@@ -27,11 +26,28 @@ const SideBar = (props: SideBarProps) => {
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText
+                  primary={text}
+                  primaryTypographyProps={{ fontSize: '0.8rem' }}
+                />
               </ListItemButton>
             </ListItem>
           ),
         )}
+        <Divider></Divider>
+        {['LOGOUT'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText
+                primary={text}
+                primaryTypographyProps={{ fontSize: '0.8rem' }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
@@ -39,7 +55,7 @@ const SideBar = (props: SideBarProps) => {
   return (
     <>
       <div>
-        <Drawer open={true}>{list()}</Drawer>
+        <Drawer open={props.isSideBarOpen}>{list()}</Drawer>
       </div>
     </>
   );
