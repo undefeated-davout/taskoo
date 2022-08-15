@@ -19,6 +19,7 @@ jobs:
         with:
           PATTERNS: |
             web/**/*
+      - run: echo ${{ env.GIT_DIFF }}
 
   test-and-deploy:
     runs-on: ubuntu-latest

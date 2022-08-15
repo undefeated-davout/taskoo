@@ -20,6 +20,7 @@ jobs:
           PATTERNS: |
             functions/**/*.ts
             functions/**/*.json
+      - run: echo ${{ env.GIT_DIFF }}
 
   test-and-deploy:
     runs-on: ubuntu-latest
