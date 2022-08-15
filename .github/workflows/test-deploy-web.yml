@@ -13,13 +13,13 @@ jobs:
       diff: ${{ steps.diff.outputs.diff }}
     steps:
       - uses: actions/checkout@v3
-      - name: 差分があるかチェック
+      - name: check existing diff
         id: diff
         uses: technote-space/get-diff-action@v6
         with:
           PATTERNS: |
-            web/**/*
-      - name: 差分表示
+            ./web/**/*
+      - name: display diff
         run: echo ${{ env.GIT_DIFF }}
 
   test-and-deploy:
