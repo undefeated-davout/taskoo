@@ -1,11 +1,11 @@
 import { render, screen, RenderResult } from '@testing-library/react';
-import Button from './index';
+import BaseButton from './index';
 
-describe('Button', () => {
+describe('BaseButton', () => {
   let renderResult: RenderResult;
 
   beforeEach(() => {
-    renderResult = render(<Button>hoge</Button>);
+    renderResult = render(<BaseButton onClick={() => {}}>hoge</BaseButton>);
   });
 
   afterEach(() => {
