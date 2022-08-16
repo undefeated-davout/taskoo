@@ -1,8 +1,17 @@
+import { useRouter } from 'next/router';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import MuiDrawer from '@mui/material/Drawer';
+// icons
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
+import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
+import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
+import ViewKanbanOutlinedIcon from '@mui/icons-material/ViewKanbanOutlined';
 
 import SideMenuList from 'components/molecules/SideMenuList';
 
@@ -58,21 +67,39 @@ const Drawer = styled(MuiDrawer, {
 
 // --- component ---
 const SideBar = (props: SideBarProps) => {
+  const router = useRouter();
+  const pageKey = router.pathname.slice(1, router.pathname.length);
+
+  const menuList: { key: string; icon: JSX.Element }[] = [
+    { key: 'focus', icon: <FilterCenterFocusIcon></FilterCenterFocusIcon> },
+    { key: 'pomodoro', icon: <TimerOutlinedIcon></TimerOutlinedIcon> },
+    {
+      key: 'tasks',
+      icon: <FormatListBulletedOutlinedIcon></FormatListBulletedOutlinedIcon>,
+    },
+    { key: 'routine', icon: <RepeatOutlinedIcon></RepeatOutlinedIcon> },
+    { key: 'kanban', icon: <ViewKanbanOutlinedIcon></ViewKanbanOutlinedIcon> },
+    {
+      key: 'calendar',
+      icon: <CalendarMonthOutlinedIcon></CalendarMonthOutlinedIcon>,
+    },
+  ];
+
   return (
     <Drawer variant="permanent" open={props.open}>
       <DrawerHeader></DrawerHeader>
       <Divider />
       <List>
-        {['focus', 'pomodoro', 'tasks', 'kanban', 'calendar'].map(
-          (key, index) => (
-            <SideMenuList
-              key={key}
-              keyName={key}
-              index={index}
-              open={props.open}
-            ></SideMenuList>
-          ),
-        )}
+        {menuList.map((menuItem, index) => (
+          <SideMenuList
+            key={menuItem.key}
+            keyName={menuItem.key}
+            icon={menuItem.icon}
+            index={index}
+            isSideBarOpen={props.open}
+            selected={pageKey === menuItem.key}
+          ></SideMenuList>
+        ))}
       </List>
       <Divider />
       <List>
@@ -80,8 +107,10 @@ const SideBar = (props: SideBarProps) => {
           <SideMenuList
             key={key}
             keyName={key}
+            icon={<LogoutOutlinedIcon></LogoutOutlinedIcon>}
             index={index}
-            open={props.open}
+            isSideBarOpen={props.open}
+            selected={false}
           ></SideMenuList>
         ))}
       </List>
