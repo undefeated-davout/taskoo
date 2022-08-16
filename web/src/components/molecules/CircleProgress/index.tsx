@@ -12,7 +12,7 @@ function CircularProgressWithLabel(
       <CircularProgress
         {...props}
         variant="determinate"
-        size="20rem"
+        size="12rem"
         sx={{ color: '#FFCDD2' }}
       />
     </Box>
@@ -20,7 +20,7 @@ function CircularProgressWithLabel(
 }
 
 const CircleProgress = () => {
-  const [progress, setProgress] = React.useState(0);
+  const [progress, setProgress] = React.useState(75);
 
   React.useEffect(() => {
     const timer = setInterval(() => {

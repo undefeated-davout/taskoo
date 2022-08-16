@@ -5,7 +5,7 @@ describe('Button', () => {
   let renderResult: RenderResult;
 
   beforeEach(() => {
-    renderResult = render(<Button text="hoge"></Button>);
+    renderResult = render(<Button>hoge</Button>);
   });
 
   afterEach(() => {
