@@ -24,11 +24,6 @@ const Pomodoro = (props: PomodoroProps) => {
     (passedSeconds * 100) / timerSeconds;
 
   const timerTitle = () => {
-    timerMinutes === 0
-      ? 'SELECT TIMER'
-      : remainSeconds() > 0
-      ? timeFormat(remainSeconds())
-      : `OVER`;
     // タイマー未セット
     if (timerMinutes === 0) {
       return 'SELECT TIMER';
@@ -90,6 +85,7 @@ const Pomodoro = (props: PomodoroProps) => {
                   <BaseButton
                     key={minutes.toString()}
                     onClick={() => startTimer(minutes)}
+                    color={timerMinutes === minutes ? 'primary' : 'inherit'}
                   >
                     {minutes}min
                   </BaseButton>
