@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Kanban: NextPage = () => {
+const KanbanPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="KANBAN"></HeadHelper>
@@ -12,4 +12,4 @@ const Kanban: NextPage = () => {
   );
 };
 
-export default Kanban;
+export default KanbanPage;

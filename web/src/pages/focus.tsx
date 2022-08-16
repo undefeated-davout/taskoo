@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Focus: NextPage = () => {
+const FocusPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="FOCUS"></HeadHelper>
@@ -12,4 +12,4 @@ const Focus: NextPage = () => {
   );
 };
 
-export default Focus;
+export default FocusPage;

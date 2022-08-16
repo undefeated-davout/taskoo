@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Login: NextPage = () => {
+const LoginPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="LOGIN"></HeadHelper>
@@ -12,4 +12,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

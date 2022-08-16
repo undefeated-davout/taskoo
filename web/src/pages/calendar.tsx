@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Calendar: NextPage = () => {
+const CalendarPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="CALENDAR"></HeadHelper>
@@ -12,4 +12,4 @@ const Calendar: NextPage = () => {
   );
 };
 
-export default Calendar;
+export default CalendarPage;

@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="Home"></HeadHelper>
@@ -12,4 +12,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

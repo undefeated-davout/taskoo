@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
 
-const Tasks: NextPage = () => {
+const TasksPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="TASKS"></HeadHelper>
@@ -12,4 +12,4 @@ const Tasks: NextPage = () => {
   );
 };
 
-export default Tasks;
+export default TasksPage;

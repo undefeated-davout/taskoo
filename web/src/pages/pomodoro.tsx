@@ -2,14 +2,17 @@ import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
 import LoggedIn from 'components/templates/LoggedIn';
+import Pomodoro from 'components/templates/Pomodoro';
 
-const Pomodoro: NextPage = () => {
+const PomodoroPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="POMODORO"></HeadHelper>
-      <LoggedIn>POMODORO</LoggedIn>
+      <LoggedIn>
+        <Pomodoro></Pomodoro>
+      </LoggedIn>
     </>
   );
 };
 
-export default Pomodoro;
+export default PomodoroPage;
