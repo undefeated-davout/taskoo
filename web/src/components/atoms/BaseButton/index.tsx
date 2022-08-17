@@ -17,7 +17,7 @@ type BaseButtonProps = {
 const BaseButton = (props: BaseButtonProps) => {
   return (
     <Button
-      color={props.color ?? 'inherit'}
+      color={props.color ?? 'primary'}
       variant="contained"
       sx={{ textTransform: 'none' }}
       onClick={props.onClick}

@@ -75,7 +75,7 @@ const Pomodoro = (props: PomodoroProps) => {
                 <CircularProgress
                   variant="determinate"
                   size="12rem"
-                  sx={{ color: '#FFCDD2' }}
+                  color="success"
                   value={progress(seconds(timerMinutes), passedSeconds)}
                 />
               </CardContent>
@@ -85,7 +85,7 @@ const Pomodoro = (props: PomodoroProps) => {
                   <BaseButton
                     key={minutes.toString()}
                     onClick={() => startTimer(minutes)}
-                    color={timerMinutes === minutes ? 'primary' : 'inherit'}
+                    color={timerMinutes === minutes ? 'success' : 'primary'}
                   >
                     {minutes}min
                   </BaseButton>
