@@ -23,7 +23,7 @@ const LoggedIn = (props: LoggedInProps) => {
       <SideBar open={open}></SideBar>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 1, height: '100vh', backgroundColor: 'gray' }}
+        sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'gray' }}
       >
         <DrawerHeader />
         {/* メインコンテンツ */}
