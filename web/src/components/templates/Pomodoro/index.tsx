@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Box, Grid } from '@mui/material';
+import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
 import BaseButton from 'components/atoms/BaseButton';
+import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
 type PomodoroProps = {};
 
@@ -51,15 +52,7 @@ const Pomodoro = (props: PomodoroProps) => {
   }, [timerMinutes]);
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <CenterContainerBox>
       <Box sx={{ maxWidth: 500, width: '100%' }}>
         <Card sx={{ p: 4 }}>
           <CardContent>
@@ -89,7 +82,7 @@ const Pomodoro = (props: PomodoroProps) => {
           </CardActions>
         </Card>
       </Box>
-    </Box>
+    </CenterContainerBox>
   );
 };
 

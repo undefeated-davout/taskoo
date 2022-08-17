@@ -1,24 +1,16 @@
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import TaskList from 'components/organisms/TaskList';
+import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
 type TasksProps = {};
 
 const Tasks = (props: TasksProps) => {
   return (
-    <Box
-      sx={{
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
+    <CenterContainerBox>
       <Box sx={{ maxWidth: 600, width: '100%' }}>
         <TaskList></TaskList>
       </Box>
-    </Box>
+    </CenterContainerBox>
   );
 };
 
