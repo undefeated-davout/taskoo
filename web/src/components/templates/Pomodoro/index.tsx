@@ -51,51 +51,45 @@ const Pomodoro = (props: PomodoroProps) => {
   }, [timerMinutes]);
 
   return (
-    <>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-        sx={{ minHeight: '100%' }}
-      >
-        <Grid item xs={12}>
-          <Card sx={{ minWidth: 400 }}>
-            <Grid
-              container
-              alignItems="center"
-              justifyContent="center"
-              direction="column"
-            >
-              <CardContent>
-                <Typography variant="h5" component="div" align="center">
-                  {timerTitle()}
-                </Typography>
-                <Box sx={{ mt: 3 }}></Box>
-                <CircularProgress
-                  variant="determinate"
-                  size="12rem"
-                  color="success"
-                  value={progress(seconds(timerMinutes), passedSeconds)}
-                />
-              </CardContent>
+    <Box
+      sx={{
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Box sx={{ maxWidth: 500, width: '100%' }}>
+        <Card sx={{ p: 4 }}>
+          <CardContent>
+            <Typography variant="h5" component="div" align="center">
+              {timerTitle()}
+            </Typography>
+            <Box sx={{ mt: 3, textAlign: 'center' }}>
+              <CircularProgress
+                variant="determinate"
+                size="12rem"
+                color="success"
+                value={progress(seconds(timerMinutes), passedSeconds)}
+              />
+            </Box>
+          </CardContent>
 
-              <CardActions sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {[0.1, 5, 10, 15, 25].map((minutes, _) => (
-                  <BaseButton
-                    key={minutes.toString()}
-                    onClick={() => startTimer(minutes)}
-                    color={timerMinutes === minutes ? 'success' : 'primary'}
-                  >
-                    {minutes}min
-                  </BaseButton>
-                ))}
-              </CardActions>
-            </Grid>
-          </Card>
-        </Grid>
-      </Grid>
-    </>
+          <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
+            {[0.1, 5, 10, 15, 25].map((minutes, _) => (
+              <BaseButton
+                key={minutes.toString()}
+                onClick={() => startTimer(minutes)}
+                color={timerMinutes === minutes ? 'success' : 'primary'}
+              >
+                {minutes}min
+              </BaseButton>
+            ))}
+          </CardActions>
+        </Card>
+      </Box>
+    </Box>
   );
 };
 
