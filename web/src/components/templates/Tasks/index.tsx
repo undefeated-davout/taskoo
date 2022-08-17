@@ -16,7 +16,7 @@ const Tasks = (props: TasksProps) => {
           p: 2,
           maxWidth: 600,
           width: '100%',
-          backgroundColor: theme.palette.grey[900],
+          backgroundColor: theme.palette.action.disabledBackground,
         }}
       >
         <TaskList></TaskList>

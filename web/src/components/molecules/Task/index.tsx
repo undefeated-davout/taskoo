@@ -14,8 +14,6 @@ const Task = (props: TaskProps) => {
     <Card
       sx={{
         height: '100%',
-        // color: theme.palette.common.black,
-        // backgroundColor: theme.palette.grey[200],
         display: 'flex',
         alignItems: 'center',
       }}
