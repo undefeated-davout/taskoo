@@ -9,6 +9,7 @@ const BaseCheckbox = (props: BaseCheckboxProps) => {
   const theme = useTheme();
   return (
     <Checkbox
+      color="default"
       icon={
         <CheckBoxOutlineBlankOutlinedIcon
           sx={{ color: theme.palette.grey[600] }}
