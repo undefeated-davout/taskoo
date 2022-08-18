@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedIn from 'components/templates/LoggedIn';
+import MenuContainer from 'components/templates/MenuContainer';
 
 const CalendarPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="CALENDAR"></HeadHelper>
-      <LoggedIn>CALENDAR</LoggedIn>
+      <MenuContainer isLoggedIn={true}>CALENDAR</MenuContainer>
     </>
   );
 };

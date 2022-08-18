@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedIn from 'components/templates/LoggedIn';
+import MenuContainer from 'components/templates/MenuContainer';
 
 const HomePage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="Home"></HeadHelper>
-      <LoggedIn>test</LoggedIn>
+      <MenuContainer isLoggedIn={true}>test</MenuContainer>
     </>
   );
 };

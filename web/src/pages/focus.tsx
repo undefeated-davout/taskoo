@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedIn from 'components/templates/LoggedIn';
+import MenuContainer from 'components/templates/MenuContainer';
 
 const FocusPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="FOCUS"></HeadHelper>
-      <LoggedIn>FOCUS</LoggedIn>
+      <MenuContainer isLoggedIn={true}>FOCUS</MenuContainer>
     </>
   );
 };

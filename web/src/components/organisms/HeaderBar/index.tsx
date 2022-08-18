@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
 type HeaderBarProps = {
+  isLoggedIn: boolean;
   onClickEvent: VoidFunction;
 };
 
@@ -19,15 +20,18 @@ const HeaderBar = (props: HeaderBarProps) => {
       sx={{ zIndex: theme.zIndex.drawer + 1 }}
     >
       <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={props.onClickEvent}
-          edge="start"
-          sx={{ marginRight: 1 }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {props.isLoggedIn && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={props.onClickEvent}
+            edge="start"
+            sx={{ marginRight: 1 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+
         <Typography
           variant="h6"
           noWrap

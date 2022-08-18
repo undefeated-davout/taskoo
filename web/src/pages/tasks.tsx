@@ -1,16 +1,16 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedIn from 'components/templates/LoggedIn';
+import MenuContainer from 'components/templates/MenuContainer';
 import Tasks from 'components/templates/Tasks';
 
 const TasksPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="TASKS"></HeadHelper>
-      <LoggedIn>
+      <MenuContainer isLoggedIn={true}>
         <Tasks></Tasks>
-      </LoggedIn>
+      </MenuContainer>
     </>
   );
 };

@@ -7,11 +7,12 @@ import { useTheme } from '@mui/material/styles';
 import HeaderBar from 'components/organisms/HeaderBar';
 import SideBar, { DrawerHeader } from 'components/organisms/SideBar';
 
-type LoggedInProps = {
+type MenuContainerProps = {
   children: React.ReactNode;
+  isLoggedIn: boolean;
 };
 
-const LoggedIn = (props: LoggedInProps) => {
+const MenuContainer = (props: MenuContainerProps) => {
   const theme = useTheme();
   const [open, setOpen] = useState(true);
   const toggleSideBarOpen = () => setOpen(!open);
@@ -19,8 +20,11 @@ const LoggedIn = (props: LoggedInProps) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <HeaderBar onClickEvent={toggleSideBarOpen}></HeaderBar>
-      <SideBar open={open}></SideBar>
+      <HeaderBar
+        onClickEvent={toggleSideBarOpen}
+        isLoggedIn={props.isLoggedIn}
+      ></HeaderBar>
+      {props.isLoggedIn && <SideBar open={open}></SideBar>}
       <Box
         component="main"
         sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'gray' }}
@@ -45,4 +49,4 @@ const LoggedIn = (props: LoggedInProps) => {
   );
 };
 
-export default LoggedIn;
+export default MenuContainer;

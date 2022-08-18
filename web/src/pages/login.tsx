@@ -1,13 +1,20 @@
 import type { NextPage } from 'next';
 
+import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedIn from 'components/templates/LoggedIn';
+import Login from 'components/templates/Login';
+import MenuContainer from 'components/templates/MenuContainer';
 
 const LoginPage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="LOGIN"></HeadHelper>
-      <LoggedIn>LOGIN</LoggedIn>
+
+      <MenuContainer isLoggedIn={false}>
+        <CenterContainerBox>
+          <Login></Login>
+        </CenterContainerBox>
+      </MenuContainer>
     </>
   );
 };
