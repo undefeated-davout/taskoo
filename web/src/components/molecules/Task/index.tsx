@@ -1,7 +1,11 @@
 import { useTheme } from '@mui/material/styles';
 
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 import { TaskType } from 'types/task';
 
 type TaskProps = {
@@ -20,6 +24,25 @@ const Task = (props: TaskProps) => {
     >
       <BaseCheckbox></BaseCheckbox>
       {props.task.title}
+
+      <CardActions sx={{ marginLeft: 'auto' }}>
+        <Button
+          variant="contained"
+          sx={{
+            maxWidth: 36,
+            minWidth: 36,
+            backgroundColor: theme.palette.grey[500],
+            '&:hover': {
+              backgroundColor: theme.palette.grey[400],
+            },
+          }}
+          onClick={() => {
+            console.log('deleted');
+          }}
+        >
+          <DeleteOutlineIcon sx={{ m: 0 }}></DeleteOutlineIcon>
+        </Button>
+      </CardActions>
     </Card>
   );
 };
