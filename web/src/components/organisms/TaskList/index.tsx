@@ -7,8 +7,13 @@ type TaskListProps = {};
 
 const TaskList = (props: TaskListProps) => {
   const tasks: TaskType[] = Array.from(Array(10).keys()).map((key, _) => {
-    return { id: key, title: `テストタスク 入力中${key + 1}` };
+    return {
+      id: key,
+      order_num: key + 1,
+      title: `テストタスク 入力中${key + 1}`,
+    };
   });
+
   return (
     <List sx={{ width: '100%' }}>
       {tasks.map((task, _) => (

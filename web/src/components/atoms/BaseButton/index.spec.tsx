@@ -1,4 +1,5 @@
-import { render, screen, RenderResult } from '@testing-library/react';
+import { RenderResult, render, screen } from '@testing-library/react';
+
 import BaseButton from './index';
 
 describe('BaseButton', () => {

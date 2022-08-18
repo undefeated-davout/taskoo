@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
-
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-
+import { useTheme } from '@mui/material/styles';
 import HeaderBar from 'components/organisms/HeaderBar';
 import SideBar, { DrawerHeader } from 'components/organisms/SideBar';
+import { useState } from 'react';
 
 type LoggedInProps = {
   children: React.ReactNode;

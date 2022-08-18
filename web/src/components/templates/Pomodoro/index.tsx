@@ -1,14 +1,12 @@
-import { useState, useEffect } from 'react';
-
 import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
+import { useEffect, useState } from 'react';
 
 type PomodoroProps = {};
 

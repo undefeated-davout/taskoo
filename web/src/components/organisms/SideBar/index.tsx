@@ -1,10 +1,3 @@
-import { useRouter } from 'next/router';
-import { styled, Theme, CSSObject } from '@mui/material/styles';
-
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import MuiDrawer from '@mui/material/Drawer';
-// icons
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
@@ -12,8 +5,12 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import RepeatOutlinedIcon from '@mui/icons-material/RepeatOutlined';
 import TimerOutlinedIcon from '@mui/icons-material/TimerOutlined';
 import ViewKanbanOutlinedIcon from '@mui/icons-material/ViewKanbanOutlined';
-
+import Divider from '@mui/material/Divider';
+import MuiDrawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import { CSSObject, Theme, styled } from '@mui/material/styles';
 import SideMenuList from 'components/molecules/SideMenuList';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 200;
 

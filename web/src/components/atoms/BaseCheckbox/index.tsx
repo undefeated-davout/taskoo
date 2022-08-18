@@ -1,7 +1,6 @@
-import { useTheme } from '@mui/material/styles';
-
-import Checkbox from '@mui/material/Checkbox';
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
+import Checkbox from '@mui/material/Checkbox';
+import { useTheme } from '@mui/material/styles';
 
 type BaseCheckboxProps = {};
 

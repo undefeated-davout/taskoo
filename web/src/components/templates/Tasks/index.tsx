@@ -1,8 +1,7 @@
-import { useTheme } from '@mui/material/styles';
-
 import Card from '@mui/material/Card';
-import TaskList from 'components/organisms/TaskList';
+import { useTheme } from '@mui/material/styles';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
+import TaskList from 'components/organisms/TaskList';
 
 type TasksProps = {};
 
