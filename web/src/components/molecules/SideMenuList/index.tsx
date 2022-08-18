@@ -1,9 +1,10 @@
+import Link from 'next/link';
+
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
-import Link from 'next/link';
 
 type SideMenuListProps = {
   keyName: string;

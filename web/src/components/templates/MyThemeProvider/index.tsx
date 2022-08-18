@@ -7,8 +7,6 @@ type Props = {
 export default function MyThemeProvider({ children }: Props) {
   const defaultTheme = useTheme();
 
-  // defaultTheme.palette.action.disabledBackground
-
   const theme = createTheme({
     palette: {
       mode: 'dark',

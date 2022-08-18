@@ -3,7 +3,9 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import { useTheme } from '@mui/material/styles';
+
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
+
 import { TaskType } from 'types/task';
 
 type TaskProps = {

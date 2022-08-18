@@ -1,6 +1,7 @@
-import MyThemeProvider from 'components/templates/MyThemeProvider';
 import { AppProps } from 'next/app';
 import { createGlobalStyle } from 'styled-components';
+
+import MyThemeProvider from 'components/templates/MyThemeProvider';
 
 const GlobalStyle = createGlobalStyle`
   html,

@@ -1,3 +1,5 @@
+import { useRouter } from 'next/router';
+
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
@@ -9,8 +11,8 @@ import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import { CSSObject, Theme, styled } from '@mui/material/styles';
+
 import SideMenuList from 'components/molecules/SideMenuList';
-import { useRouter } from 'next/router';
 
 const drawerWidth = 200;
 
