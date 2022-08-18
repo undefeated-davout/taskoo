@@ -1,6 +1,5 @@
-import { addDecorator } from '@storybook/react'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
-import * as NextImage from 'next/image'
+import * as NextImage from 'next/image';
+import {  createGlobalStyle } from 'styled-components';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },

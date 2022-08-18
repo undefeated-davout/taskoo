@@ -9,10 +9,11 @@ type TaskListProps = {};
 
 const TaskList = (props: TaskListProps) => {
   const tasks: TaskType[] = Array.from(Array(10).keys()).map((key, _) => {
+    const id = key + 1;
     return {
-      id: key,
-      order_num: key + 1,
-      title: `テストタスク 入力中${key + 1}`,
+      id: id,
+      order_num: id,
+      title: `テストタスク 入力中${id}`,
     };
   });
 

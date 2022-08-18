@@ -8,12 +8,15 @@ import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
 import { TaskType } from 'types/task';
 
+import { DeleteTask } from 'lib/functions/task';
+
 type TaskProps = {
   task: TaskType;
 };
 
 const Task = (props: TaskProps) => {
   const theme = useTheme();
+
   return (
     <Card
       sx={{
@@ -36,9 +39,7 @@ const Task = (props: TaskProps) => {
               backgroundColor: theme.palette.grey[400],
             },
           }}
-          onClick={() => {
-            console.log('deleted');
-          }}
+          onClick={() => DeleteTask(props.task.id)}
         >
           <DeleteOutlineIcon sx={{ m: 0 }}></DeleteOutlineIcon>
         </Button>
