@@ -53,12 +53,18 @@ jobs:
         run: yarn --frozen-lockfile
         working-directory: ./web
 
+      # 環境変数読み込み
+      - name: load env
+        env:
+          BASE64_ENV_PROD: ${{ secrets.BASE64_ENV_PROD }}
+        run: echo -n $BASE64_ENV_PROD | base64 --decode > ./web/.env.production.local
+
       # テスト
-      - name: build
-        run: yarn build
-        working-directory: ./web
       - name: test
         run: yarn test
+        working-directory: ./web
+      - name: build
+        run: yarn build
         working-directory: ./web
 
       # デプロイ
