@@ -1,4 +1,5 @@
 // import { getAnalytics } from 'firebase/analytics';
+import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
 const firebaseConfig = {
@@ -14,3 +15,4 @@ const firebaseConfig = {
 export const preparedFirebase = firebase;
 const app = preparedFirebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
+export const auth = getAuth();
