@@ -25,7 +25,7 @@ const TaskList = (props: TaskListProps) => {
           disablePadding
           sx={{ display: 'block', mt: 1, height: 50 }}
         >
-          <Task task={task}></Task>
+          <Task task={task} />
         </ListItem>
       ))}
     </List>

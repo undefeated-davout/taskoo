@@ -23,7 +23,7 @@ const MenuContainer = (props: MenuContainerProps) => {
       <HeaderBar
         onClickEvent={toggleSideBarOpen}
         isLoggedIn={props.isLoggedIn}
-      ></HeaderBar>
+      />
       {props.isLoggedIn && <SideBar open={open}></SideBar>}
       <Box
         component="main"

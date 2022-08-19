@@ -1,13 +1,31 @@
-import Card from '@mui/material/Card';
+import { addDoc, collection } from 'firebase/firestore';
+
 import TextField from '@mui/material/TextField';
-import { useTheme } from '@mui/material/styles';
 
 type AddTaskFormProps = {};
 
 const AddTaskForm = (props: AddTaskFormProps) => {
-  const theme = useTheme();
+  /** ボタン押下orEnterで呼ばれる */
+  const handleSubmit = (
+    e:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    console.log('Click');
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
+    handleSubmit(e);
+  };
 
-  return <TextField label="ENTER YOUR TASK" variant="outlined" fullWidth />;
+  return (
+    <TextField
+      label="ENTER YOUR TASK"
+      variant="outlined"
+      fullWidth
+      onKeyDown={handleKeyDown}
+    />
+  );
 };
 
 export default AddTaskForm;

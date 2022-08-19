@@ -14,7 +14,7 @@ const BaseCheckbox = (props: BaseCheckboxProps) => {
           sx={{ color: theme.palette.grey[600] }}
         />
       }
-    ></Checkbox>
+    />
   );
 };
 

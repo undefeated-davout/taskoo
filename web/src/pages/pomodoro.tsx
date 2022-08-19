@@ -7,9 +7,9 @@ import Pomodoro from 'components/templates/Pomodoro';
 const PomodoroPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="POMODORO"></HeadHelper>
+      <HeadHelper titleElem="POMODORO" />
       <MenuContainer isLoggedIn={true}>
-        <Pomodoro></Pomodoro>
+        <Pomodoro />
       </MenuContainer>
     </>
   );

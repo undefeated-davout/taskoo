@@ -96,7 +96,7 @@ const SideBar = (props: SideBarProps) => {
 
   return (
     <Drawer variant="permanent" open={props.open}>
-      <DrawerHeader></DrawerHeader>
+      <DrawerHeader />
       <Divider />
       <List>
         {firstMenuList.map((menuItem, index) => (
@@ -108,7 +108,7 @@ const SideBar = (props: SideBarProps) => {
             index={index}
             isSideBarOpen={props.open}
             selected={pageKey === menuItem.key}
-          ></SideMenuList>
+          />
         ))}
       </List>
       <Divider />
@@ -122,7 +122,7 @@ const SideBar = (props: SideBarProps) => {
             index={index}
             isSideBarOpen={props.open}
             selected={false}
-          ></SideMenuList>
+          />
         ))}
       </List>
     </Drawer>

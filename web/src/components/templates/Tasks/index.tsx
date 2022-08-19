@@ -15,15 +15,17 @@ const Tasks = (props: TasksProps) => {
     <HorizontalCenterContainerBox>
       <Card
         sx={{
+          mt: 4,
           p: 2,
           maxWidth: 600,
           width: '100%',
           backgroundColor: theme.palette.action.disabledBackground,
         }}
       >
-        <AddTaskForm></AddTaskForm>
-        <Box sx={{ mt: 1 }}></Box>
-        <TaskList></TaskList>
+        <Box sx={{ mt: 1 }} />
+        <AddTaskForm />
+        <Box sx={{ mt: 1 }} />
+        <TaskList />
       </Card>
     </HorizontalCenterContainerBox>
   );

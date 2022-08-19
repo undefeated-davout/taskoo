@@ -6,7 +6,7 @@ import MenuContainer from 'components/templates/MenuContainer';
 const FocusPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="FOCUS"></HeadHelper>
+      <HeadHelper titleElem="FOCUS" />
       <MenuContainer isLoggedIn={true}>FOCUS</MenuContainer>
     </>
   );

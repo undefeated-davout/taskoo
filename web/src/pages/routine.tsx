@@ -6,7 +6,7 @@ import MenuContainer from 'components/templates/MenuContainer';
 const RoutinePage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="ROUTINE"></HeadHelper>
+      <HeadHelper titleElem="ROUTINE" />
       <MenuContainer isLoggedIn={true}>ROUTINE</MenuContainer>
     </>
   );

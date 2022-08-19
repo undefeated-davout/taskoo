@@ -6,7 +6,7 @@ import MenuContainer from 'components/templates/MenuContainer';
 const HomePage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="Home"></HeadHelper>
+      <HeadHelper titleElem="Home" />
       <MenuContainer isLoggedIn={true}>LOADING...</MenuContainer>
     </>
   );

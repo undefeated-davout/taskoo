@@ -25,7 +25,7 @@ const Task = (props: TaskProps) => {
         alignItems: 'center',
       }}
     >
-      <BaseCheckbox></BaseCheckbox>
+      <BaseCheckbox />
       {props.task.title}
 
       <CardActions sx={{ marginLeft: 'auto' }}>
@@ -41,7 +41,7 @@ const Task = (props: TaskProps) => {
           }}
           onClick={() => DeleteTask(props.task.id)}
         >
-          <DeleteOutlineIcon sx={{ m: 0 }}></DeleteOutlineIcon>
+          <DeleteOutlineIcon sx={{ m: 0 }} />
         </Button>
       </CardActions>
     </Card>

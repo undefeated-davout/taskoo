@@ -6,7 +6,7 @@ import MenuContainer from 'components/templates/MenuContainer';
 const KanbanPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="KANBAN"></HeadHelper>
+      <HeadHelper titleElem="KANBAN" />
       <MenuContainer isLoggedIn={true}>KANBAN</MenuContainer>
     </>
   );

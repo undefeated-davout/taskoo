@@ -7,9 +7,9 @@ import Tasks from 'components/templates/Tasks';
 const TasksPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="TASKS"></HeadHelper>
+      <HeadHelper titleElem="TASKS" />
       <MenuContainer isLoggedIn={true}>
-        <Tasks></Tasks>
+        <Tasks />
       </MenuContainer>
     </>
   );

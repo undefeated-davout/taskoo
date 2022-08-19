@@ -8,11 +8,11 @@ import MenuContainer from 'components/templates/MenuContainer';
 const LoginPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="LOGIN"></HeadHelper>
+      <HeadHelper titleElem="LOGIN" />
 
       <MenuContainer isLoggedIn={false}>
         <CenterContainerBox>
-          <Login></Login>
+          <Login />
         </CenterContainerBox>
       </MenuContainer>
     </>

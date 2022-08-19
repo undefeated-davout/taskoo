@@ -6,7 +6,7 @@ import MenuContainer from 'components/templates/MenuContainer';
 const CalendarPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="CALENDAR"></HeadHelper>
+      <HeadHelper titleElem="CALENDAR" />
       <MenuContainer isLoggedIn={true}>CALENDAR</MenuContainer>
     </>
   );
