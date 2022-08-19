@@ -39,7 +39,6 @@ jobs:
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: get yarn cache
         uses: actions/cache@v3
-        id: yarn-cache
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-functions-${{ hashFiles('**/yarn.lock') }}
@@ -51,8 +50,7 @@ jobs:
 
       # Cloud Functionのビルド
       - name: yarn install
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --prefer-offline
         working-directory: ./functions
       - name: build
         run: yarn build
