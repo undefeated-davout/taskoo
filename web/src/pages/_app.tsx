@@ -1,7 +1,11 @@
+import { User, onAuthStateChanged } from 'firebase/auth';
 import { AppProps } from 'next/app';
+import { useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import MyThemeProvider from 'components/templates/MyThemeProvider';
+
+import { auth } from 'lib/infrastructure/firebase';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -32,7 +36,39 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+// 認証情報を取得
+const getUser = (): Promise<User | null> => {
+  return new Promise((resolve, _) => {
+    onAuthStateChanged(auth, (user) => {
+      resolve(user);
+    });
+  });
+};
+
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
+  const [displayReadyFlag, setDisplayReadyFlag] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getUser();
+      let isLoggedIn = !!user;
+      if (isLoggedIn && ['/login', '/_error'].indexOf(router.pathname) > -1) {
+        // ログイン状態でloginページor不正なページにアクセスしたらトップページへリダイレクト
+        router.push('/focus');
+        return;
+      } else if (!isLoggedIn && router.pathname !== '/login') {
+        // ログアウト状態でloginページ以外にアクセスしたらloginページへリダイレクト
+        router.push('/login');
+        return;
+      }
+      setDisplayReadyFlag(true);
+    })();
+  }, [router.pathname]);
+
+  if (!displayReadyFlag) {
+    return <></>;
+  }
+
   return (
     <>
       <MyThemeProvider>
