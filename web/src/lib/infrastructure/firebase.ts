@@ -1,6 +1,7 @@
 // import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -16,3 +17,4 @@ export const preparedFirebase = firebase;
 const app = preparedFirebase.initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 export const auth = getAuth();
+export const db = getFirestore(app);
