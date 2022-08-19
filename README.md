@@ -16,3 +16,9 @@ docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_e
 // http://0.0.0.0:5001/taskoo-davout-v1/asia-northeast1/helloWorld
 // https://asia-northeast1-taskoo-davout-v1.cloudfunctions.net/helloWorld
 ```
+
+## デプロイ
+
+```bash
+firebase deploy --only firestore:rules
+```
