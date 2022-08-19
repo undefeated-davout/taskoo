@@ -52,7 +52,7 @@ jobs:
         with:
           path: |
             web/node_modules
-          key: ${{ runner.os }}-node-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          key: ${{ runner.os }}-nextjs-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
 
       - name: install yarn
         run: npm install -g yarn

@@ -45,6 +45,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-functions-
 
+      - name: get node_modules cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            web/node_modules
+          key: ${{ runner.os }}-functions-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+
       - name: install yarn
         run: npm install -g yarn
 
