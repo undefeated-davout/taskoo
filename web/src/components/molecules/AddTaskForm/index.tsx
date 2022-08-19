@@ -1,6 +1,8 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 import TextField from '@mui/material/TextField';
+
+import { NewTaskType } from 'types/task';
 
 import { db } from 'lib/infrastructure/firebase';
 
@@ -13,15 +15,21 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       | React.MouseEvent<HTMLButtonElement>
       | React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    console.log('Click');
-
     try {
-      const docRef = await addDoc(collection(db, 'users'), {
-        first: 'Ada',
-        last: 'Lovelace',
-        born: 1815,
-      });
-      console.log('Document written with ID: ', docRef.id);
+      const taskColloctionRef = collection(
+        db,
+        'users',
+        '4FLibj7aErYG54Fe0G0fdsSbt5q1',
+        'tasks',
+      );
+      const task: NewTaskType = {
+        order_num: 0,
+        title: 'test',
+        isDone: false,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+      setDoc(doc(taskColloctionRef), task);
     } catch (e) {
       console.error('Error adding document: ', e);
     }
