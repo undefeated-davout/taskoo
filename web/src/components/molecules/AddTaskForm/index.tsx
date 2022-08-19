@@ -24,6 +24,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       variant="outlined"
       fullWidth
       onKeyDown={handleKeyDown}
+      autoComplete="off"
     />
   );
 };
