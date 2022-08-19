@@ -47,7 +47,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
 
-      - name: cache node_modules
+      - name: get node_modules cache
         uses: actions/cache@v3
         with:
           path: |
