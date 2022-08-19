@@ -8,7 +8,7 @@ import { TaskType } from 'types/task';
 type TaskListProps = {};
 
 const TaskList = (props: TaskListProps) => {
-  const tasks: TaskType[] = Array.from(Array(20).keys()).map((key, _) => {
+  const tasks: TaskType[] = Array.from(Array(10).keys()).map((key, _) => {
     const id = key + 1;
     return {
       id: id,
