@@ -3,5 +3,8 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "singleQuote": true,
-  "semi": true
+  "semi": true,
+  "importOrder": ["^firebase(.*)$", "^./lib/(.*)$", "^./types/(.*)$", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
