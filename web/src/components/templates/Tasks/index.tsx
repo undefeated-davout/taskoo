@@ -1,7 +1,9 @@
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
-import CenterContainerBox from 'components/atoms/CenterContainerBox';
+import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
+import AddTaskForm from 'components/molecules/AddTaskForm';
 import TaskList from 'components/organisms/TaskList';
 
 type TasksProps = {};
@@ -10,7 +12,7 @@ const Tasks = (props: TasksProps) => {
   const theme = useTheme();
 
   return (
-    <CenterContainerBox>
+    <HorizontalCenterContainerBox>
       <Card
         sx={{
           p: 2,
@@ -19,9 +21,11 @@ const Tasks = (props: TasksProps) => {
           backgroundColor: theme.palette.action.disabledBackground,
         }}
       >
+        <AddTaskForm></AddTaskForm>
+        <Box sx={{ mt: 1 }}></Box>
         <TaskList></TaskList>
       </Card>
-    </CenterContainerBox>
+    </HorizontalCenterContainerBox>
   );
 };
 
