@@ -9,9 +9,26 @@ import { useTheme } from '@mui/material/styles';
 type SideMenuListProps = {
   keyName: string;
   icon: JSX.Element;
+  onClick?: VoidFunction;
   index: number;
   isSideBarOpen: boolean;
   selected: boolean;
+};
+
+const MenuElem = (props: {
+  path: string;
+  onClick?: VoidFunction;
+  children: React.ReactNode;
+}) => {
+  return (
+    <>
+      {props.onClick ? (
+        <div onClick={props.onClick}>{props.children}</div>
+      ) : (
+        <Link href={props.path}>{props.children}</Link>
+      )}
+    </>
+  );
 };
 
 const SideMenuList = (props: SideMenuListProps) => {
@@ -27,7 +44,7 @@ const SideMenuList = (props: SideMenuListProps) => {
           : undefined,
       }}
     >
-      <Link href={`/${props.keyName}`}>
+      <MenuElem path={`/${props.keyName}`} onClick={props.onClick}>
         <ListItemButton
           sx={{
             minHeight: 48,
@@ -50,7 +67,7 @@ const SideMenuList = (props: SideMenuListProps) => {
             sx={{ opacity: props.isSideBarOpen ? 1 : 0 }}
           />
         </ListItemButton>
-      </Link>
+      </MenuElem>
     </ListItem>
   );
 };

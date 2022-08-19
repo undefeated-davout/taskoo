@@ -1,3 +1,4 @@
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
@@ -13,6 +14,8 @@ import List from '@mui/material/List';
 import { CSSObject, Theme, styled } from '@mui/material/styles';
 
 import SideMenuList from 'components/molecules/SideMenuList';
+
+import { auth } from 'lib/infrastructure/firebase';
 
 const drawerWidth = 200;
 
@@ -64,23 +67,34 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
+type menuType = { key: string; icon: JSX.Element; onClick?: VoidFunction };
+
 // --- component ---
 const SideBar = (props: SideBarProps) => {
   const router = useRouter();
   const pageKey = router.pathname.slice(1, router.pathname.length);
 
-  const menuList: { key: string; icon: JSX.Element }[] = [
-    { key: 'focus', icon: <FilterCenterFocusIcon></FilterCenterFocusIcon> },
-    { key: 'pomodoro', icon: <TimerOutlinedIcon></TimerOutlinedIcon> },
+  const firstMenuList: menuType[] = [
+    { key: 'focus', icon: <FilterCenterFocusIcon /> },
+    { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
+    { key: 'tasks', icon: <FormatListBulletedOutlinedIcon /> },
+    { key: 'routine', icon: <RepeatOutlinedIcon /> },
+    { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
+    { key: 'calendar', icon: <CalendarMonthOutlinedIcon /> },
+  ];
+  const secondMenuList: menuType[] = [
     {
-      key: 'tasks',
-      icon: <FormatListBulletedOutlinedIcon></FormatListBulletedOutlinedIcon>,
-    },
-    { key: 'routine', icon: <RepeatOutlinedIcon></RepeatOutlinedIcon> },
-    { key: 'kanban', icon: <ViewKanbanOutlinedIcon></ViewKanbanOutlinedIcon> },
-    {
-      key: 'calendar',
-      icon: <CalendarMonthOutlinedIcon></CalendarMonthOutlinedIcon>,
+      key: 'logout',
+      icon: <LogoutOutlinedIcon />,
+      onClick: () => {
+        signOut(auth)
+          .then(() => {
+            // Sign-out successful.
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      },
     },
   ];
 
@@ -89,11 +103,12 @@ const SideBar = (props: SideBarProps) => {
       <DrawerHeader></DrawerHeader>
       <Divider />
       <List>
-        {menuList.map((menuItem, index) => (
+        {firstMenuList.map((menuItem, index) => (
           <SideMenuList
             key={menuItem.key}
             keyName={menuItem.key}
             icon={menuItem.icon}
+            onClick={menuItem.onClick}
             index={index}
             isSideBarOpen={props.open}
             selected={pageKey === menuItem.key}
@@ -102,11 +117,12 @@ const SideBar = (props: SideBarProps) => {
       </List>
       <Divider />
       <List>
-        {['logout'].map((key, index) => (
+        {secondMenuList.map((menuItem, index) => (
           <SideMenuList
-            key={key}
-            keyName={key}
-            icon={<LogoutOutlinedIcon></LogoutOutlinedIcon>}
+            key={menuItem.key}
+            keyName={menuItem.key}
+            icon={menuItem.icon}
+            onClick={menuItem.onClick}
             index={index}
             isSideBarOpen={props.open}
             selected={false}
