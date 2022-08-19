@@ -47,6 +47,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
 
+      - name: cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            web/node_modules
+          key: ${{ runner.os }}-node-deps-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+
       - name: install yarn
         run: npm install -g yarn
       - name: yarn install
