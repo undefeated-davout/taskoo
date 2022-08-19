@@ -51,6 +51,7 @@ jobs:
 
       # Cloud Functionのビルド
       - name: yarn install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
         working-directory: ./functions
       - name: build

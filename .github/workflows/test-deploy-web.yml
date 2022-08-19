@@ -39,6 +39,7 @@ jobs:
 
       - name: get yarn cache
         uses: actions/cache@v3
+        id: yarn-cache
         with:
           path: |
             ~/.npm
@@ -50,6 +51,7 @@ jobs:
       - name: install yarn
         run: npm install -g yarn
       - name: yarn install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
         working-directory: ./web
 
