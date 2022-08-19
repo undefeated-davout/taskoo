@@ -14,6 +14,9 @@ const TaskList = (props: TaskListProps) => {
       id: id,
       order_num: id,
       title: `テストタスク 入力中${id}`,
+      isDone: false,
+      createdAt: null,
+      updatedAt: null,
     };
   });
 

@@ -4,8 +4,8 @@ export type NewTaskType = {
   order_num: number;
   title: string;
   isDone: boolean;
-  createdAt: FieldValue;
-  updatedAt: FieldValue;
+  createdAt: FieldValue | null;
+  updatedAt: FieldValue | null;
 };
 
 export type TaskType = NewTaskType & {
