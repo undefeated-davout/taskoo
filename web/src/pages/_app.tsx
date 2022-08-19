@@ -66,7 +66,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
       }
       setDisplayReadyFlag(true);
     })();
-  }, [router.pathname]);
+  }, [router, router.pathname]);
 
   return (
     <>
