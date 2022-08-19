@@ -88,12 +88,8 @@ const SideBar = (props: SideBarProps) => {
       icon: <LogoutOutlinedIcon />,
       onClick: () => {
         signOut(auth)
-          .then(() => {
-            // Sign-out successful.
-          })
-          .catch((error) => {
-            // An error happened.
-          });
+          .then(() => router.push('/login'))
+          .catch((err) => alert(err));
       },
     },
   ];

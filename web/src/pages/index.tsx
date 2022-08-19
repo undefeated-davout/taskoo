@@ -7,7 +7,7 @@ const HomePage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="Home"></HeadHelper>
-      <MenuContainer isLoggedIn={true}>test</MenuContainer>
+      <MenuContainer isLoggedIn={true}>LOADING...</MenuContainer>
     </>
   );
 };
