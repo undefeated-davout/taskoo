@@ -1,24 +1,40 @@
+import { Unsubscribe, collection } from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
+import { orderBy, query } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
 import Task from 'components/molecules/Task';
 
-import { taskType } from 'types/task';
+import { newTaskType, taskType } from 'types/task';
+
+import { getUser } from 'lib/api/user';
+import { db } from 'lib/infrastructure/firebase';
 
 type TaskListProps = {};
 
 const TaskList = (props: TaskListProps) => {
-  const tasks: taskType[] = Array.from(Array(15).keys()).map((key, _) => {
-    const id = key + 1;
-    return {
-      id: id,
-      order_num: id,
-      title: `テストタスク 入力中${id}`,
-      isDone: false,
-      createdAt: null,
-      updatedAt: null,
-    };
-  });
+  const [tasks, setTasks] = useState<taskType[]>([]);
+
+  useEffect(() => {
+    let unsubscribe: Unsubscribe;
+    getUser().then((user) => {
+      const taskColloctionRef = collection(db, 'users', user!.uid, 'tasks');
+      const q = query(taskColloctionRef, orderBy('updatedAt', 'desc'));
+      unsubscribe = onSnapshot(q, (docs) => {
+        let workTasks: taskType[] = [];
+        docs.forEach((doc) => {
+          let taskDoc = doc.data() as newTaskType;
+          const task: taskType = { id: doc.id, ...taskDoc };
+          workTasks.push(task);
+        });
+        setTasks(workTasks);
+      });
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <List sx={{ width: '100%' }}>

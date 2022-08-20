@@ -9,5 +9,5 @@ export type newTaskType = {
 };
 
 export type taskType = newTaskType & {
-  id: number;
+  id: string;
 };
