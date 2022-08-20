@@ -76,11 +76,11 @@ const SideBar = (props: SideBarProps) => {
 
   const firstMenuList: menuType[] = [
     { key: 'focus', icon: <FilterCenterFocusIcon /> },
-    { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
-    { key: 'tasks', icon: <FormatListBulletedOutlinedIcon /> },
+    { key: 'today', icon: <FormatListBulletedOutlinedIcon /> },
     { key: 'routine', icon: <RepeatOutlinedIcon /> },
     { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
     { key: 'calendar', icon: <CalendarMonthOutlinedIcon /> },
+    { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
   ];
   const secondMenuList: menuType[] = [
     {

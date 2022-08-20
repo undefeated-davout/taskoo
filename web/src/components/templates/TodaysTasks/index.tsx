@@ -6,9 +6,9 @@ import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterConta
 import AddTaskForm from 'components/molecules/AddTaskForm';
 import TaskList from 'components/organisms/TaskList';
 
-type TasksProps = {};
+type TodaysTasksProps = {};
 
-const Tasks = (props: TasksProps) => {
+const TodaysTasks = (props: TodaysTasksProps) => {
   const theme = useTheme();
 
   return (
@@ -31,4 +31,4 @@ const Tasks = (props: TasksProps) => {
   );
 };
 
-export default Tasks;
+export default TodaysTasks;
