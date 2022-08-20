@@ -1,6 +1,6 @@
 import { FieldValue } from 'firebase/firestore';
 
-export type NewTaskType = {
+export type newTaskType = {
   order_num: number;
   title: string;
   isDone: boolean;
@@ -8,6 +8,6 @@ export type NewTaskType = {
   updatedAt: FieldValue | null;
 };
 
-export type TaskType = NewTaskType & {
+export type taskType = newTaskType & {
   id: number;
 };

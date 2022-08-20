@@ -1,11 +1,10 @@
-import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import MyThemeProvider from 'components/templates/MyThemeProvider';
 
-import { auth } from 'lib/infrastructure/firebase';
+import { getUser } from 'lib/api/user';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -36,21 +35,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// 認証情報を取得
-const getUser = (auth: Auth): Promise<User | null> => {
-  return new Promise((resolve, _) => {
-    onAuthStateChanged(auth, (user) => {
-      resolve(user);
-    });
-  });
-};
-
 const MyApp = ({ Component, pageProps, router }: AppProps) => {
   const [displayReadyFlag, setDisplayReadyFlag] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const user = await getUser(auth);
+      const user = await getUser();
       let isLoggedIn = !!user;
       if (
         isLoggedIn &&

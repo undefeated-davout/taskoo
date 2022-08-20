@@ -1,42 +1,34 @@
-import { collection, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
+import { useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
-import { NewTaskType } from 'types/task';
+import { newTaskType } from 'types/task';
 
-import { db } from 'lib/infrastructure/firebase';
+import { addTask } from 'lib/api/task';
 
 type AddTaskFormProps = {};
 
 const AddTaskForm = (props: AddTaskFormProps) => {
-  /** ボタン押下orEnterで呼ばれる */
-  const handleSubmit = async (
-    e:
-      | React.MouseEvent<HTMLButtonElement>
-      | React.KeyboardEvent<HTMLInputElement>,
-  ) => {
-    try {
-      const taskColloctionRef = collection(
-        db,
-        'users',
-        '4FLibj7aErYG54Fe0G0fdsSbt5q1',
-        'tasks',
-      );
-      const task: NewTaskType = {
-        order_num: 0,
-        title: 'test',
-        isDone: false,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      };
-      setDoc(doc(taskColloctionRef), task);
-    } catch (e) {
-      console.error('Error adding document: ', e);
-    }
+  const [inputValue, setInputValue] = useState('');
+
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
-    handleSubmit(e);
+
+    const newTask: newTaskType = {
+      order_num: 0,
+      title: inputValue,
+      isDone: false,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    };
+
+    await addTask(newTask);
+    setInputValue('');
   };
 
   return (
@@ -44,8 +36,10 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       label="ENTER YOUR TASK"
       variant="outlined"
       fullWidth
-      onKeyDown={handleKeyDown}
       autoComplete="off"
+      value={inputValue}
+      onChange={handleTextFieldChange}
+      onKeyDown={handleKeyDown}
     />
   );
 };

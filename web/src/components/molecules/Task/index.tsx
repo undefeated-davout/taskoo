@@ -6,12 +6,12 @@ import { useTheme } from '@mui/material/styles';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
-import { TaskType } from 'types/task';
+import { taskType } from 'types/task';
 
-import { DeleteTask } from 'lib/functions/task';
+import { deleteTask } from 'lib/api/task';
 
 type TaskProps = {
-  task: TaskType;
+  task: taskType;
 };
 
 const Task = (props: TaskProps) => {
@@ -39,7 +39,7 @@ const Task = (props: TaskProps) => {
               backgroundColor: theme.palette.grey[400],
             },
           }}
-          onClick={() => DeleteTask(props.task.id)}
+          onClick={() => deleteTask(props.task.id)}
         >
           <DeleteOutlineIcon sx={{ m: 0 }} />
         </Button>
