@@ -27,4 +27,4 @@ export const addTask = async (newTask: newTaskType) => {
   }
 };
 
-export const deleteTask = (taskID: number) => console.log('delete', taskID);
+export const deleteTask = (taskID: string) => console.log('delete', taskID);
