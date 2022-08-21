@@ -19,12 +19,14 @@ const TodaysTasks = (props: TodaysTasksProps) => {
   const theme = useTheme();
 
   const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[]>([]);
+  const [tasks, setTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks);
     return () => unsubscribe();
   }, [user]);
+
+  if (tasks === null) return <></>;
 
   return (
     <HorizontalCenterContainerBox>

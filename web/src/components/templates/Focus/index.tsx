@@ -19,12 +19,14 @@ const Focus = (props: FocusProps) => {
   const theme = useTheme();
 
   const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[]>([]);
+  const [tasks, setTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, false);
     return () => unsubscribe();
   }, [user]);
+
+  if (tasks === null) return <></>;
 
   return (
     <CenterContainerBox>

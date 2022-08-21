@@ -19,7 +19,7 @@ import { db } from 'lib/infrastructure/firebase';
 // タスク一覧取得
 export const getTasks = (
   userID: string,
-  setTasks: Dispatch<SetStateAction<taskType[]>>,
+  setTasks: Dispatch<SetStateAction<taskType[] | null>>,
   isDone?: boolean,
 ) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');

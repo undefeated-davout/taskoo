@@ -40,7 +40,7 @@ export const UtilContext = createContext<{ user: User | null }>({ user: null });
 
 const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [displayReadyFlag, setDisplayReadyFlag] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -59,7 +59,7 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
         router.push('/login');
         return;
       }
-      setDisplayReadyFlag(true);
+      setIsReady(true);
     })();
   }, [router, router.pathname]);
 
@@ -68,7 +68,7 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
       <UtilThemeProvider>
         <UtilContext.Provider value={{ user: user }}>
           <GlobalStyle />
-          {displayReadyFlag && <Component {...pageProps} />}
+          {isReady && <Component {...pageProps} />}
         </UtilContext.Provider>
       </UtilThemeProvider>
     </>
