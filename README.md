@@ -21,4 +21,5 @@ docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_e
 
 ```bash
 firebase deploy --only firestore:rules
+firebase deploy --only firestore:indexes
 ```
