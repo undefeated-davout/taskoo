@@ -45,6 +45,6 @@ export const deleteTask = (userID: string, taskID: string) => {
     const taskRef = doc(userRef, 'tasks', taskID);
     deleteDoc(taskRef);
   } catch (e) {
-    console.error('Error adding document: ', e);
+    console.error('Error deleting document: ', e);
   }
 };
