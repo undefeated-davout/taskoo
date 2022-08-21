@@ -22,9 +22,9 @@ const Focus = (props: FocusProps) => {
   const [tasks, setTasks] = useState<taskType[]>([]);
 
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks);
+    const unsubscribe = getTasks(user!.uid, setTasks, false);
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   return (
     <CenterContainerBox>
@@ -38,7 +38,7 @@ const Focus = (props: FocusProps) => {
       >
         {tasks.length === 0 ? (
           <Typography variant="h6" sx={{ fontWeight: 100 }}>
-            NO TASKS IN "DOING".
+            {'NO TASKS IN "DOING".'}
           </Typography>
         ) : (
           <Typography variant="h6" sx={{ fontWeight: 100 }}>

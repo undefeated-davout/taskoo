@@ -1,9 +1,12 @@
 import {
+  DocumentData,
+  Query,
   collection,
   deleteDoc,
   doc,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { orderBy, query } from 'firebase/firestore';
@@ -17,9 +20,20 @@ import { db } from 'lib/infrastructure/firebase';
 export const getTasks = (
   userID: string,
   setTasks: Dispatch<SetStateAction<taskType[]>>,
+  isDone?: boolean,
 ) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');
-  const q = query(taskColloctionRef, orderBy('updatedAt', 'desc'));
+
+  let q: Query<DocumentData>;
+  if (isDone === false) {
+    q = query(
+      taskColloctionRef,
+      where('isDone', '==', isDone),
+      orderBy('updatedAt', 'desc'),
+    );
+  } else {
+    q = query(taskColloctionRef, orderBy('updatedAt', 'desc'));
+  }
 
   const unsubscribe = onSnapshot(q, (docs) => {
     let workTasks: taskType[] = [];

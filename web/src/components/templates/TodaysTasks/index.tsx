@@ -24,7 +24,7 @@ const TodaysTasks = (props: TodaysTasksProps) => {
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks);
     return () => unsubscribe();
-  }, []);
+  }, [user]);
 
   return (
     <HorizontalCenterContainerBox>
