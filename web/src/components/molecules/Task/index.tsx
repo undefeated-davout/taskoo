@@ -1,3 +1,6 @@
+import { UtilContext } from 'pages/_app';
+import { useContext } from 'react';
+
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -15,6 +18,7 @@ type TaskProps = {
 };
 
 const Task = (props: TaskProps) => {
+  const { user } = useContext(UtilContext);
   const theme = useTheme();
 
   return (
@@ -39,7 +43,7 @@ const Task = (props: TaskProps) => {
               backgroundColor: theme.palette.grey[400],
             },
           }}
-          onClick={() => deleteTask(props.task.id)}
+          onClick={() => deleteTask(user!.uid, props.task.id)}
         >
           <DeleteOutlineIcon sx={{ m: 0 }} />
         </Button>

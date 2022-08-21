@@ -1,5 +1,6 @@
 import { serverTimestamp } from 'firebase/firestore';
-import { useState } from 'react';
+import { UtilContext } from 'pages/_app';
+import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
@@ -10,6 +11,7 @@ import { addTask } from 'lib/api/task';
 type AddTaskFormProps = {};
 
 const AddTaskForm = (props: AddTaskFormProps) => {
+  const { user } = useContext(UtilContext);
   const [inputValue, setInputValue] = useState('');
 
   const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +29,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       updatedAt: serverTimestamp(),
     };
 
-    await addTask(newTask);
+    addTask(user!.uid, newTask);
     setInputValue('');
   };
 

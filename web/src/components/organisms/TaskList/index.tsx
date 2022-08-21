@@ -1,5 +1,5 @@
-import { Unsubscribe } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { UtilContext } from 'pages/_app';
+import { useContext, useEffect, useState } from 'react';
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,14 +13,12 @@ import { getTasks } from 'lib/api/task';
 type TaskListProps = {};
 
 const TaskList = (props: TaskListProps) => {
+  const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[]>([]);
 
   useEffect(() => {
-    let unsubscribe: Unsubscribe;
-    (async () => {
-      unsubscribe = await getTasks(setTasks);
-    })();
-    return () => unsubscribe && unsubscribe();
+    const unsubscribe = getTasks(user!.uid, setTasks);
+    return () => unsubscribe();
   }, []);
 
   return (

@@ -1,8 +1,9 @@
+import { User } from 'firebase/auth';
 import { AppProps } from 'next/app';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
-import MyThemeProvider from 'components/templates/MyThemeProvider';
+import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
 import { getUser } from 'lib/api/user';
 
@@ -35,13 +36,17 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const MyApp = ({ Component, pageProps, router }: AppProps) => {
+export const UtilContext = createContext<{ user: User | null }>({ user: null });
+
+const UtilApp = ({ Component, pageProps, router }: AppProps) => {
+  const [user, setUser] = useState<User | null>(null);
   const [displayReadyFlag, setDisplayReadyFlag] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const user = await getUser();
-      let isLoggedIn = !!user;
+      const currentUser = await getUser();
+      setUser(currentUser);
+      let isLoggedIn = !!currentUser;
       if (
         isLoggedIn &&
         ['/', '/login', '/_error'].indexOf(router.pathname) > -1
@@ -60,12 +65,14 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
 
   return (
     <>
-      <MyThemeProvider>
-        <GlobalStyle />
-        {displayReadyFlag && <Component {...pageProps} />}
-      </MyThemeProvider>
+      <UtilThemeProvider>
+        <UtilContext.Provider value={{ user: user }}>
+          <GlobalStyle />
+          {displayReadyFlag && <Component {...pageProps} />}
+        </UtilContext.Provider>
+      </UtilThemeProvider>
     </>
   );
 };
 
-export default MyApp;
+export default UtilApp;

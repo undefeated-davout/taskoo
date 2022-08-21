@@ -5,15 +5,14 @@ import { Dispatch, SetStateAction } from 'react';
 
 import { newTaskType, taskType } from 'types/task';
 
-import { getUser } from 'lib/api/user';
 import { db } from 'lib/infrastructure/firebase';
 
 // タスク一覧取得
-export const getTasks = async (
+export const getTasks = (
+  userID: string,
   setTasks: Dispatch<SetStateAction<taskType[]>>,
 ) => {
-  const user = await getUser();
-  const taskColloctionRef = collection(db, 'users', user!.uid, 'tasks');
+  const taskColloctionRef = collection(db, 'users', userID, 'tasks');
   const q = query(taskColloctionRef, orderBy('updatedAt', 'desc'));
 
   const unsubscribe = onSnapshot(q, (docs) => {
@@ -30,10 +29,9 @@ export const getTasks = async (
 };
 
 // タスク追加
-export const addTask = async (newTask: newTaskType) => {
+export const addTask = (userID: string, newTask: newTaskType) => {
   try {
-    const user = await getUser();
-    const taskColloctionRef = collection(db, 'users', user!.uid, 'tasks');
+    const taskColloctionRef = collection(db, 'users', userID, 'tasks');
     setDoc(doc(taskColloctionRef), newTask);
   } catch (e) {
     console.error('Error adding document: ', e);
@@ -41,10 +39,9 @@ export const addTask = async (newTask: newTaskType) => {
 };
 
 // タスク削除
-export const deleteTask = async (taskID: string) => {
+export const deleteTask = (userID: string, taskID: string) => {
   try {
-    const user = await getUser();
-    const userRef = doc(db, 'users', user!.uid);
+    const userRef = doc(db, 'users', userID);
     const taskRef = doc(userRef, 'tasks', taskID);
     deleteDoc(taskRef);
   } catch (e) {
