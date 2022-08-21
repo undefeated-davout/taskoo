@@ -4,7 +4,7 @@ import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
-import { newTaskType } from 'types/task';
+import { addTaskType } from 'types/task';
 
 import { addTask } from 'lib/api/task';
 
@@ -21,9 +21,11 @@ const AddTaskForm = (props: AddTaskFormProps) => {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Enter') return;
 
-    const newTask: newTaskType = {
+    if (inputValue.trim() === '') return;
+
+    const newTask: addTaskType = {
       order_num: 0,
-      title: inputValue,
+      title: inputValue.trim(),
       isDone: false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

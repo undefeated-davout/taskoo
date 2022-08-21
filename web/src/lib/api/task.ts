@@ -1,9 +1,15 @@
-import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { orderBy, query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
-import { newTaskType, taskType } from 'types/task';
+import { addTaskType, taskType, updateTaskType } from 'types/task';
 
 import { db } from 'lib/infrastructure/firebase';
 
@@ -18,7 +24,7 @@ export const getTasks = (
   const unsubscribe = onSnapshot(q, (docs) => {
     let workTasks: taskType[] = [];
     docs.forEach((doc) => {
-      let taskDoc = doc.data() as newTaskType;
+      let taskDoc = doc.data() as addTaskType;
       const task: taskType = { id: doc.id, ...taskDoc };
       workTasks.push(task);
     });
@@ -29,10 +35,25 @@ export const getTasks = (
 };
 
 // タスク追加
-export const addTask = (userID: string, newTask: newTaskType) => {
+export const addTask = (userID: string, newTask: addTaskType) => {
   try {
     const taskColloctionRef = collection(db, 'users', userID, 'tasks');
     setDoc(doc(taskColloctionRef), newTask);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
+
+// タスク更新
+export const updateTask = (
+  userID: string,
+  taskID: string,
+  task: updateTaskType,
+) => {
+  try {
+    const userRef = doc(db, 'users', userID);
+    const taskRef = doc(userRef, 'tasks', taskID);
+    updateDoc(taskRef, task);
   } catch (e) {
     console.error('Error adding document: ', e);
   }

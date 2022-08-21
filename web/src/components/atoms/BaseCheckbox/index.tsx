@@ -2,7 +2,10 @@ import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlin
 import Checkbox from '@mui/material/Checkbox';
 import { useTheme } from '@mui/material/styles';
 
-type BaseCheckboxProps = {};
+type BaseCheckboxProps = {
+  checked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const BaseCheckbox = (props: BaseCheckboxProps) => {
   const theme = useTheme();
@@ -14,6 +17,8 @@ const BaseCheckbox = (props: BaseCheckboxProps) => {
           sx={{ color: theme.palette.grey[600] }}
         />
       }
+      checked={props.checked}
+      onChange={props.onChange}
     />
   );
 };

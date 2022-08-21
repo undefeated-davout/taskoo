@@ -1,5 +1,5 @@
 import { UtilContext } from 'pages/_app';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
 import { taskType } from 'types/task';
 
-import { deleteTask } from 'lib/api/task';
+import { deleteTask, updateTask } from 'lib/api/task';
 
 type TaskProps = {
   task: taskType;
@@ -21,6 +21,13 @@ const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
   const theme = useTheme();
 
+  const [checked, setChecked] = useState(props.task.isDone);
+
+  const handleChangeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+    updateTask(user!.uid, props.task.id, { isDone: event.target.checked });
+  };
+
   return (
     <Card
       sx={{
@@ -29,7 +36,7 @@ const Task = (props: TaskProps) => {
         alignItems: 'center',
       }}
     >
-      <BaseCheckbox />
+      <BaseCheckbox checked={checked} onChange={handleChangeCheckbox} />
       {props.task.title}
 
       <CardActions sx={{ marginLeft: 'auto' }}>
