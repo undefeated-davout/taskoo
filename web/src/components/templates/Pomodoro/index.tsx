@@ -138,16 +138,22 @@ const Pomodoro = (props: PomodoroProps) => {
   }, [user]);
 
   useEffect(() => {
-    if (timer === undefined || timer === null) return;
-    setStatus(timer.status);
-    setTimerSeconds(timer.timerSeconds);
-    if (timer.status === statusConst.working) {
-      const nowSeconds = Math.floor(new Date().getTime() / 1000);
-      const remainSeconds = timer.endAt!.seconds - nowSeconds;
-      const passedSeconds = timer.timerSeconds - remainSeconds;
-      setPassedSeconds(passedSeconds);
+    if (timer === undefined) return;
+    if (timer === null) {
+      setStatus(statusConst.unset);
+      setTimerSeconds(0);
+      setPassedSeconds(0);
     } else {
-      setPassedSeconds(timer.passedSeconds!);
+      setStatus(timer.status);
+      setTimerSeconds(timer.timerSeconds);
+      if (timer.status === statusConst.working) {
+        const nowSeconds = Math.floor(new Date().getTime() / 1000);
+        const remainSeconds = timer.endAt!.seconds - nowSeconds;
+        const passedSeconds = timer.timerSeconds - remainSeconds;
+        setPassedSeconds(passedSeconds);
+      } else {
+        setPassedSeconds(timer.passedSeconds!);
+      }
     }
   }, [timer]);
 
