@@ -18,7 +18,7 @@
 
 ## timers
 
-- isActive
-- remainSecond
-- totalSecond
+- timerSeconds
+- status
+- remainSeconds
 - endAt
