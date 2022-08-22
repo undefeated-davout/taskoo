@@ -9,7 +9,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
@@ -18,79 +17,87 @@ import { playAlerm } from 'lib/util/audio';
 
 type PomodoroProps = {};
 
+const timerStatusConst: { [key: string]: number } = {
+  unset: 0,
+  working: 1,
+  stopped: 2,
+  done: 80,
+};
+
 const Pomodoro = (props: PomodoroProps) => {
-  const theme = useTheme();
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
-  const [isAlermDone, setIsAlermDone] = useState(false); // アラーム鳴動したらtrue
-  const [isStopped, setIsStopped] = useState(false);
+  const [status, setStatus] = useState(timerStatusConst.unset);
+  let timer: NodeJS.Timer;
 
   const seconds = (minutes: number) => minutes * 60;
-  const minuts = (seconds: number) => Math.floor(seconds / 60);
-  const remainSeconds = () => seconds(timerMinutes) - passedSeconds;
-  const timeFormat = (seconds: number) =>
-    seconds <= 60 ? `${seconds} sec` : `${minuts(seconds)} min`;
+
   const progress = (timerSeconds: number, passedSeconds: number) =>
     timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
 
-  const timerStatusConst: { [key: string]: number } = {
-    notWorking: 0,
-    working: 1,
-    done: 80,
-  };
+  const title = (timerStatus: number) => {
+    const minutes = (seconds: number) => Math.floor(seconds / 60);
+    const timeFormat = (seconds: number) =>
+      seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`;
+    const remainSeconds = () => seconds(timerMinutes) - passedSeconds;
 
-  const timerStatus = () => {
-    // タイマー未セット
-    if (timerMinutes === 0) return timerStatusConst.notWorking;
-    // タイマー起動中
-    if (remainSeconds() > 0) return timerStatusConst.working;
-    // タイマー終了
-    return timerStatusConst.done;
-  };
-
-  const timerTitle = (timerStatus: number) => {
-    if (timerStatus === timerStatusConst.notWorking) return 'SELECT TIMER';
-    if (timerStatus === timerStatusConst.working)
+    if (timerStatus === timerStatusConst.unset) {
+      return 'SELECT TIMER';
+    } else if (
+      timerStatus === timerStatusConst.working ||
+      timerStatus === timerStatusConst.stopped
+    ) {
       return timeFormat(remainSeconds());
-    return `${timeFormat(seconds(timerMinutes))} OVER`;
+    } else {
+      return `${timeFormat(seconds(timerMinutes))} OVER`;
+    }
   };
 
   const startTimer = (minutes: number) => {
     setTimerMinutes(minutes);
     setPassedSeconds(0);
     playAlerm();
-    setIsAlermDone(false);
+    setStatus(timerStatusConst.working);
   };
 
-  const deleteTimer = (timer: NodeJS.Timer) => {
+  const stopTimer = () => {
+    clearInterval(timer);
+    setStatus(timerStatusConst.stopped);
+  };
+
+  const resumeTimer = () => {
+    setStatus(timerStatusConst.working);
+  };
+
+  const deleteTimer = () => {
     setTimerMinutes(0);
     setPassedSeconds(0);
-    setIsAlermDone(false);
-    setIsStopped(false);
     clearInterval(timer);
+    setStatus(timerStatusConst.unset);
   };
 
-  let timer: NodeJS.Timer;
   // タイマーがセットされたかを監視
   useEffect(() => {
+    // タイマー分が指定されているか、動作中ならタイマーをセットする
+    if (timerMinutes === 0 || status !== timerStatusConst.working) return;
     const timerSeconds = seconds(timerMinutes);
     timer = setInterval(() => {
       setPassedSeconds((prev) => (prev < timerSeconds ? prev + 1 : prev));
     }, 1000);
     return () => clearInterval(timer);
-  }, [timerMinutes, passedSeconds]);
+  }, [timerMinutes, status]);
 
   // タイマー動作中監視
   useEffect(() => {
     // タイマーが動作している時のみ対象
     if (timerMinutes === 0 || timerMinutes === 0) return;
-    if (isAlermDone) return; // アラーム未鳴動なら対象
+    if (status !== timerStatusConst.working) return;
     if (seconds(timerMinutes) === passedSeconds) {
       playAlerm();
       clearInterval(timer);
-      setIsAlermDone(true);
+      setStatus(timerStatusConst.done);
     }
-  }, [passedSeconds, timerMinutes, isAlermDone]);
+  }, [passedSeconds, timerMinutes, status]);
 
   return (
     <CenterContainerBox>
@@ -98,7 +105,7 @@ const Pomodoro = (props: PomodoroProps) => {
         <Card sx={{ p: 4 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
-              {timerTitle(timerStatus())}
+              {title(status)}
             </Typography>
             <Box sx={{ mt: 3, textAlign: 'center' }}>
               <CircularProgress
@@ -111,16 +118,20 @@ const Pomodoro = (props: PomodoroProps) => {
           </CardContent>
 
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-            {timerStatus() === timerStatusConst.working ? (
+            {status === timerStatusConst.working ||
+            status === timerStatusConst.stopped ? (
               <>
-                <BaseButton onClick={() => setIsStopped(!isStopped)}>
-                  {isStopped ? (
-                    <PlayCircleOutlineOutlinedIcon />
-                  ) : (
+                {status === timerStatusConst.working ? (
+                  <BaseButton color="error" onClick={() => stopTimer()}>
                     <StopCircleOutlinedIcon />
-                  )}
-                </BaseButton>
-                <BaseButton onClick={() => deleteTimer(timer)}>
+                  </BaseButton>
+                ) : (
+                  <BaseButton color="success" onClick={() => resumeTimer()}>
+                    <PlayCircleOutlineOutlinedIcon />
+                  </BaseButton>
+                )}
+
+                <BaseButton onClick={() => deleteTimer()}>
                   <DeleteOutlinedIcon />
                 </BaseButton>
               </>
