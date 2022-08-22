@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { serverTimestamp } from 'firebase/firestore';
+import { useContext, useEffect, useState } from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
@@ -10,9 +11,14 @@ import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
+import { UtilContext } from 'pages/_app';
+
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
+import { addTimerType, timerType, updateTimerType } from 'types/timer';
+
+import { addTimer, deleteTimer, getTimer, updateTimer } from 'lib/api/timer';
 import { playAlerm } from 'lib/util/audio';
 
 type PomodoroProps = {};
@@ -27,10 +33,13 @@ const statusConst: { [key: string]: number } = {
 };
 
 const Pomodoro = (props: PomodoroProps) => {
+  const { user } = useContext(UtilContext);
+
+  const [status, setStatus] = useState(statusConst.unset);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
-  const [status, setStatus] = useState(statusConst.unset);
-  let timer: NodeJS.Timer;
+  const [timer, setTimer] = useState<timerType | null | undefined>(undefined);
+  let nodeJSTimer: NodeJS.Timer;
 
   const progress = (timerSeconds: number, passedSeconds: number) =>
     timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
@@ -58,32 +67,52 @@ const Pomodoro = (props: PomodoroProps) => {
     setPassedSeconds(0);
     setStatus(statusConst.working);
     playAlerm();
+    addTimer(user!.uid, {
+      timerSeconds: seconds,
+      status: statusConst.working,
+      endAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
   };
 
   const stopTimer = () => {
-    clearInterval(timer);
+    clearInterval(nodeJSTimer);
     setStatus(statusConst.stopped);
+    updateTimer(user!.uid, timer!.id, {
+      status: statusConst.stopped,
+      passedSeconds: passedSeconds,
+      endAt: null,
+      updatedAt: serverTimestamp(),
+    });
   };
 
   const resumeTimer = () => {
     setStatus(statusConst.working);
+    updateTimer(user!.uid, timer!.id, {
+      status: statusConst.working,
+      passedSeconds: null,
+      endAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
   };
 
-  const deleteTimer = () => {
-    clearInterval(timer);
+  const discardTimer = () => {
+    clearInterval(nodeJSTimer);
     setTimerSeconds(0);
     setPassedSeconds(0);
     setStatus(statusConst.unset);
+    deleteTimer(user!.uid, timer!.id);
   };
 
   // タイマーがセットされたかを監視
   useEffect(() => {
     // タイマー分が指定されているか、動作中ならタイマーをセットする
     if (timerSeconds === 0 || status !== statusConst.working) return;
-    timer = setInterval(() => {
+    nodeJSTimer = setInterval(() => {
       setPassedSeconds((prev) => (prev < timerSeconds ? prev + 1 : prev));
     }, 1000);
-    return () => clearInterval(timer);
+    return () => clearInterval(nodeJSTimer);
   }, [timerSeconds, status]);
 
   // タイマー動作中監視
@@ -91,10 +120,29 @@ const Pomodoro = (props: PomodoroProps) => {
     // タイマーが動作中に、指定時間以上経過したら対象
     if (!(status === statusConst.working && passedSeconds >= timerSeconds))
       return;
-    clearInterval(timer);
+    clearInterval(nodeJSTimer);
     setStatus(statusConst.done);
     playAlerm();
+    deleteTimer(user!.uid, timer!.id);
   }, [timerSeconds, passedSeconds, status]);
+
+  useEffect(() => {
+    const unsubscribe = getTimer(user!.uid, setTimer);
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    if (timer === undefined || timer === null) return;
+    setStatus(timer.status);
+    setTimerSeconds(timer.timerSeconds);
+    if (timer.status === statusConst.working) {
+      // setPassedSeconds(10);
+    } else {
+      setPassedSeconds(timer.passedSeconds!);
+    }
+  }, [timer]);
+
+  if (timer === undefined) return <></>;
 
   return (
     <CenterContainerBox>
@@ -128,7 +176,7 @@ const Pomodoro = (props: PomodoroProps) => {
                   </BaseButton>
                 )}
 
-                <BaseButton onClick={() => deleteTimer()}>
+                <BaseButton onClick={() => discardTimer()}>
                   <DeleteOutlinedIcon />
                 </BaseButton>
               </>

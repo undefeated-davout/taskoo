@@ -1,11 +1,11 @@
-import { UtilContext } from 'pages/_app';
 import { useContext } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import { useTheme } from '@mui/material/styles';
+
+import { UtilContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
@@ -19,7 +19,6 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
-  const theme = useTheme();
 
   return (
     <Card
