@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // reactStrictMode: true,
-  reactStrictMode: false,
+  reactStrictMode: false, // TODO: react-firebaseuiが対応したらtrueに戻す
   swcMinify: true,
   trailingSlash: true,
   compiler: (() => {
@@ -18,11 +17,6 @@ const nextConfig = {
     }
     return compilerConfig;
   })(),
-  experimental: {
-    images: {
-      unoptimized: true,
-    },
-  },
 };
 
 module.exports = nextConfig;
