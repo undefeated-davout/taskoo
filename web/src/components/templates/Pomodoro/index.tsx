@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
+import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
@@ -15,9 +19,11 @@ import { playAlerm } from 'lib/util/audio';
 type PomodoroProps = {};
 
 const Pomodoro = (props: PomodoroProps) => {
+  const theme = useTheme();
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
   const [isAlermDone, setIsAlermDone] = useState(false); // アラーム鳴動したらtrue
+  const [isStopped, setIsStopped] = useState(false);
 
   const seconds = (minutes: number) => minutes * 60;
   const minuts = (seconds: number) => Math.floor(seconds / 60);
@@ -25,7 +31,7 @@ const Pomodoro = (props: PomodoroProps) => {
   const timeFormat = (seconds: number) =>
     seconds <= 60 ? `${seconds} sec` : `${minuts(seconds)} min`;
   const progress = (timerSeconds: number, passedSeconds: number) =>
-    (passedSeconds * 100) / timerSeconds;
+    timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
 
   const timerStatusConst: { [key: string]: number } = {
     notWorking: 0,
@@ -54,6 +60,14 @@ const Pomodoro = (props: PomodoroProps) => {
     setPassedSeconds(0);
     playAlerm();
     setIsAlermDone(false);
+  };
+
+  const deleteTimer = (timer: NodeJS.Timer) => {
+    setTimerMinutes(0);
+    setPassedSeconds(0);
+    setIsAlermDone(false);
+    setIsStopped(false);
+    clearInterval(timer);
   };
 
   let timer: NodeJS.Timer;
@@ -97,15 +111,31 @@ const Pomodoro = (props: PomodoroProps) => {
           </CardContent>
 
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-            {[0.2, 5, 10, 15, 25].map((minutes, _) => (
-              <BaseButton
-                key={minutes.toString()}
-                onClick={() => startTimer(minutes)}
-                color={timerMinutes === minutes ? 'success' : 'primary'}
-              >
-                {minutes}min
-              </BaseButton>
-            ))}
+            {timerStatus() === timerStatusConst.working ? (
+              <>
+                <BaseButton onClick={() => setIsStopped(!isStopped)}>
+                  {isStopped ? (
+                    <PlayCircleOutlineOutlinedIcon />
+                  ) : (
+                    <StopCircleOutlinedIcon />
+                  )}
+                </BaseButton>
+                <BaseButton onClick={() => deleteTimer(timer)}>
+                  <DeleteOutlinedIcon />
+                </BaseButton>
+              </>
+            ) : (
+              <>
+                {[0.2, 5, 10, 15, 25].map((minutes, _) => (
+                  <BaseButton
+                    key={minutes.toString()}
+                    onClick={() => startTimer(minutes)}
+                  >
+                    {minutes}min
+                  </BaseButton>
+                ))}
+              </>
+            )}
           </CardActions>
         </Card>
       </Box>

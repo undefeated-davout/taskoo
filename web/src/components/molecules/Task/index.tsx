@@ -40,13 +40,10 @@ const Task = (props: TaskProps) => {
       <CardActions sx={{ marginLeft: 'auto' }}>
         <Button
           variant="contained"
+          color="primary"
           sx={{
             maxWidth: 36,
             minWidth: 36,
-            backgroundColor: theme.palette.grey[500],
-            '&:hover': {
-              backgroundColor: theme.palette.grey[400],
-            },
           }}
           onClick={() => deleteTask(user!.uid, props.task.id)}
         >
