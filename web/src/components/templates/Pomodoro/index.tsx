@@ -16,14 +16,14 @@ import { UtilContext } from 'pages/_app';
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
-import { addTimerType, timerType, updateTimerType } from 'types/timer';
+import { timerType } from 'types/timer';
 
 import { addTimer, deleteTimer, getTimer, updateTimer } from 'lib/api/timer';
 import { playAlerm } from 'lib/util/audio';
 
 type PomodoroProps = {};
 
-const timerMinutesList = [0.2, 5, 10, 15, 25];
+const timerMinutesList = [5, 10, 15, 25];
 
 const statusConst: { [key: string]: number } = {
   unset: 0,
@@ -62,11 +62,13 @@ const Pomodoro = (props: PomodoroProps) => {
     }
   };
 
-  const startTimer = (seconds: number) => {
-    const nowDate = new Date();
-    const nowSecond = Math.floor(nowDate.getTime() / 1000);
-    const endTimestamp = new Timestamp(nowSecond + seconds, 0);
+  const endAt = (seconds: number) => {
+    const nowSeconds = Math.floor(new Date().getTime() / 1000);
+    const endTimestamp = new Timestamp(nowSeconds + seconds, 0);
+    return endTimestamp;
+  };
 
+  const startTimer = (seconds: number) => {
     setTimerSeconds(seconds);
     setPassedSeconds(0);
     setStatus(statusConst.working);
@@ -74,7 +76,7 @@ const Pomodoro = (props: PomodoroProps) => {
     addTimer(user!.uid, {
       timerSeconds: seconds,
       status: statusConst.working,
-      endAt: endTimestamp,
+      endAt: endAt(seconds),
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -92,15 +94,11 @@ const Pomodoro = (props: PomodoroProps) => {
   };
 
   const resumeTimer = () => {
-    const nowDate = new Date();
-    const nowSecond = Math.floor(nowDate.getTime() / 1000);
-    const endTimestamp = new Timestamp(nowSecond + remainSeconds(), 0);
-
     setStatus(statusConst.working);
     updateTimer(user!.uid, timer!.id, {
       status: statusConst.working,
       passedSeconds: null,
-      endAt: endTimestamp,
+      endAt: endAt(remainSeconds()),
       updatedAt: serverTimestamp(),
     });
   };
@@ -144,7 +142,10 @@ const Pomodoro = (props: PomodoroProps) => {
     setStatus(timer.status);
     setTimerSeconds(timer.timerSeconds);
     if (timer.status === statusConst.working) {
-      // setPassedSeconds(10);
+      const nowSeconds = Math.floor(new Date().getTime() / 1000);
+      const remainSeconds = timer.endAt!.seconds - nowSeconds;
+      const passedSeconds = timer.timerSeconds - remainSeconds;
+      setPassedSeconds(passedSeconds);
     } else {
       setPassedSeconds(timer.passedSeconds!);
     }
