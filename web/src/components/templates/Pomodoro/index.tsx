@@ -1,4 +1,4 @@
-import { serverTimestamp } from 'firebase/firestore';
+import { Timestamp, serverTimestamp } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -43,12 +43,12 @@ const Pomodoro = (props: PomodoroProps) => {
 
   const progress = (timerSeconds: number, passedSeconds: number) =>
     timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
+  const remainSeconds = () => timerSeconds - passedSeconds;
 
   const title = (timerStatus: number) => {
     const minutes = (seconds: number) => Math.floor(seconds / 60);
     const timeFormat = (seconds: number) =>
       seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`;
-    const remainSeconds = () => timerSeconds - passedSeconds;
 
     if (timerStatus === statusConst.unset) {
       return 'SELECT TIMER';
@@ -63,6 +63,10 @@ const Pomodoro = (props: PomodoroProps) => {
   };
 
   const startTimer = (seconds: number) => {
+    const nowDate = new Date();
+    const nowSecond = Math.floor(nowDate.getTime() / 1000);
+    const endTimestamp = new Timestamp(nowSecond + seconds, 0);
+
     setTimerSeconds(seconds);
     setPassedSeconds(0);
     setStatus(statusConst.working);
@@ -70,7 +74,7 @@ const Pomodoro = (props: PomodoroProps) => {
     addTimer(user!.uid, {
       timerSeconds: seconds,
       status: statusConst.working,
-      endAt: serverTimestamp(),
+      endAt: endTimestamp,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -88,11 +92,15 @@ const Pomodoro = (props: PomodoroProps) => {
   };
 
   const resumeTimer = () => {
+    const nowDate = new Date();
+    const nowSecond = Math.floor(nowDate.getTime() / 1000);
+    const endTimestamp = new Timestamp(nowSecond + remainSeconds(), 0);
+
     setStatus(statusConst.working);
     updateTimer(user!.uid, timer!.id, {
       status: statusConst.working,
       passedSeconds: null,
-      endAt: serverTimestamp(),
+      endAt: endTimestamp,
       updatedAt: serverTimestamp(),
     });
   };
