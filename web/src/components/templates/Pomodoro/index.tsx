@@ -19,7 +19,7 @@ type PomodoroProps = {};
 
 const timerMinutesList = [0.2, 5, 10, 15, 25];
 
-const timerStatusConst: { [key: string]: number } = {
+const statusConst: { [key: string]: number } = {
   unset: 0,
   working: 1,
   stopped: 2,
@@ -29,7 +29,7 @@ const timerStatusConst: { [key: string]: number } = {
 const Pomodoro = (props: PomodoroProps) => {
   const [timerMinutes, setTimerMinutes] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
-  const [status, setStatus] = useState(timerStatusConst.unset);
+  const [status, setStatus] = useState(statusConst.unset);
   let timer: NodeJS.Timer;
 
   const seconds = (minutes: number) => minutes * 60;
@@ -43,11 +43,11 @@ const Pomodoro = (props: PomodoroProps) => {
       seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`;
     const remainSeconds = () => seconds(timerMinutes) - passedSeconds;
 
-    if (timerStatus === timerStatusConst.unset) {
+    if (timerStatus === statusConst.unset) {
       return 'SELECT TIMER';
     } else if (
-      timerStatus === timerStatusConst.working ||
-      timerStatus === timerStatusConst.stopped
+      timerStatus === statusConst.working ||
+      timerStatus === statusConst.stopped
     ) {
       return timeFormat(remainSeconds());
     } else {
@@ -59,29 +59,29 @@ const Pomodoro = (props: PomodoroProps) => {
     setTimerMinutes(minutes);
     setPassedSeconds(0);
     playAlerm();
-    setStatus(timerStatusConst.working);
+    setStatus(statusConst.working);
   };
 
   const stopTimer = () => {
     clearInterval(timer);
-    setStatus(timerStatusConst.stopped);
+    setStatus(statusConst.stopped);
   };
 
   const resumeTimer = () => {
-    setStatus(timerStatusConst.working);
+    setStatus(statusConst.working);
   };
 
   const deleteTimer = () => {
     setTimerMinutes(0);
     setPassedSeconds(0);
     clearInterval(timer);
-    setStatus(timerStatusConst.unset);
+    setStatus(statusConst.unset);
   };
 
   // タイマーがセットされたかを監視
   useEffect(() => {
     // タイマー分が指定されているか、動作中ならタイマーをセットする
-    if (timerMinutes === 0 || status !== timerStatusConst.working) return;
+    if (timerMinutes === 0 || status !== statusConst.working) return;
     const timerSeconds = seconds(timerMinutes);
     timer = setInterval(() => {
       setPassedSeconds((prev) => (prev < timerSeconds ? prev + 1 : prev));
@@ -93,11 +93,11 @@ const Pomodoro = (props: PomodoroProps) => {
   useEffect(() => {
     // タイマーが動作している時のみ対象
     if (timerMinutes === 0 || timerMinutes === 0) return;
-    if (status !== timerStatusConst.working) return;
+    if (status !== statusConst.working) return;
     if (seconds(timerMinutes) === passedSeconds) {
       playAlerm();
       clearInterval(timer);
-      setStatus(timerStatusConst.done);
+      setStatus(statusConst.done);
     }
   }, [passedSeconds, timerMinutes, status]);
 
@@ -113,19 +113,17 @@ const Pomodoro = (props: PomodoroProps) => {
               <CircularProgress
                 variant="determinate"
                 size="12rem"
-                color={
-                  status === timerStatusConst.working ? 'success' : 'secondary'
-                }
+                color={status === statusConst.working ? 'success' : 'secondary'}
                 value={progress(seconds(timerMinutes), passedSeconds)}
               />
             </Box>
           </CardContent>
 
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-            {status === timerStatusConst.working ||
-            status === timerStatusConst.stopped ? (
+            {status === statusConst.working ||
+            status === statusConst.stopped ? (
               <>
-                {status === timerStatusConst.working ? (
+                {status === statusConst.working ? (
                   <BaseButton color="error" onClick={() => stopTimer()}>
                     <StopCircleOutlinedIcon />
                   </BaseButton>
