@@ -17,6 +17,8 @@ import { playAlerm } from 'lib/util/audio';
 
 type PomodoroProps = {};
 
+const timerMinutesList = [0.2, 5, 10, 15, 25];
+
 const timerStatusConst: { [key: string]: number } = {
   unset: 0,
   working: 1,
@@ -137,7 +139,7 @@ const Pomodoro = (props: PomodoroProps) => {
               </>
             ) : (
               <>
-                {[0.2, 5, 10, 15, 25].map((minutes, _) => (
+                {timerMinutesList.map((minutes, _) => (
                   <BaseButton
                     key={minutes.toString()}
                     onClick={() => startTimer(minutes)}
