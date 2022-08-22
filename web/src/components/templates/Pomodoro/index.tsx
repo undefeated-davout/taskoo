@@ -113,7 +113,9 @@ const Pomodoro = (props: PomodoroProps) => {
               <CircularProgress
                 variant="determinate"
                 size="12rem"
-                color="success"
+                color={
+                  status === timerStatusConst.working ? 'success' : 'secondary'
+                }
                 value={progress(seconds(timerMinutes), passedSeconds)}
               />
             </Box>
