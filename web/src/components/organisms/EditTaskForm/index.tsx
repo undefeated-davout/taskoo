@@ -45,7 +45,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
   useEffect(() => {
     setInputValue(props.task.title.trim());
-  }, [props.isOpen]);
+  }, [props.isOpen, props.task.title]);
 
   return (
     <div>
