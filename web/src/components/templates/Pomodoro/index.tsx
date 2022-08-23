@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import { Timestamp, serverTimestamp } from 'firebase/firestore';
 
@@ -40,7 +40,8 @@ const Pomodoro = (props: PomodoroProps) => {
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
   const [timer, setTimer] = useState<timerType | null | undefined>(undefined);
-  let nodeJSTimer: NodeJS.Timer;
+  // let nodeJSTimer: NodeJS.Timer | null = null;
+  const timerRef = useRef<NodeJS.Timer>();
 
   const progress = (timerSeconds: number, passedSeconds: number) =>
     timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
@@ -84,7 +85,7 @@ const Pomodoro = (props: PomodoroProps) => {
   };
 
   const stopTimer = () => {
-    clearInterval(nodeJSTimer);
+    clearInterval(timerRef.current);
     setStatus(statusConst.stopped);
     updateTimer(user!.uid, timer!.id, {
       status: statusConst.stopped,
@@ -105,7 +106,7 @@ const Pomodoro = (props: PomodoroProps) => {
   };
 
   const discardTimer = () => {
-    clearInterval(nodeJSTimer);
+    clearInterval(timerRef.current);
     setTimerSeconds(0);
     setPassedSeconds(0);
     setStatus(statusConst.unset);
@@ -116,10 +117,10 @@ const Pomodoro = (props: PomodoroProps) => {
   useEffect(() => {
     // タイマー分が指定されているか、動作中ならタイマーをセットする
     if (timerSeconds === 0 || status !== statusConst.working) return;
-    nodeJSTimer = setInterval(() => {
+    timerRef.current = setInterval(() => {
       setPassedSeconds((prev) => (prev < timerSeconds ? prev + 1 : prev));
     }, 1000);
-    return () => clearInterval(nodeJSTimer);
+    return () => clearInterval(timerRef.current);
   }, [timerSeconds, status]);
 
   // タイマー動作中監視
@@ -127,11 +128,11 @@ const Pomodoro = (props: PomodoroProps) => {
     // タイマーが動作中に、指定時間以上経過したら対象
     if (!(status === statusConst.working && passedSeconds >= timerSeconds))
       return;
-    clearInterval(nodeJSTimer);
+    clearInterval(timerRef.current);
     setStatus(statusConst.done);
     playAlerm();
     deleteTimer(user!.uid, timer!.id);
-  }, [timerSeconds, passedSeconds, status]);
+  }, [timerSeconds, passedSeconds, status, timer, user]);
 
   useEffect(() => {
     const unsubscribe = getTimer(user!.uid, setTimer);
