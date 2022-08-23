@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Box from '@mui/material/Box';
@@ -12,7 +12,7 @@ import { UtilContext } from 'pages/_app';
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 import EditTaskForm from 'components/organisms/EditTaskForm';
 
-import { taskType } from 'types/task';
+import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTask, updateTask } from 'lib/api/task';
 
@@ -24,16 +24,17 @@ const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
 
+  const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    const editTask: updateTaskType = { isDone: event.target.checked };
+    updateTask(user!.uid, props.task.id, editTask);
+  };
+
   return (
     <>
       <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
         <BaseCheckbox
           checked={props.task.isDone}
-          onChange={(event) =>
-            updateTask(user!.uid, props.task.id, {
-              isDone: event.target.checked,
-            })
-          }
+          onChange={handleChangeCheckbox}
         />
 
         <Box
@@ -60,10 +61,7 @@ const Task = (props: TaskProps) => {
           <Button
             variant="contained"
             color="primary"
-            sx={{
-              maxWidth: 36,
-              minWidth: 36,
-            }}
+            sx={{ maxWidth: 36, minWidth: 36 }}
             onClick={() => deleteTask(user!.uid, props.task.id)}
           >
             <DeleteOutlineIcon sx={{ m: 0 }} />

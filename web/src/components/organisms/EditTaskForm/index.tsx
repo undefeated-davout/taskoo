@@ -22,13 +22,13 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UtilContext);
   const [inputValue, setInputValue] = useState(props.task.title);
 
-  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
+    submit();
   };
 
-  const cancel = () => {
-    console.log('cancel!!');
-    props.onClose();
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   const submit = () => {
@@ -45,7 +45,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
   return (
     <div>
-      <Dialog open={props.isOpen} onClose={cancel}>
+      <Dialog open={props.isOpen} onClose={submit} onKeyDown={handleKeyDown}>
         <DialogContent sx={{ width: 500, maxWidth: '100%' }}>
           <TextField
             fullWidth
@@ -58,10 +58,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
           />
         </DialogContent>
         <DialogActions sx={{ mr: 2, mb: 2 }}>
-          <Button color="primary" variant="contained" onClick={submit}>
-            SAVE
-          </Button>
-          <Button onClick={cancel}>CANCEL</Button>
+          <Button onClick={submit}>CLOSE</Button>
         </DialogActions>
       </Dialog>
     </div>
