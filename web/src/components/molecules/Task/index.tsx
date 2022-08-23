@@ -37,11 +37,11 @@ const Task = (props: TaskProps) => {
           onChange={handleChangeCheckbox}
         />
 
-        <Box
+        <Button
           sx={{
             height: '100%',
             width: '100%',
-            '&:hover': { cursor: 'pointer' },
+            justifyContent: 'flex-start',
           }}
           onClick={() => setIsOpenForm(true)}
         >
@@ -55,7 +55,7 @@ const Task = (props: TaskProps) => {
           >
             {props.task.title}
           </Typography>
-        </Box>
+        </Button>
 
         <CardActions sx={{ pl: 0 }}>
           <Button
