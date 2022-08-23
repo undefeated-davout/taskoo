@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -8,6 +8,7 @@ import CardActions from '@mui/material/CardActions';
 import { UtilContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
+import EditTaskForm from 'components/organisms/EditTaskForm';
 
 import { taskType } from 'types/task';
 
@@ -19,37 +20,51 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
+  const [isOpenForm, setIsOpenForm] = useState(false);
 
   return (
-    <Card
-      sx={{
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
-      <BaseCheckbox
-        checked={props.task.isDone}
-        onChange={(event) =>
-          updateTask(user!.uid, props.task.id, { isDone: event.target.checked })
-        }
-      />
-      {props.task.title}
+    <>
+      <Card
+        sx={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          '&:hover': { cursor: 'pointer' },
+        }}
+        onClick={() => setIsOpenForm(true)}
+      >
+        <BaseCheckbox
+          checked={props.task.isDone}
+          onChange={(event) =>
+            updateTask(user!.uid, props.task.id, {
+              isDone: event.target.checked,
+            })
+          }
+        />
 
-      <CardActions sx={{ marginLeft: 'auto' }}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            maxWidth: 36,
-            minWidth: 36,
-          }}
-          onClick={() => deleteTask(user!.uid, props.task.id)}
-        >
-          <DeleteOutlineIcon sx={{ m: 0 }} />
-        </Button>
-      </CardActions>
-    </Card>
+        {props.task.title}
+
+        <CardActions sx={{ marginLeft: 'auto' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              maxWidth: 36,
+              minWidth: 36,
+            }}
+            onClick={() => deleteTask(user!.uid, props.task.id)}
+          >
+            <DeleteOutlineIcon sx={{ m: 0 }} />
+          </Button>
+        </CardActions>
+      </Card>
+
+      <EditTaskForm
+        task={props.task}
+        isOpen={isOpenForm}
+        onClose={() => setIsOpenForm(false)}
+      />
+    </>
   );
 };
 
