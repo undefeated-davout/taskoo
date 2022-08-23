@@ -1,5 +1,11 @@
 import { AppProps } from 'next/app';
-import { createContext, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import { User } from 'firebase/auth';
@@ -37,10 +43,15 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-export const UtilContext = createContext<{ user: User | null }>({ user: null });
+export const UtilContext = createContext<{
+  user: User | null;
+  isMenuOpen: boolean;
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>> | null;
+}>({ user: null, isMenuOpen: true, setIsMenuOpen: null });
 
 const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -67,7 +78,13 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <UtilThemeProvider>
-        <UtilContext.Provider value={{ user: user }}>
+        <UtilContext.Provider
+          value={{
+            user: user,
+            isMenuOpen: isMenuOpen,
+            setIsMenuOpen: setIsMenuOpen,
+          }}
+        >
           <GlobalStyle />
           {isReady && <Component {...pageProps} />}
         </UtilContext.Provider>

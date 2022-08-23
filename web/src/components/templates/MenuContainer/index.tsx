@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useTheme } from '@mui/material/styles';
+
+import { UtilContext } from 'pages/_app';
 
 import HeaderBar from 'components/organisms/HeaderBar';
 import SideBar, { DrawerHeader } from 'components/organisms/SideBar';
@@ -13,9 +15,11 @@ type MenuContainerProps = {
 };
 
 const MenuContainer = (props: MenuContainerProps) => {
+  const { isMenuOpen, setIsMenuOpen } = useContext(UtilContext);
+  if (setIsMenuOpen === null) return <></>;
+
   const theme = useTheme();
-  const [open, setOpen] = useState(true);
-  const toggleSideBarOpen = () => setOpen(!open);
+  const toggleSideBarOpen = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -24,7 +28,7 @@ const MenuContainer = (props: MenuContainerProps) => {
         onClickEvent={toggleSideBarOpen}
         isLoggedIn={props.isLoggedIn}
       />
-      {props.isLoggedIn && <SideBar open={open}></SideBar>}
+      {props.isLoggedIn && <SideBar open={isMenuOpen}></SideBar>}
       <Box
         component="main"
         sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'gray' }}
