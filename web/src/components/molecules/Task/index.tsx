@@ -22,7 +22,6 @@ type TaskProps = {
 };
 
 const Task = (props: TaskProps) => {
-  const theme = useTheme();
   const { user } = useContext(UtilContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
 
