@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -20,7 +20,7 @@ type EditTaskFormProps = {
 
 const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UtilContext);
-  const [inputValue, setInputValue] = useState(props.task.title);
+  const [inputValue, setInputValue] = useState('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
@@ -42,6 +42,10 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
     props.onClose();
   };
+
+  useEffect(() => {
+    setInputValue(props.task.title.trim());
+  }, [props.isOpen]);
 
   return (
     <div>

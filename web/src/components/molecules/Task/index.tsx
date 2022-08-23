@@ -56,6 +56,7 @@ const Task = (props: TaskProps) => {
             height: '100%',
             width: '100%',
             justifyContent: 'flex-start',
+            textTransform: 'none',
             '&:hover': { backgroundColor: 'transparent' },
           }}
           onClick={() => setIsOpenForm(true)}
