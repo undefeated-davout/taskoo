@@ -1,5 +1,6 @@
-import 'firebase/compat/auth';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
+import 'firebase/compat/auth';
 
 import Box from '@mui/material/Box';
 

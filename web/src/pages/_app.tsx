@@ -1,7 +1,8 @@
-import { User } from 'firebase/auth';
 import { AppProps } from 'next/app';
 import { createContext, useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
+
+import { User } from 'firebase/auth';
 
 import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
