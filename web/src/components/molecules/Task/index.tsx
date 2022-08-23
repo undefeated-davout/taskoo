@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 import { UtilContext } from 'pages/_app';
 
@@ -21,17 +22,34 @@ type TaskProps = {
 };
 
 const Task = (props: TaskProps) => {
+  const theme = useTheme();
   const { user } = useContext(UtilContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
     const editTask: updateTaskType = { isDone: event.target.checked };
     updateTask(user!.uid, props.task.id, editTask);
   };
 
+  const handleDeleteButton = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    deleteTask(user!.uid, props.task.id);
+  };
+
   return (
     <>
-      <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
+      <Card
+        sx={{
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          '&:hover': { cursor: 'pointer' },
+        }}
+        onClick={() => setIsOpenForm(true)}
+      >
         <BaseCheckbox
           checked={props.task.isDone}
           onChange={handleChangeCheckbox}
@@ -42,6 +60,7 @@ const Task = (props: TaskProps) => {
             height: '100%',
             width: '100%',
             justifyContent: 'flex-start',
+            '&:hover': { backgroundColor: 'transparent' },
           }}
           onClick={() => setIsOpenForm(true)}
         >
@@ -62,7 +81,7 @@ const Task = (props: TaskProps) => {
             variant="contained"
             color="primary"
             sx={{ maxWidth: 36, minWidth: 36 }}
-            onClick={() => deleteTask(user!.uid, props.task.id)}
+            onClick={handleDeleteButton}
           >
             <DeleteOutlineIcon sx={{ m: 0 }} />
           </Button>
