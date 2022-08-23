@@ -40,7 +40,6 @@ const Pomodoro = (props: PomodoroProps) => {
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
   const [timer, setTimer] = useState<timerType | null | undefined>(undefined);
-  // let nodeJSTimer: NodeJS.Timer | null = null;
   const timerRef = useRef<NodeJS.Timer>();
 
   const progress = (timerSeconds: number, passedSeconds: number) =>
