@@ -15,10 +15,10 @@ type MenuContainerProps = {
 };
 
 const MenuContainer = (props: MenuContainerProps) => {
+  const theme = useTheme();
   const { isMenuOpen, setIsMenuOpen } = useContext(UtilContext);
   if (setIsMenuOpen === null) return <></>;
 
-  const theme = useTheme();
   const toggleSideBarOpen = () => setIsMenuOpen(!isMenuOpen);
 
   return (
