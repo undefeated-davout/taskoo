@@ -1,12 +1,10 @@
 import { ChangeEvent, useContext, useState } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 
 import { UtilContext } from 'pages/_app';
 
@@ -31,15 +29,14 @@ const Task = (props: TaskProps) => {
     updateTask(user!.uid, props.task.id, editTask);
   };
 
-  const handleDeleteButton = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     deleteTask(user!.uid, props.task.id);
   };
 
   return (
     <>
+      {/* タスク要素 */}
       <Card
         sx={{
           height: '100%',
@@ -87,6 +84,7 @@ const Task = (props: TaskProps) => {
         </CardActions>
       </Card>
 
+      {/* 詳細編集フォーム */}
       <EditTaskForm
         task={props.task}
         isOpen={isOpenForm}
