@@ -162,8 +162,8 @@ const Pomodoro = (props: PomodoroProps) => {
 
   return (
     <CenterContainerBox>
-      <Box sx={{ maxWidth: 500, width: '100%' }}>
-        <Card sx={{ p: 4 }}>
+      <Box sx={{ maxWidth: 350, width: '100%' }}>
+        <Card sx={{ p: 2 }}>
           <CardContent>
             <Typography variant="h5" component="div" align="center">
               {title(status)}
