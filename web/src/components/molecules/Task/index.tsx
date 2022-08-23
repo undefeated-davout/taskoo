@@ -1,9 +1,11 @@
 import { useContext, useState } from 'react';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
 
 import { UtilContext } from 'pages/_app';
 
@@ -24,15 +26,7 @@ const Task = (props: TaskProps) => {
 
   return (
     <>
-      <Card
-        sx={{
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          '&:hover': { cursor: 'pointer' },
-        }}
-        onClick={() => setIsOpenForm(true)}
-      >
+      <Card sx={{ height: '100%', display: 'flex', alignItems: 'center' }}>
         <BaseCheckbox
           checked={props.task.isDone}
           onChange={(event) =>
@@ -42,9 +36,27 @@ const Task = (props: TaskProps) => {
           }
         />
 
-        {props.task.title}
+        <Box
+          sx={{
+            height: '100%',
+            width: '100%',
+            '&:hover': { cursor: 'pointer' },
+          }}
+          onClick={() => setIsOpenForm(true)}
+        >
+          <Typography
+            sx={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              fontSize: 16,
+            }}
+          >
+            {props.task.title}
+          </Typography>
+        </Box>
 
-        <CardActions sx={{ marginLeft: 'auto' }}>
+        <CardActions sx={{ pl: 0 }}>
           <Button
             variant="contained"
             color="primary"
