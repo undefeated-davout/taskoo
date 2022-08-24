@@ -29,7 +29,8 @@ const AddTaskForm = (props: AddTaskFormProps) => {
     if (inputValue.trim() === '') return;
 
     const newTask: addTaskType = {
-      order_num: 0,
+      orderNum: 0,
+      statusID: 1,
       title: inputValue.trim(),
       isDone: false,
       createdAt: serverTimestamp(),

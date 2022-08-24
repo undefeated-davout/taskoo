@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -8,37 +8,26 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import { UtilContext } from 'pages/_app';
-
 import AddTaskForm from 'components/molecules/AddTaskForm';
 import TaskList from 'components/organisms/TaskList';
 
+import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
-import { getTasks } from 'lib/api/task';
-
-type KanbanListProps = {
-  title: string;
+type KanbanStatusPanelProps = {
+  kanbanStatus: kanbanStatusType;
+  tasks: taskType[];
 };
 
-const KanbanList = (props: KanbanListProps) => {
+const KanbanStatusPanel = (props: KanbanStatusPanelProps) => {
   const theme = useTheme();
-
-  const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[] | null>(null);
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks);
-    return () => unsubscribe();
-  }, [user]);
-
-  if (tasks === null) return <></>;
 
   return (
     <Card
       sx={{
         width: 280,
+        minHeight: 86,
         p: 1,
         backgroundColor: theme.palette.action.disabledBackground,
       }}
@@ -56,7 +45,7 @@ const KanbanList = (props: KanbanListProps) => {
         }
         title={
           <Typography sx={{ ml: 0.5, fontSize: 14, fontWeight: 100 }}>
-            {props.title}
+            {props.kanbanStatus.name}
           </Typography>
         }
         sx={{ m: 0, p: 0 }}
@@ -71,9 +60,9 @@ const KanbanList = (props: KanbanListProps) => {
       )}
 
       {/* タスクリスト */}
-      <TaskList isMini={true} tasks={tasks} />
+      <TaskList isMini={true} tasks={props.tasks} />
     </Card>
   );
 };
 
-export default KanbanList;
+export default KanbanStatusPanel;

@@ -1,7 +1,8 @@
 import { FieldValue } from 'firebase/firestore';
 
 export type addTaskType = {
-  order_num: number;
+  orderNum: number;
+  statusID: number;
   title: string;
   isDone: boolean;
   createdAt: FieldValue;
@@ -9,7 +10,8 @@ export type addTaskType = {
 };
 
 export type updateTaskType = {
-  order_num?: number;
+  orderNum?: number;
+  statusID?: number;
   title?: string;
   isDone?: boolean;
   updatedAt?: FieldValue;
