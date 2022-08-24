@@ -12,6 +12,7 @@ import { addTask } from 'lib/api/task';
 
 type AddTaskFormProps = {
   isMini: boolean;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 
 const AddTaskForm = (props: AddTaskFormProps) => {
@@ -45,10 +46,12 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       variant="outlined"
       fullWidth
       autoComplete="off"
+      autoFocus
       size={props.isMini ? 'small' : 'medium'}
       value={inputValue}
       onChange={handleTextFieldChange}
       onKeyDown={handleKeyDown}
+      onBlur={props.onBlur}
     />
   );
 };

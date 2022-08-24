@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
@@ -23,6 +25,7 @@ const KanbanList = (props: KanbanListProps) => {
 
   const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [isOpenAddForm, setIsOpenAddForm] = useState(false);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks);
@@ -48,9 +51,25 @@ const KanbanList = (props: KanbanListProps) => {
       <TaskList isMini={true} tasks={tasks} />
 
       {/* タスク入力欄 */}
-      <Box sx={{ mt: 2 }} />
-      <AddTaskForm isMini={true} />
-      <Box sx={{ mt: 1 }} />
+      {isOpenAddForm ? (
+        <>
+          <Box sx={{ mt: 2 }} />
+          <AddTaskForm isMini={true} onBlur={() => setIsOpenAddForm(false)} />
+        </>
+      ) : (
+        <>
+          <Box sx={{ mt: 1 }} />
+          <Button
+            sx={{ width: '100%', justifyContent: 'flex-start', pl: 0 }}
+            onClick={() => setIsOpenAddForm(true)}
+          >
+            <AddIcon sx={{ mr: 1 }} />
+            <Typography sx={{ fontSize: 14, fontWeight: 100 }}>
+              ADD TASK
+            </Typography>
+          </Button>
+        </>
+      )}
     </Card>
   );
 };
