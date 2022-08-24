@@ -1,8 +1,9 @@
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import Checkbox from '@mui/material/Checkbox';
-import { useTheme } from '@mui/material/styles';
+import { SxProps, Theme, useTheme } from '@mui/material/styles';
 
 type BaseCheckboxProps = {
+  sx?: SxProps<Theme>;
   checked: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
@@ -11,6 +12,7 @@ const BaseCheckbox = (props: BaseCheckboxProps) => {
   const theme = useTheme();
   return (
     <Checkbox
+      sx={props.sx}
       color="default"
       icon={
         <CheckBoxOutlineBlankOutlinedIcon

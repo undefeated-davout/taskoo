@@ -16,6 +16,7 @@ import { taskType, updateTaskType } from 'types/task';
 import { deleteTask, updateTask } from 'lib/api/task';
 
 type TaskProps = {
+  isMini: boolean;
   task: taskType;
 };
 
@@ -46,10 +47,12 @@ const Task = (props: TaskProps) => {
         }}
         onClick={() => setIsOpenForm(true)}
       >
-        <BaseCheckbox
-          checked={props.task.isDone}
-          onChange={handleChangeCheckbox}
-        />
+        {!props.isMini && (
+          <BaseCheckbox
+            checked={props.task.isDone}
+            onChange={handleChangeCheckbox}
+          />
+        )}
 
         <Button
           sx={{
@@ -73,16 +76,18 @@ const Task = (props: TaskProps) => {
           </Typography>
         </Button>
 
-        <CardActions sx={{ pl: 0 }}>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ maxWidth: 36, minWidth: 36 }}
-            onClick={handleDeleteButton}
-          >
-            <DeleteOutlineIcon sx={{ m: 0 }} />
-          </Button>
-        </CardActions>
+        {!props.isMini && (
+          <CardActions sx={{ pl: 0 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ maxWidth: 20, minWidth: 20 }}
+              onClick={handleDeleteButton}
+            >
+              <DeleteOutlineIcon sx={{ m: 0 }} />
+            </Button>
+          </CardActions>
+        )}
       </Card>
 
       {/* 詳細編集フォーム */}

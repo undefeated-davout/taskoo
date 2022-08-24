@@ -10,7 +10,9 @@ import { addTaskType } from 'types/task';
 
 import { addTask } from 'lib/api/task';
 
-type AddTaskFormProps = {};
+type AddTaskFormProps = {
+  isMini: boolean;
+};
 
 const AddTaskForm = (props: AddTaskFormProps) => {
   const { user } = useContext(UtilContext);
@@ -43,6 +45,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       variant="outlined"
       fullWidth
       autoComplete="off"
+      size={props.isMini ? 'small' : 'medium'}
       value={inputValue}
       onChange={handleTextFieldChange}
       onKeyDown={handleKeyDown}

@@ -6,6 +6,7 @@ import Task from 'components/molecules/Task';
 import { taskType } from 'types/task';
 
 type TaskListProps = {
+  isMini: boolean;
   tasks: taskType[];
 };
 
@@ -16,9 +17,9 @@ const TaskList = (props: TaskListProps) => {
         <ListItem
           key={task.id}
           disablePadding
-          sx={{ display: 'block', mt: 1, height: 50 }}
+          sx={{ display: 'block', mt: 1, height: props.isMini ? 34 : 50 }}
         >
-          <Task task={task} />
+          <Task isMini={props.isMini} task={task} />
         </ListItem>
       ))}
     </List>

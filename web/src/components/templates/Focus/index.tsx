@@ -54,7 +54,7 @@ const Focus = (props: FocusProps) => {
         {tasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
-            <Task task={tasks[0]} />
+            <Task isMini={false} task={tasks[0]} />
           </>
         )}
       </Card>
