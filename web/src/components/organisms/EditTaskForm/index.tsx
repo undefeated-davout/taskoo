@@ -10,7 +10,7 @@ import { UtilContext } from 'pages/_app';
 
 import { taskType, updateTaskType } from 'types/task';
 
-import { updateTask } from 'lib/api/task';
+import { deleteTask, updateTask } from 'lib/api/task';
 
 type EditTaskFormProps = {
   task: taskType;
@@ -24,22 +24,26 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
-    submit();
+    handleClose();
   };
 
   const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
-  const submit = () => {
+  const handleClose = () => {
     if (inputValue.trim() === '') return;
 
     const editTask: updateTaskType = {
       title: inputValue.trim(),
     };
-
     updateTask(user!.uid, props.task.id, editTask);
 
+    props.onClose();
+  };
+
+  const handleDelete = () => {
+    deleteTask(user!.uid, props.task.id);
     props.onClose();
   };
 
@@ -49,7 +53,11 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
   return (
     <div>
-      <Dialog open={props.isOpen} onClose={submit} onKeyDown={handleKeyDown}>
+      <Dialog
+        open={props.isOpen}
+        onClose={handleClose}
+        onKeyDown={handleKeyDown}
+      >
         <DialogContent sx={{ width: 500, maxWidth: '100%' }}>
           <TextField
             fullWidth
@@ -61,8 +69,11 @@ const EditTaskForm = (props: EditTaskFormProps) => {
             onChange={handleTextFieldChange}
           />
         </DialogContent>
-        <DialogActions sx={{ mr: 2, mb: 2 }}>
-          <Button onClick={submit}>CLOSE</Button>
+        <DialogActions sx={{ mr: 2, mb: 1 }}>
+          <Button onClick={handleClose}>CLOSE</Button>
+          <Button variant="contained" color="error" onClick={handleDelete}>
+            DELETE
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

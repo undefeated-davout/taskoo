@@ -11,6 +11,7 @@ import { addTaskType } from 'types/task';
 import { addTask } from 'lib/api/task';
 
 type AddTaskFormProps = {
+  kanbanStatusID: string;
   isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
@@ -30,9 +31,9 @@ const AddTaskForm = (props: AddTaskFormProps) => {
 
     const newTask: addTaskType = {
       orderNum: 0,
-      statusID: 1,
+      statusID: props.kanbanStatusID,
       title: inputValue.trim(),
-      isDone: false,
+      isDone: props.kanbanStatusID === '80' ? true : false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
