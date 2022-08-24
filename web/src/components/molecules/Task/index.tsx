@@ -16,7 +16,7 @@ import { taskType, updateTaskType } from 'types/task';
 import { deleteTask, updateTask } from 'lib/api/task';
 
 type TaskProps = {
-  isMini: boolean;
+  isMini?: boolean;
   task: taskType;
 };
 

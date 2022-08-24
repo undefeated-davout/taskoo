@@ -11,7 +11,7 @@ import { addTaskType } from 'types/task';
 import { addTask } from 'lib/api/task';
 
 type AddTaskFormProps = {
-  isMini: boolean;
+  isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 

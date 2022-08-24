@@ -6,7 +6,7 @@ import Task from 'components/molecules/Task';
 import { taskType } from 'types/task';
 
 type TaskListProps = {
-  isMini: boolean;
+  isMini?: boolean;
   tasks: taskType[];
 };
 
