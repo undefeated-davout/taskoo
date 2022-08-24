@@ -4,6 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
@@ -42,34 +43,35 @@ const KanbanList = (props: KanbanListProps) => {
         backgroundColor: theme.palette.action.disabledBackground,
       }}
     >
-      {/* タイトル */}
-      <Typography sx={{ fontSize: 14, fontWeight: 100 }}>
-        {props.title}
-      </Typography>
-
-      {/* タスクリスト */}
-      <TaskList isMini={true} tasks={tasks} />
+      <CardHeader
+        action={
+          !isOpenAddForm && (
+            <Button sx={{ mr: 0.5 }} onClick={() => setIsOpenAddForm(true)}>
+              <AddIcon sx={{ mr: 1 }} />
+              <Typography sx={{ fontSize: 14, fontWeight: 100 }}>
+                ADD TASK
+              </Typography>
+            </Button>
+          )
+        }
+        title={
+          <Typography sx={{ ml: 0.5, fontSize: 14, fontWeight: 100 }}>
+            {props.title}
+          </Typography>
+        }
+        sx={{ m: 0, p: 0 }}
+      />
 
       {/* タスク入力欄 */}
-      {isOpenAddForm ? (
+      {isOpenAddForm && (
         <>
           <Box sx={{ mt: 2 }} />
           <AddTaskForm isMini={true} onBlur={() => setIsOpenAddForm(false)} />
         </>
-      ) : (
-        <>
-          <Box sx={{ mt: 1 }} />
-          <Button
-            sx={{ width: '100%', justifyContent: 'flex-start', pl: 0 }}
-            onClick={() => setIsOpenAddForm(true)}
-          >
-            <AddIcon sx={{ mr: 1 }} />
-            <Typography sx={{ fontSize: 14, fontWeight: 100 }}>
-              ADD TASK
-            </Typography>
-          </Button>
-        </>
       )}
+
+      {/* タスクリスト */}
+      <TaskList isMini={true} tasks={tasks} />
     </Card>
   );
 };
