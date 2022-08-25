@@ -18,7 +18,7 @@ const kanbanStatuses: kanbanStatusType[] = [
   { id: '1', orderNum: 1, name: 'DOING' },
   { id: '2', orderNum: 2, name: 'TODO' },
   { id: '3', orderNum: 3, name: 'IDEA' },
-  { id: '4', orderNum: 4, name: 'CONDITION' },
+  { id: '4', orderNum: 4, name: 'CONDITIONAL' },
   { id: '80', orderNum: 5, name: 'DONE' },
 ];
 
