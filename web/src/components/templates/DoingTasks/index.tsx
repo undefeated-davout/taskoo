@@ -14,9 +14,9 @@ import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
 
-type TodaysTasksProps = {};
+type DoingTasksProps = {};
 
-const TodaysTasks = (props: TodaysTasksProps) => {
+const DoingTasks = (props: DoingTasksProps) => {
   const theme = useTheme();
 
   const { user } = useContext(UtilContext);
@@ -49,4 +49,4 @@ const TodaysTasks = (props: TodaysTasksProps) => {
   );
 };
 
-export default TodaysTasks;
+export default DoingTasks;

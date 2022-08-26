@@ -1,18 +1,18 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
+import DoingTasks from 'components/templates/DoingTasks';
 import MenuContainer from 'components/templates/MenuContainer';
-import TodaysTasks from 'components/templates/TodaysTasks';
 
-const TodayPage: NextPage = () => {
+const DoingPage: NextPage = () => {
   return (
     <>
-      <HeadHelper titleElem="TODAY'S TASKS" />
+      <HeadHelper titleElem="DOING" />
       <MenuContainer isLoggedIn={true}>
-        <TodaysTasks />
+        <DoingTasks />
       </MenuContainer>
     </>
   );
 };
 
-export default TodayPage;
+export default DoingPage;
