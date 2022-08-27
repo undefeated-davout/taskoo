@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import {
   DocumentData,
   Query,
@@ -12,6 +10,7 @@ import {
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { orderBy, query } from 'firebase/firestore';
+import { Dispatch, SetStateAction } from 'react';
 
 import { addTaskType, taskType, updateTaskType } from 'types/task';
 
