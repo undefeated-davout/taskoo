@@ -14,12 +14,12 @@ import TaskList from 'components/organisms/TaskList';
 import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
-type KanbanStatusPanelProps = {
+type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
 };
 
-const KanbanStatusPanel = (props: KanbanStatusPanelProps) => {
+const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
 
@@ -69,4 +69,4 @@ const KanbanStatusPanel = (props: KanbanStatusPanelProps) => {
   );
 };
 
-export default KanbanStatusPanel;
+export default KanbanPanel;
