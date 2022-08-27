@@ -1,6 +1,5 @@
-import { useRouter } from 'next/router';
-
 import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/router';
 
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';

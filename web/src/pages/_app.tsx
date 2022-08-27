@@ -1,3 +1,4 @@
+import { User } from 'firebase/auth';
 import { AppProps } from 'next/app';
 import {
   Dispatch,
@@ -6,9 +7,10 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
-
-import { User } from 'firebase/auth';
 
 import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
@@ -78,16 +80,20 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <UtilThemeProvider>
-        <UtilContext.Provider
-          value={{
-            user: user,
-            isMenuOpen: isMenuOpen,
-            setIsMenuOpen: setIsMenuOpen,
-          }}
-        >
-          <GlobalStyle />
-          {isReady && <Component {...pageProps} />}
-        </UtilContext.Provider>
+        <RecoilRoot>
+          <DndProvider backend={HTML5Backend}>
+            <UtilContext.Provider
+              value={{
+                user: user,
+                isMenuOpen: isMenuOpen,
+                setIsMenuOpen: setIsMenuOpen,
+              }}
+            >
+              <GlobalStyle />
+              {isReady && <Component {...pageProps} />}
+            </UtilContext.Provider>
+          </DndProvider>
+        </RecoilRoot>
       </UtilThemeProvider>
     </>
   );

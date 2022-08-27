@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 import {
   collection,
   deleteDoc,
@@ -8,6 +6,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
+import { Dispatch, SetStateAction } from 'react';
 
 import { addTimerType, timerType, updateTimerType } from 'types/timer';
 
