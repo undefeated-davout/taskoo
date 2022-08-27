@@ -25,13 +25,11 @@ const Task = (props: TaskProps) => {
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
     const editTask: updateTaskType = { isDone: event.target.checked };
     updateTask(user!.uid, props.task.id, editTask);
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
     deleteTask(user!.uid, props.task.id);
   };
 
@@ -45,7 +43,6 @@ const Task = (props: TaskProps) => {
           alignItems: 'center',
           '&:hover': { cursor: 'pointer' },
         }}
-        onClick={() => setIsOpenForm(true)}
       >
         {!props.isMini && (
           <BaseCheckbox
