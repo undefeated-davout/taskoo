@@ -18,6 +18,7 @@ import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTask, updateTask } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { replaceStatusID } from 'lib/models/task';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type TaskProps = {
@@ -41,9 +42,7 @@ const Task = (props: TaskProps) => {
       if (!dropResult) return;
       setDroppedColumnNumber(dropResult.panelID);
       // パネルを移動したら更新
-      const statusID = props.task.isDone
-        ? kanbanStatusConst.done
-        : props.task.statusID; // 完了ならDONEに読み替え
+      const statusID = replaceStatusID(props.task.isDone, props.task.statusID);
       if (dropResult.panelID !== statusID) {
         if (dropResult.panelID === kanbanStatusConst.done) {
           const editTask: updateTaskType = { isDone: true };
