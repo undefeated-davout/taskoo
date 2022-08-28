@@ -21,6 +21,7 @@ import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type TaskProps = {
   isMini?: boolean;
+  isDraggable?: boolean;
   task: taskType;
 };
 
@@ -68,7 +69,7 @@ const Task = (props: TaskProps) => {
     <>
       {/* タスク要素 */}
       <Card
-        ref={drag}
+        ref={props.isDraggable ? drag : undefined}
         sx={{
           height: '100%',
           display: 'flex',
