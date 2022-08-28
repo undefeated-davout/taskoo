@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDrop } from 'react-dnd';
+import { useRecoilValue } from 'recoil';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -11,8 +13,10 @@ import { useTheme } from '@mui/material/styles';
 import AddTaskForm from 'components/molecules/AddTaskForm';
 import TaskList from 'components/organisms/TaskList';
 
-import { kanbanStatusType } from 'types/kanban';
+import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
+
+import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
@@ -23,8 +27,18 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
 
+  // --- ドロップ設定 ---
+  const [, drop] = useDrop(() => ({
+    accept: DnDItems.Task,
+    drop: () => ({ panelID: props.kanbanStatus.id }),
+  }));
+
+  // const isDropped =
+  //   useRecoilValue(droppedKanbanPanelState) === props.kanbanStatus.id;
+
   return (
     <Card
+      ref={drop}
       sx={{
         width: 280,
         minHeight: 86,
@@ -32,6 +46,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
         backgroundColor: theme.palette.action.disabledBackground,
       }}
     >
+      <div>{props.kanbanStatus.id}</div>
       <CardHeader
         action={
           !isOpenAddForm && (

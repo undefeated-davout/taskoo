@@ -3,3 +3,13 @@ export type kanbanStatusType = {
   orderNum: number;
   name: string;
 };
+
+export const DnDItems = {
+  Task: 'Task',
+} as const;
+
+export type DnDItems = typeof DnDItems[keyof typeof DnDItems];
+
+export type DropResult = {
+  panelID: string;
+};
