@@ -5,12 +5,52 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "isDone",
-          "order": "DESCENDING"
+          "fieldPath": "orderNum",
+          "order": "ASCENDING"
         },
         {
           "fieldPath": "updatedAt",
-          "order": "DESCENDING"
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "statusID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "isDone",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "orderNum",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "tasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "statusID",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "orderNum",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "ASCENDING"
         }
       ]
     }

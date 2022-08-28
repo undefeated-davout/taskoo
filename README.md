@@ -17,6 +17,13 @@ docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_e
 // https://asia-northeast1-taskoo-davout-v1.cloudfunctions.net/helloWorld
 ```
 
+## 設定
+
+```bash
+# Firestore indexes export
+firebase firestore:indexes > infrastructure/firebase/firestore.indexes.json
+```
+
 ## デプロイ
 
 ```bash
