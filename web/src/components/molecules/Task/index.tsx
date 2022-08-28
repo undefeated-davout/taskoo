@@ -69,8 +69,6 @@ const Task = (props: TaskProps) => {
     deleteTask(user!.uid, props.task.id);
   };
 
-  console.log('props.displayDeleteButton', props.displayDeleteButton);
-
   return (
     <>
       {/* タスク要素 */}
