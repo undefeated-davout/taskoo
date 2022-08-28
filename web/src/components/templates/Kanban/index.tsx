@@ -5,7 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import { UtilContext } from 'pages/_app';
 
-import KanbanStatusPanel from 'components/organisms/KanbanStatusPanel';
+import KanbanPanel from 'components/organisms/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
@@ -47,7 +47,7 @@ const Kanban = (props: KanbanProps) => {
       <Grid container spacing={2}>
         {kanbanStatuses.map((kanbanStatus, _) => (
           <Grid key={kanbanStatus.id}>
-            <KanbanStatusPanel
+            <KanbanPanel
               kanbanStatus={kanbanStatus}
               tasks={kanbanStatusTaskDict[kanbanStatus.id] || []}
             />

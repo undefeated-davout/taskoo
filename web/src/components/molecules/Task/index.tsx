@@ -1,4 +1,6 @@
 import { ChangeEvent, useContext, useState } from 'react';
+import { useDrag } from 'react-dnd';
+import { useRecoilState } from 'recoil';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -11,9 +13,11 @@ import { UtilContext } from 'pages/_app';
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 import EditTaskForm from 'components/organisms/EditTaskForm';
 
+import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTask, updateTask } from 'lib/api/task';
+import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type TaskProps = {
   isMini?: boolean;
@@ -23,6 +27,24 @@ type TaskProps = {
 const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
+
+  // --- ドラッグ設定 ---
+  const [_, setDroppedColumnNumber] = useRecoilState(droppedKanbanPanelState);
+  const [collected, drag] = useDrag(() => ({
+    type: DnDItems.Task,
+    end: (_, monitor) => {
+      const dropResult = monitor.getDropResult() as DropResult;
+      if (!dropResult) return;
+      setDroppedColumnNumber(dropResult.panelID);
+      // パネルを移動したら更新
+      if (dropResult.panelID !== props.task.statusID) {
+        const editTask: updateTaskType = { statusID: dropResult.panelID };
+        updateTask(user!.uid, props.task.id, editTask);
+      }
+    },
+    collect: (monitor) => ({ dragging: monitor.isDragging() }),
+  }));
+  const { dragging } = collected;
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     const editTask: updateTaskType = { isDone: event.target.checked };
@@ -37,10 +59,12 @@ const Task = (props: TaskProps) => {
     <>
       {/* タスク要素 */}
       <Card
+        ref={drag}
         sx={{
           height: '100%',
           display: 'flex',
           alignItems: 'center',
+          opacity: dragging ? 0.3 : 1,
           '&:hover': { cursor: 'pointer' },
         }}
       >
@@ -52,6 +76,7 @@ const Task = (props: TaskProps) => {
         )}
 
         <Button
+          disableRipple
           sx={{
             height: '100%',
             width: '100%',
