@@ -13,6 +13,7 @@ import Task from 'components/molecules/Task';
 import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
+import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type FocusProps = {};
 
@@ -23,7 +24,10 @@ const Focus = (props: FocusProps) => {
   const [tasks, setTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks, false);
+    const unsubscribe = getTasks(user!.uid, setTasks, {
+      isDone: false,
+      statusID: kanbanStatusConst.doing,
+    });
     return () => unsubscribe();
   }, [user]);
 

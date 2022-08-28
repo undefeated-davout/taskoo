@@ -8,6 +8,7 @@ import { UtilContext } from 'pages/_app';
 import { addTaskType } from 'types/task';
 
 import { addTask } from 'lib/api/task';
+import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
@@ -32,7 +33,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       orderNum: 0,
       statusID: props.kanbanStatusID,
       title: inputValue.trim(),
-      isDone: props.kanbanStatusID === '80' ? true : false,
+      isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };

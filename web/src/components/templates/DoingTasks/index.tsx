@@ -13,6 +13,7 @@ import TaskList from 'components/organisms/TaskList';
 import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
+import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type DoingTasksProps = {};
 
@@ -23,7 +24,9 @@ const DoingTasks = (props: DoingTasksProps) => {
   const [tasks, setTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks);
+    const unsubscribe = getTasks(user!.uid, setTasks, {
+      statusID: kanbanStatusConst.doing,
+    });
     return () => unsubscribe();
   }, [user]);
 

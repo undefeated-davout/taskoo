@@ -11,6 +11,7 @@ import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
+import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type KanbanProps = {};
 
@@ -27,7 +28,7 @@ const Kanban = (props: KanbanProps) => {
   const [tasks, setTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks);
+    const unsubscribe = getTasks(user!.uid, setTasks, {});
     return () => unsubscribe();
   }, [user]);
 
@@ -35,7 +36,7 @@ const Kanban = (props: KanbanProps) => {
 
   const kanbanStatusTaskDict = tasks.reduce(
     (dict: { [type: string]: taskType[] }, task) => {
-      const statusID = task.isDone ? '80' : task.statusID; // 完了ならDONEに読み替え
+      const statusID = task.isDone ? kanbanStatusConst.done : task.statusID; // 完了ならDONEに読み替え
       dict[statusID] ? dict[statusID].push(task) : (dict[statusID] = [task]);
       return dict;
     },

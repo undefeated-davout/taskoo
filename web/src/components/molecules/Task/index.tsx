@@ -17,6 +17,7 @@ import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTask, updateTask } from 'lib/api/task';
+import { kanbanStatusConst } from 'lib/constants/kanban';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type TaskProps = {
@@ -39,9 +40,11 @@ const Task = (props: TaskProps) => {
       if (!dropResult) return;
       setDroppedColumnNumber(dropResult.panelID);
       // パネルを移動したら更新
-      const statusID = props.task.isDone ? '80' : props.task.statusID; // 完了ならDONEに読み替え
+      const statusID = props.task.isDone
+        ? kanbanStatusConst.done
+        : props.task.statusID; // 完了ならDONEに読み替え
       if (dropResult.panelID !== statusID) {
-        if (dropResult.panelID === '80') {
+        if (dropResult.panelID === kanbanStatusConst.done) {
           const editTask: updateTaskType = { isDone: true };
           updateTask(user!.uid, props.task.id, editTask);
         } else {

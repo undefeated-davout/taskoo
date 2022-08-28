@@ -42,7 +42,6 @@ const KanbanPanel = (props: KanbanPanelProps) => {
         backgroundColor: theme.palette.action.disabledBackground,
       }}
     >
-      <div>{props.kanbanStatus.id}</div>
       <CardHeader
         action={
           !isOpenAddForm && (

@@ -1,6 +1,7 @@
 import {
   DocumentData,
   Query,
+  QueryConstraint,
   collection,
   deleteDoc,
   doc,
@@ -20,21 +21,21 @@ import { db } from 'lib/infrastructure/firebase';
 export const getTasks = (
   userID: string,
   setTasks: Dispatch<SetStateAction<taskType[] | null>>,
-  isDone?: boolean,
+  options: { isDone?: boolean; statusID?: string },
 ) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');
 
-  let q: Query<DocumentData>;
-  if (isDone === false) {
-    q = query(
-      taskColloctionRef,
-      where('isDone', '==', isDone),
-      orderBy('updatedAt', 'desc'),
-    );
-  } else {
-    q = query(taskColloctionRef, orderBy('updatedAt', 'desc'));
-  }
+  let constraints: QueryConstraint[] = [];
+  // --- WHERE ---
+  if (options?.statusID !== undefined)
+    constraints.push(where('statusID', '==', options.statusID));
+  if (options?.isDone === false)
+    constraints.push(where('isDone', '==', options.isDone));
+  // --- ORDER BY ---
+  constraints.push(orderBy('orderNum'));
+  constraints.push(orderBy('updatedAt'));
 
+  let q = query(taskColloctionRef, ...constraints);
   const unsubscribe = onSnapshot(q, (docs) => {
     let workTasks: taskType[] = [];
     docs.forEach((doc) => {
