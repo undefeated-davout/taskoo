@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useRecoilValue } from 'recoil';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -32,9 +31,6 @@ const KanbanPanel = (props: KanbanPanelProps) => {
     accept: DnDItems.Task,
     drop: () => ({ panelID: props.kanbanStatus.id }),
   }));
-
-  // const isDropped =
-  //   useRecoilValue(droppedKanbanPanelState) === props.kanbanStatus.id;
 
   return (
     <Card

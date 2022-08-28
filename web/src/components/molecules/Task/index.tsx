@@ -32,17 +32,26 @@ const Task = (props: TaskProps) => {
   const [_, setDroppedColumnNumber] = useRecoilState(droppedKanbanPanelState);
   const [collected, drag] = useDrag(() => ({
     type: DnDItems.Task,
+    collect: (monitor) => ({ dragging: monitor.isDragging() }),
     end: (_, monitor) => {
       const dropResult = monitor.getDropResult() as DropResult;
       if (!dropResult) return;
       setDroppedColumnNumber(dropResult.panelID);
       // パネルを移動したら更新
-      if (dropResult.panelID !== props.task.statusID) {
-        const editTask: updateTaskType = { statusID: dropResult.panelID };
-        updateTask(user!.uid, props.task.id, editTask);
+      const statusID = props.task.isDone ? '80' : props.task.statusID; // 完了ならDONEに読み替え
+      if (dropResult.panelID !== statusID) {
+        if (dropResult.panelID === '80') {
+          const editTask: updateTaskType = { isDone: true };
+          updateTask(user!.uid, props.task.id, editTask);
+        } else {
+          const editTask: updateTaskType = {
+            statusID: dropResult.panelID,
+            isDone: false,
+          };
+          updateTask(user!.uid, props.task.id, editTask);
+        }
       }
     },
-    collect: (monitor) => ({ dragging: monitor.isDragging() }),
   }));
   const { dragging } = collected;
 
