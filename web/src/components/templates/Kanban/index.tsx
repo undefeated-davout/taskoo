@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 
+import HandymanIcon from '@mui/icons-material/Handyman';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import { UtilContext } from 'pages/_app';
 
 import KanbanPanel from 'components/organisms/KanbanPanel';
+import KanbanToolDialog from 'components/organisms/KanbanToolDialog';
 
 import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
@@ -26,6 +29,8 @@ const kanbanStatuses: kanbanStatusType[] = [
 const Kanban = (props: KanbanProps) => {
   const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [isOpenToolDialog, setIsOpenToolDialog] = useState(false);
+  const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {});
@@ -44,18 +49,36 @@ const Kanban = (props: KanbanProps) => {
   );
 
   return (
-    <Box>
-      <Grid container spacing={2}>
-        {kanbanStatuses.map((kanbanStatus, _) => (
-          <Grid key={kanbanStatus.id}>
-            <KanbanPanel
-              kanbanStatus={kanbanStatus}
-              tasks={kanbanStatusTaskDict[kanbanStatus.id] || []}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+    <>
+      <Box>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button onClick={() => setIsOpenToolDialog(true)}>
+            <HandymanIcon />
+          </Button>
+        </Box>
+
+        <Grid container spacing={2}>
+          {kanbanStatuses.map((kanbanStatus, _) => (
+            <Grid key={kanbanStatus.id}>
+              <KanbanPanel
+                kanbanStatus={kanbanStatus}
+                tasks={kanbanStatusTaskDict[kanbanStatus.id] || []}
+                displayDeleteButton={displayDeleteButton}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
+      <KanbanToolDialog
+        displayDeleteButton={displayDeleteButton}
+        isOpen={isOpenToolDialog}
+        onClose={({ displayDeleteButton }) => {
+          setDisplayDeleteButton(displayDeleteButton);
+          setIsOpenToolDialog(false);
+        }}
+      />
+    </>
   );
 };
 

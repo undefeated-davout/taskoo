@@ -1,6 +1,4 @@
 import {
-  DocumentData,
-  Query,
   QueryConstraint,
   collection,
   deleteDoc,

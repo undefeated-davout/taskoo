@@ -22,6 +22,7 @@ import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 
 type TaskProps = {
   isMini?: boolean;
+  displayDeleteButton?: boolean;
   isDraggable?: boolean;
   task: taskType;
 };
@@ -68,6 +69,8 @@ const Task = (props: TaskProps) => {
     deleteTask(user!.uid, props.task.id);
   };
 
+  console.log('props.displayDeleteButton', props.displayDeleteButton);
+
   return (
     <>
       {/* タスク要素 */}
@@ -111,15 +114,14 @@ const Task = (props: TaskProps) => {
           </Typography>
         </Button>
 
-        {!props.isMini && (
+        {(!props.isMini || props.displayDeleteButton) && (
           <CardActions sx={{ pl: 0 }}>
             <Button
-              variant="contained"
               color="primary"
-              sx={{ maxWidth: 20, minWidth: 20 }}
+              sx={{ maxWidth: 32, minWidth: 32 }}
               onClick={handleDeleteButton}
             >
-              <DeleteOutlineIcon sx={{ m: 0 }} />
+              <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
             </Button>
           </CardActions>
         )}

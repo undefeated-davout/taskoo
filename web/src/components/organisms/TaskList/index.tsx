@@ -7,6 +7,7 @@ import { taskType } from 'types/task';
 
 type TaskListProps = {
   isMini?: boolean;
+  displayDeleteButton?: boolean;
   tasks: taskType[];
 };
 
@@ -19,7 +20,12 @@ const TaskList = (props: TaskListProps) => {
           disablePadding
           sx={{ display: 'block', mt: 1, height: props.isMini ? 34 : 50 }}
         >
-          <Task isMini={props.isMini} isDraggable task={task} />
+          <Task
+            isMini={props.isMini}
+            displayDeleteButton={props.displayDeleteButton}
+            isDraggable
+            task={task}
+          />
         </ListItem>
       ))}
     </List>

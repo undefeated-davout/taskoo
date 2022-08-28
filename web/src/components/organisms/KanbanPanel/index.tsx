@@ -15,11 +15,10 @@ import TaskList from 'components/organisms/TaskList';
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
-import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
-
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
+  displayDeleteButton?: boolean;
 };
 
 const KanbanPanel = (props: KanbanPanelProps) => {
@@ -74,7 +73,11 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       )}
 
       {/* タスクリスト */}
-      <TaskList isMini={true} tasks={props.tasks} />
+      <TaskList
+        isMini={true}
+        displayDeleteButton={props.displayDeleteButton}
+        tasks={props.tasks}
+      />
     </Card>
   );
 };

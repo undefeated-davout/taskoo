@@ -44,7 +44,7 @@ const DoingTasks = (props: DoingTasksProps) => {
         }}
       >
         <Box sx={{ mt: 1 }} />
-        <AddTaskForm kanbanStatusID="2" />
+        <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
         <Box sx={{ mt: tasks.length === 0 ? 1 : 3 }} />
         <TaskList tasks={tasks} />
       </Card>
