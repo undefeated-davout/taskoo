@@ -7,6 +7,7 @@ import { UtilContext } from 'pages/_app';
 import { addTaskType, taskType } from 'types/task';
 
 import { addTask } from 'lib/api/task';
+import { addTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type AddTaskFormProps = {
@@ -36,6 +37,8 @@ const AddTaskForm = (props: AddTaskFormProps) => {
     };
 
     addTask(user!.uid, newTask);
+    const order = props.tasks.map((task) => task.id).join(',');
+    addTaskOrder(user!.uid, { order: order });
     setInputValue('');
   };
 
