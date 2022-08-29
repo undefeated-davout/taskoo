@@ -1,19 +1,22 @@
 import {
   QueryConstraint,
+  Transaction,
+  addDoc,
   collection,
   deleteDoc,
   doc,
-  setDoc,
+  orderBy,
   updateDoc,
   where,
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
-import { orderBy, query } from 'firebase/firestore';
+import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
 import { addTaskType, taskType, updateTaskType } from 'types/task';
 
 import { db } from 'lib/infrastructure/firebase';
+import { sortTasks } from 'lib/models/task';
 
 // タスク一覧取得
 export const getTasks = (
@@ -30,8 +33,7 @@ export const getTasks = (
   if (options?.isDone === false)
     constraints.push(where('isDone', '==', options.isDone));
   // --- ORDER BY ---
-  constraints.push(orderBy('orderNum'));
-  constraints.push(orderBy('updatedAt'));
+  constraints.push(orderBy('nextID'));
 
   let q = query(taskColloctionRef, ...constraints);
   const unsubscribe = onSnapshot(q, (docs) => {
@@ -41,32 +43,70 @@ export const getTasks = (
       const task: taskType = { id: doc.id, ...taskDoc };
       workTasks.push(task);
     });
-    setTasks(workTasks);
+    const sortedTasks = sortTasks(workTasks);
+    setTasks(sortedTasks);
   });
 
   return unsubscribe;
 };
 
 // タスク追加
-export const addTask = (userID: string, newTask: addTaskType) => {
+const addTaskCommon = (userID: string) => {
+  return collection(db, 'users', userID, 'tasks');
+};
+
+export const addTask = async (userID: string, newTask: addTaskType) => {
   try {
-    const taskColloctionRef = collection(db, 'users', userID, 'tasks');
-    setDoc(doc(taskColloctionRef), newTask);
+    const taskColloctionRef = addTaskCommon(userID);
+    return addDoc(taskColloctionRef, newTask);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
+
+export const addTaskTx = async (
+  tx: Transaction,
+  userID: string,
+  newTask: addTaskType,
+) => {
+  try {
+    const taskColloctionRef = addTaskCommon(userID);
+    const docRef = doc(taskColloctionRef);
+    tx.set(docRef, newTask);
+    return docRef;
   } catch (e) {
     console.error('Error adding document: ', e);
   }
 };
 
 // タスク更新
+const updateTaskCommon = (userID: string, taskID: string) => {
+  const userRef = doc(db, 'users', userID);
+  return doc(userRef, 'tasks', taskID);
+};
+
 export const updateTask = (
   userID: string,
   taskID: string,
   task: updateTaskType,
 ) => {
   try {
-    const userRef = doc(db, 'users', userID);
-    const taskRef = doc(userRef, 'tasks', taskID);
-    updateDoc(taskRef, task);
+    const taskRef = updateTaskCommon(userID, taskID);
+    return updateDoc(taskRef, task);
+  } catch (e) {
+    console.error('Error updating document: ', e);
+  }
+};
+
+export const updateTaskTx = (
+  tx: Transaction,
+  userID: string,
+  taskID: string,
+  task: updateTaskType,
+) => {
+  try {
+    const taskRef = updateTaskCommon(userID, taskID);
+    return tx.update(taskRef, task);
   } catch (e) {
     console.error('Error updating document: ', e);
   }

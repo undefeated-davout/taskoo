@@ -15,6 +15,8 @@ import TaskList from 'components/organisms/tasks/TaskList';
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
+import { lastTaskID } from 'lib/models/task';
+
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
@@ -25,15 +27,15 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
 
-  // --- ドロップ設定 ---
-  const [, drop] = useDrop(() => ({
-    accept: DnDItems.Task,
-    drop: () => ({ panelID: props.kanbanStatus.id }),
-  }));
+  // // --- ドロップ設定 ---
+  // const [, drop] = useDrop(() => ({
+  //   accept: DnDItems.Task,
+  //   drop: () => ({ panelID: props.kanbanStatus.id }),
+  // }));
 
   return (
     <Card
-      ref={drop}
+      // ref={drop}
       sx={{
         width: 280,
         minHeight: 86,
@@ -66,6 +68,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <Box sx={{ mt: 2 }} />
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
+            lastTaskID={lastTaskID(props.tasks)}
             isMini={true}
             onBlur={() => setIsOpenAddForm(false)}
           />

@@ -1,5 +1,5 @@
-import { ChangeEvent, useContext, useState } from 'react';
-import { useDrag } from 'react-dnd';
+import { ChangeEvent, useContext, useRef, useState } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
 import { useRecoilState } from 'recoil';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -31,6 +31,7 @@ type TaskProps = {
 const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   // --- ドラッグ設定 ---
   const [_, setDroppedColumnNumber] = useRecoilState(droppedKanbanPanelState);
@@ -40,24 +41,34 @@ const Task = (props: TaskProps) => {
     end: (_, monitor) => {
       const dropResult = monitor.getDropResult() as DropResult;
       if (!dropResult) return;
-      setDroppedColumnNumber(dropResult.panelID);
-      // パネルを移動したら更新
+      setDroppedColumnNumber({
+        panelID: dropResult.panelID,
+        nextID: dropResult.nextID,
+      });
+      let editTask: updateTaskType = { nextID: dropResult.nextID };
       const statusID = replaceStatusID(props.task.isDone, props.task.statusID);
       if (dropResult.panelID !== statusID) {
         if (dropResult.panelID === kanbanStatusConst.done) {
-          const editTask: updateTaskType = { isDone: true };
-          updateTask(user!.uid, props.task.id, editTask);
+          editTask = { isDone: true };
         } else {
-          const editTask: updateTaskType = {
-            statusID: dropResult.panelID,
-            isDone: false,
-          };
-          updateTask(user!.uid, props.task.id, editTask);
+          editTask = { statusID: dropResult.panelID, isDone: false };
         }
       }
+      updateTask(user!.uid, props.task.id, editTask);
     },
   }));
   const { dragging } = collected;
+
+  // --- ドロップ設定 ---
+  const [, drop] = useDrop(() => ({
+    accept: DnDItems.Task,
+    drop: () => ({
+      panelID: props.task.statusID,
+      nextID: props.task.nextID,
+    }),
+  }));
+
+  drag(drop(ref));
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     const editTask: updateTaskType = { isDone: event.target.checked };
@@ -72,7 +83,7 @@ const Task = (props: TaskProps) => {
     <>
       {/* タスク要素 */}
       <Card
-        ref={props.isDraggable ? drag : undefined}
+        ref={props.isDraggable ? ref : undefined}
         sx={{
           height: '100%',
           display: 'flex',

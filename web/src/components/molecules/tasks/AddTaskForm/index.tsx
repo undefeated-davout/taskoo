@@ -1,17 +1,20 @@
 import { serverTimestamp } from 'firebase/firestore';
+import { runTransaction } from 'firebase/firestore';
 import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
 import { UtilContext } from 'pages/_app';
 
-import { addTaskType } from 'types/task';
+import { addTaskType, updateTaskType } from 'types/task';
 
-import { addTask } from 'lib/api/task';
+import { addTask, addTaskTx, updateTask, updateTaskTx } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { db } from 'lib/infrastructure/firebase';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
+  lastTaskID: string;
   isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
@@ -30,7 +33,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
     if (inputValue.trim() === '') return;
 
     const newTask: addTaskType = {
-      orderNum: 0,
+      nextID: '',
       statusID: props.kanbanStatusID,
       title: inputValue.trim(),
       isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
@@ -38,8 +41,20 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       updatedAt: serverTimestamp(),
     };
 
-    addTask(user!.uid, newTask);
-    setInputValue('');
+    try {
+      await runTransaction(db, async (tx) => {
+        const newDoc = await addTaskTx(tx, user!.uid, newTask);
+        if (newDoc === undefined) throw 'failed to add';
+        if (props.lastTaskID !== '' && newDoc !== undefined) {
+          const editTask: updateTaskType = { nextID: newDoc.id };
+          updateTaskTx(tx, user!.uid, props.lastTaskID, editTask);
+        }
+      });
+      console.log('Transaction successfully committed!');
+      setInputValue('');
+    } catch (e) {
+      console.log('Transaction failed: ', e);
+    }
   };
 
   return (
