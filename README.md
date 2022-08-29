@@ -21,7 +21,9 @@ docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_e
 
 ```bash
 # Firestore indexes export
-firebase firestore:indexes > infrastructure/firebase/firestore.indexes.json
+mkdir -p ./tmp/ && \
+  firebase firestore:indexes > ./tmp/firestore.indexes.json && \
+  mv ./tmp/firestore.indexes.json infrastructure/firebase/firestore.indexes.json
 ```
 
 ## デプロイ
