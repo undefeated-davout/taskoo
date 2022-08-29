@@ -43,13 +43,8 @@ const Task = (props: TaskProps) => {
       if (!dropResult) return;
       setDroppedColumnNumber({
         panelID: dropResult.panelID,
-        prevID: dropResult.prevID,
-        nextID: dropResult.nextID,
       });
-      let editTask: updateTaskType = {
-        prevID: dropResult.prevID,
-        nextID: dropResult.nextID,
-      };
+      let editTask: updateTaskType = {};
       const statusID = replaceStatusID(props.task.isDone, props.task.statusID);
       if (dropResult.panelID !== statusID) {
         if (dropResult.panelID === kanbanStatusConst.done) {
@@ -63,8 +58,6 @@ const Task = (props: TaskProps) => {
         }
       }
       updateTask(user!.uid, props.task.id, editTask);
-      updateTask(user!.uid, dropResult.prevID, { nextID: props.task.id });
-      updateTask(user!.uid, dropResult.nextID, { prevID: props.task.id });
     },
   }));
   const { dragging } = collected;
@@ -74,8 +67,6 @@ const Task = (props: TaskProps) => {
     accept: DnDItems.Task,
     drop: () => ({
       panelID: props.task.statusID,
-      prevID: props.task.prevID,
-      nextID: props.task.id,
     }),
   }));
   drag(drop(ref));
@@ -85,7 +76,7 @@ const Task = (props: TaskProps) => {
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    deleteTask(user!.uid, props.task.id, props.task);
+    deleteTask(user!.uid, props.task.id);
   };
 
   return (

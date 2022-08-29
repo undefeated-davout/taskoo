@@ -1,10 +1,9 @@
 import {
   QueryConstraint,
-  Transaction,
   collection,
+  deleteDoc,
   doc,
-  orderBy,
-  runTransaction,
+  setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -15,7 +14,8 @@ import { Dispatch, SetStateAction } from 'react';
 import { addTaskType, taskType, updateTaskType } from 'types/task';
 
 import { db } from 'lib/infrastructure/firebase';
-import { sortTasks } from 'lib/models/task';
+
+import { createStruct, updateStruct } from './common';
 
 // タスク一覧取得
 export const getTasks = (
@@ -31,95 +31,52 @@ export const getTasks = (
     constraints.push(where('statusID', '==', options.statusID));
   if (options?.isDone === false)
     constraints.push(where('isDone', '==', options.isDone));
-  // --- ORDER BY ---
-  constraints.push(orderBy('prevID'));
-  constraints.push(orderBy('nextID'));
 
   let q = query(taskColloctionRef, ...constraints);
   const unsubscribe = onSnapshot(q, (docs) => {
     let workTasks: taskType[] = [];
     docs.forEach((doc) => {
-      let taskDoc = doc.data() as addTaskType;
+      let taskDoc = doc.data() as Omit<taskType, 'id'>;
       const task: taskType = { id: doc.id, ...taskDoc };
       workTasks.push(task);
     });
-    const sortedTasks = sortTasks(workTasks);
-    setTasks(sortedTasks);
+    setTasks(workTasks);
   });
 
   return unsubscribe;
 };
 
-// タスク追加
-export const addTask = async (
-  userID: string,
-  lastTaskID: string,
-  newTask: addTaskType,
-) => {
+// タスクソート順追加
+export const addTask = (userID: string, task: addTaskType) => {
   try {
-    await runTransaction(db, async (tx) => {
-      const taskColloctionRef = collection(db, 'users', userID, 'tasks');
-      const docRef = doc(taskColloctionRef);
-      tx.set(docRef, newTask);
-      if (docRef === undefined) throw 'failed to add';
-      if (lastTaskID !== '' && docRef !== undefined) {
-        updateTaskTx(tx, userID, lastTaskID, { nextID: docRef.id });
-      }
-    });
+    const taskColloctionRef = collection(db, 'users', userID, 'tasks');
+    setDoc(doc(taskColloctionRef), createStruct(task));
   } catch (e) {
     console.error('Error adding document: ', e);
   }
 };
 
-// タスク更新
-const updateTaskCommon = (userID: string, taskID: string) => {
-  const userRef = doc(db, 'users', userID);
-  return doc(userRef, 'tasks', taskID);
-};
-
+// タスクソート順更新
 export const updateTask = (
   userID: string,
   taskID: string,
   task: updateTaskType,
 ) => {
   try {
-    const taskRef = updateTaskCommon(userID, taskID);
-    return updateDoc(taskRef, task);
-  } catch (e) {
-    console.error('Error updating document: ', e);
-  }
-};
-
-export const updateTaskTx = (
-  tx: Transaction,
-  userID: string,
-  taskID: string,
-  task: updateTaskType,
-) => {
-  try {
-    const taskRef = updateTaskCommon(userID, taskID);
-    return tx.update(taskRef, task);
+    const userRef = doc(db, 'users', userID);
+    const taskRef = doc(userRef, 'tasks', taskID);
+    updateDoc(taskRef, updateStruct(task));
   } catch (e) {
     console.error('Error updating document: ', e);
   }
 };
 
 // タスク削除
-export const deleteTask = async (
-  userID: string,
-  taskID: string,
-  task: taskType,
-) => {
+export const deleteTask = (userID: string, taskID: string) => {
   try {
-    await runTransaction(db, async (tx) => {
-      if (task.prevID !== '')
-        updateTaskTx(tx, userID, task.prevID, { nextID: task.nextID });
-      if (task.nextID !== '')
-        updateTaskTx(tx, userID, task.nextID, { prevID: task.prevID });
-      const userRef = doc(db, 'users', userID);
-      const taskRef = doc(userRef, 'tasks', taskID);
-      tx.delete(taskRef);
-    });
+    const userRef = doc(db, 'users', userID);
+    const taskRef = doc(userRef, 'tasks', taskID);
+    deleteDoc(taskRef);
   } catch (e) {
     console.error('Error deleting document: ', e);
   }

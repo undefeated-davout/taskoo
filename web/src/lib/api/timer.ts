@@ -12,6 +12,8 @@ import { addTimerType, timerType, updateTimerType } from 'types/timer';
 
 import { db } from 'lib/infrastructure/firebase';
 
+import { createStruct, updateStruct } from './common';
+
 // タイマー情報1件取得
 export const getTimer = (
   userID: string,
@@ -22,7 +24,7 @@ export const getTimer = (
   const unsubscribe = onSnapshot(timerColloctionRef, (docs) => {
     setTimer(null);
     docs.forEach((doc) => {
-      let timerDoc = doc.data() as addTimerType;
+      let timerDoc = doc.data() as Omit<timerType, 'id'>;
       const timer: timerType = { id: doc.id, ...timerDoc };
       setTimer(timer);
       return;
@@ -33,10 +35,10 @@ export const getTimer = (
 };
 
 // タイマー追加
-export const addTimer = (userID: string, newTimer: addTimerType) => {
+export const addTimer = (userID: string, timer: addTimerType) => {
   try {
     const timerColloctionRef = collection(db, 'users', userID, 'timers');
-    setDoc(doc(timerColloctionRef), newTimer);
+    setDoc(doc(timerColloctionRef), createStruct(timer));
   } catch (e) {
     console.error('Error adding document: ', e);
   }
@@ -51,7 +53,7 @@ export const updateTimer = (
   try {
     const userRef = doc(db, 'users', userID);
     const timerRef = doc(userRef, 'timers', timerID);
-    updateDoc(timerRef, timer);
+    updateDoc(timerRef, updateStruct(timer));
   } catch (e) {
     console.error('Error updating document: ', e);
   }

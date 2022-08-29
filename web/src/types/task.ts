@@ -1,24 +1,15 @@
-import { FieldValue } from 'firebase/firestore';
+import { idType, metaType } from './common';
 
 export type addTaskType = {
-  prevID: string;
-  nextID: string;
   statusID: string;
   title: string;
   isDone: boolean;
-  createdAt: FieldValue;
-  updatedAt: FieldValue;
 };
 
 export type updateTaskType = {
-  prevID?: string;
-  nextID?: string;
   statusID?: string;
   title?: string;
   isDone?: boolean;
-  updatedAt?: FieldValue;
 };
 
-export type taskType = addTaskType & {
-  id: string;
-};
+export type taskType = addTaskType & idType & metaType;

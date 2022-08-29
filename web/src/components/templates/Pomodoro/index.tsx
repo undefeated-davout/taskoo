@@ -1,4 +1,4 @@
-import { Timestamp, serverTimestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { useContext, useEffect, useRef, useState } from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -71,8 +71,6 @@ const Pomodoro = (props: PomodoroProps) => {
       timerSeconds: seconds,
       status: timerStatusConst.working,
       endAt: endAt(seconds),
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     });
   };
 
@@ -83,7 +81,6 @@ const Pomodoro = (props: PomodoroProps) => {
       status: timerStatusConst.stopped,
       passedSeconds: passedSeconds,
       endAt: null,
-      updatedAt: serverTimestamp(),
     });
   };
 
@@ -92,8 +89,6 @@ const Pomodoro = (props: PomodoroProps) => {
     updateTimer(user!.uid, timer!.id, {
       status: timerStatusConst.working,
       passedSeconds: null,
-      endAt: endAt(remainSeconds()),
-      updatedAt: serverTimestamp(),
     });
   };
 

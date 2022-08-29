@@ -12,6 +12,4 @@ export type DnDItems = typeof DnDItems[keyof typeof DnDItems];
 
 export type DropResult = {
   panelID: string;
-  prevID: string;
-  nextID: string;
 };

@@ -36,7 +36,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       statusID: props.kanbanStatus.id,
     });
     return () => unsubscribe();
-  }, [user]);
+  }, [user, props.kanbanStatus.id]);
 
   if (tasks === null) return <></>;
 

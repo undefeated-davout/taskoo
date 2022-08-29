@@ -1,4 +1,3 @@
-import { serverTimestamp } from 'firebase/firestore';
 import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
@@ -31,16 +30,12 @@ const AddTaskForm = (props: AddTaskFormProps) => {
     if (inputValue.trim() === '') return;
 
     const newTask: addTaskType = {
-      prevID: props.lastTaskID,
-      nextID: '',
       statusID: props.kanbanStatusID,
       title: inputValue.trim(),
       isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     };
 
-    addTask(user!.uid, props.lastTaskID, newTask);
+    addTask(user!.uid, newTask);
     setInputValue('');
   };
 
