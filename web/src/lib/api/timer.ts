@@ -15,16 +15,17 @@ import { db } from 'lib/infrastructure/firebase';
 // タイマー情報1件取得
 export const getTimer = (
   userID: string,
-  setTimers: Dispatch<SetStateAction<timerType | null | undefined>>,
+  setTimer: Dispatch<SetStateAction<timerType | null | undefined>>,
 ) => {
   const timerColloctionRef = collection(db, 'users', userID, 'timers');
 
   const unsubscribe = onSnapshot(timerColloctionRef, (docs) => {
-    setTimers(null);
+    setTimer(null);
     docs.forEach((doc) => {
       let timerDoc = doc.data() as addTimerType;
       const timer: timerType = { id: doc.id, ...timerDoc };
-      setTimers(timer);
+      setTimer(timer);
+      return;
     });
   });
 
