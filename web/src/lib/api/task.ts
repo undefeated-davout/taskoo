@@ -32,6 +32,7 @@ export const getTasks = (
   if (options?.isDone === false)
     constraints.push(where('isDone', '==', options.isDone));
   // --- ORDER BY ---
+  constraints.push(orderBy('prevID'));
   constraints.push(orderBy('nextID'));
 
   let q = query(taskColloctionRef, ...constraints);

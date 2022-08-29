@@ -5,20 +5,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "orderNum",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "tasks",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "statusID",
           "order": "ASCENDING"
         },
@@ -27,11 +13,11 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "orderNum",
+          "fieldPath": "prevID",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "updatedAt",
+          "fieldPath": "nextID",
           "order": "ASCENDING"
         }
       ]
@@ -45,11 +31,11 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "orderNum",
+          "fieldPath": "prevID",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "updatedAt",
+          "fieldPath": "nextID",
           "order": "ASCENDING"
         }
       ]
