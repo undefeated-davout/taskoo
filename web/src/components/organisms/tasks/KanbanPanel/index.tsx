@@ -16,8 +16,10 @@ import TaskList from 'components/organisms/tasks/TaskList';
 
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
 
 import { getTasks } from 'lib/api/task';
+import { getTaskOrder } from 'lib/api/task_order';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
@@ -29,6 +31,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {
@@ -36,6 +39,11 @@ const KanbanPanel = (props: KanbanPanelProps) => {
     });
     return () => unsubscribe();
   }, [user, props.kanbanStatus.id]);
+
+  useEffect(() => {
+    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    return () => unsubscribe();
+  }, [user]);
 
   if (tasks === null) return <></>;
 
@@ -80,8 +88,9 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <Box sx={{ mt: 2 }} />
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
-            isMini={true}
             tasks={tasks}
+            taskOrder={taskOrder}
+            isMini={true}
             onBlur={() => setIsOpenAddForm(false)}
           />
         </>

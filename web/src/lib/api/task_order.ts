@@ -21,7 +21,7 @@ import { createStruct, updateStruct } from './common';
 // タスクソート順情報1件取得
 export const getTaskOrder = (
   userID: string,
-  setTaskOrder: Dispatch<SetStateAction<taskOrderType | null | undefined>>,
+  setTaskOrder: Dispatch<SetStateAction<taskOrderType | null>>,
 ) => {
   const taskOrderColloctionRef = collection(db, 'users', userID, 'task_orders');
 

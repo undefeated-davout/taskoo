@@ -5,14 +5,16 @@ import TextField from '@mui/material/TextField';
 import { UtilContext } from 'pages/_app';
 
 import { addTaskType, taskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
 
 import { addTask } from 'lib/api/task';
-import { addTaskOrder } from 'lib/api/task_order';
+import { addTaskOrder, updateTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
   tasks: taskType[];
+  taskOrder: taskOrderType | null;
   isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
@@ -38,7 +40,9 @@ const AddTaskForm = (props: AddTaskFormProps) => {
 
     addTask(user!.uid, newTask);
     const order = props.tasks.map((task) => task.id).join(',');
-    addTaskOrder(user!.uid, { order: order });
+    props.taskOrder
+      ? updateTaskOrder(user!.uid, props.taskOrder.id, { order: order })
+      : addTaskOrder(user!.uid, { order: order });
     setInputValue('');
   };
 

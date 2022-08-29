@@ -11,8 +11,10 @@ import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
 import TaskList from 'components/organisms/tasks/TaskList';
 
 import { taskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
 
 import { getTasks } from 'lib/api/task';
+import { getTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type DoingTasksProps = {};
@@ -22,11 +24,17 @@ const DoingTasks = (props: DoingTasksProps) => {
 
   const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {
       statusID: kanbanStatusConst.doing,
     });
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
     return () => unsubscribe();
   }, [user]);
 
@@ -44,7 +52,11 @@ const DoingTasks = (props: DoingTasksProps) => {
         }}
       >
         <Box sx={{ mt: 1 }} />
-        <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} tasks={tasks} />
+        <AddTaskForm
+          kanbanStatusID={kanbanStatusConst.doing}
+          tasks={tasks}
+          taskOrder={taskOrder}
+        />
         <Box sx={{ mt: tasks.length === 0 ? 1 : 3 }} />
         <TaskList tasks={tasks} />
       </Card>
