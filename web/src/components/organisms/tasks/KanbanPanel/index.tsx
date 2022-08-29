@@ -18,7 +18,6 @@ import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
-import { lastTaskID } from 'lib/models/task';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
@@ -81,8 +80,8 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <Box sx={{ mt: 2 }} />
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
-            lastTaskID={lastTaskID(tasks)}
             isMini={true}
+            tasks={tasks}
             onBlur={() => setIsOpenAddForm(false)}
           />
         </>

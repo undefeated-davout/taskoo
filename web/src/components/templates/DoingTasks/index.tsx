@@ -14,7 +14,6 @@ import { taskType } from 'types/task';
 
 import { getTasks } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { lastTaskID } from 'lib/models/task';
 
 type DoingTasksProps = {};
 
@@ -45,10 +44,7 @@ const DoingTasks = (props: DoingTasksProps) => {
         }}
       >
         <Box sx={{ mt: 1 }} />
-        <AddTaskForm
-          kanbanStatusID={kanbanStatusConst.doing}
-          lastTaskID={lastTaskID(tasks)}
-        />
+        <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} tasks={tasks} />
         <Box sx={{ mt: tasks.length === 0 ? 1 : 3 }} />
         <TaskList tasks={tasks} />
       </Card>

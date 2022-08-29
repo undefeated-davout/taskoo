@@ -4,14 +4,14 @@ import TextField from '@mui/material/TextField';
 
 import { UtilContext } from 'pages/_app';
 
-import { addTaskType } from 'types/task';
+import { addTaskType, taskType } from 'types/task';
 
 import { addTask } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
-  lastTaskID: string;
+  tasks: taskType[];
   isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
