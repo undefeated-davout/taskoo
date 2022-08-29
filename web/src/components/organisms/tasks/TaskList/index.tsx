@@ -1,7 +1,7 @@
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import Task from 'components/molecules/Task';
+import Task from 'components/molecules/tasks/Task';
 
 import { taskType } from 'types/task';
 

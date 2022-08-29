@@ -9,8 +9,8 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import AddTaskForm from 'components/molecules/AddTaskForm';
-import TaskList from 'components/organisms/TaskList';
+import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
+import TaskList from 'components/organisms/tasks/TaskList';
 
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';

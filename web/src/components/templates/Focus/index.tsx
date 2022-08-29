@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { UtilContext } from 'pages/_app';
 
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
-import Task from 'components/molecules/Task';
+import Task from 'components/molecules/tasks/Task';
 
 import { taskType } from 'types/task';
 

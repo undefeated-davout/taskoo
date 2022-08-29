@@ -6,8 +6,8 @@ import { useTheme } from '@mui/material/styles';
 
 import { UtilContext } from 'pages/_app';
 
-import HeaderBar from 'components/organisms/HeaderBar';
-import SideBar, { DrawerHeader } from 'components/organisms/SideBar';
+import HeaderBar from 'components/organisms/common/HeaderBar';
+import SideBar, { DrawerHeader } from 'components/organisms/common/SideBar';
 
 type MenuContainerProps = {
   children: React.ReactNode;

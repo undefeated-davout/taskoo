@@ -7,8 +7,8 @@ import { useTheme } from '@mui/material/styles';
 import { UtilContext } from 'pages/_app';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
-import AddTaskForm from 'components/molecules/AddTaskForm';
-import TaskList from 'components/organisms/TaskList';
+import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
+import TaskList from 'components/organisms/tasks/TaskList';
 
 import { taskType } from 'types/task';
 

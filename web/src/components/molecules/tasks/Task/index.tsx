@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { UtilContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
-import EditTaskForm from 'components/organisms/EditTaskForm';
+import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
 
 import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';

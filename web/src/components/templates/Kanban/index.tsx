@@ -7,8 +7,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 
 import { UtilContext } from 'pages/_app';
 
-import KanbanPanel from 'components/organisms/KanbanPanel';
-import KanbanToolDialog from 'components/organisms/KanbanToolDialog';
+import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
+import KanbanToolDialog from 'components/organisms/tasks/KanbanToolDialog';
 
 import { kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
