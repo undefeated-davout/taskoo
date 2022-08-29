@@ -43,7 +43,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleDelete = () => {
-    deleteTask(user!.uid, props.task.id);
+    deleteTask(user!.uid, props.task.id, props.task);
     props.onClose();
   };
 

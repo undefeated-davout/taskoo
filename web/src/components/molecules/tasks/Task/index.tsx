@@ -70,12 +70,11 @@ const Task = (props: TaskProps) => {
   drag(drop(ref));
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    const editTask: updateTaskType = { isDone: event.target.checked };
-    updateTask(user!.uid, props.task.id, editTask);
+    updateTask(user!.uid, props.task.id, { isDone: event.target.checked });
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    deleteTask(user!.uid, props.task.id);
+    deleteTask(user!.uid, props.task.id, props.task);
   };
 
   return (

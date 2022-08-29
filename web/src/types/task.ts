@@ -1,6 +1,7 @@
 import { FieldValue } from 'firebase/firestore';
 
 export type addTaskType = {
+  prevID: string;
   nextID: string;
   statusID: string;
   title: string;
@@ -10,6 +11,7 @@ export type addTaskType = {
 };
 
 export type updateTaskType = {
+  prevID?: string;
   nextID?: string;
   statusID?: string;
   title?: string;

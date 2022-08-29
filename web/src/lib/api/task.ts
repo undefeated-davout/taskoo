@@ -1,11 +1,10 @@
 import {
   QueryConstraint,
   Transaction,
-  addDoc,
   collection,
-  deleteDoc,
   doc,
   orderBy,
+  runTransaction,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -51,29 +50,21 @@ export const getTasks = (
 };
 
 // タスク追加
-const addTaskCommon = (userID: string) => {
-  return collection(db, 'users', userID, 'tasks');
-};
-
-export const addTask = async (userID: string, newTask: addTaskType) => {
-  try {
-    const taskColloctionRef = addTaskCommon(userID);
-    return addDoc(taskColloctionRef, newTask);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-};
-
-export const addTaskTx = async (
-  tx: Transaction,
+export const addTask = async (
   userID: string,
+  lastTaskID: string,
   newTask: addTaskType,
 ) => {
   try {
-    const taskColloctionRef = addTaskCommon(userID);
-    const docRef = doc(taskColloctionRef);
-    tx.set(docRef, newTask);
-    return docRef;
+    await runTransaction(db, async (tx) => {
+      const taskColloctionRef = collection(db, 'users', userID, 'tasks');
+      const docRef = doc(taskColloctionRef);
+      tx.set(docRef, newTask);
+      if (docRef === undefined) throw 'failed to add';
+      if (lastTaskID !== '' && docRef !== undefined) {
+        updateTaskTx(tx, userID, lastTaskID, { nextID: docRef.id });
+      }
+    });
   } catch (e) {
     console.error('Error adding document: ', e);
   }
@@ -113,11 +104,21 @@ export const updateTaskTx = (
 };
 
 // タスク削除
-export const deleteTask = (userID: string, taskID: string) => {
+export const deleteTask = async (
+  userID: string,
+  taskID: string,
+  task: taskType,
+) => {
   try {
-    const userRef = doc(db, 'users', userID);
-    const taskRef = doc(userRef, 'tasks', taskID);
-    deleteDoc(taskRef);
+    await runTransaction(db, async (tx) => {
+      if (task.prevID !== '')
+        updateTaskTx(tx, userID, task.prevID, { nextID: task.nextID });
+      if (task.nextID !== '')
+        updateTaskTx(tx, userID, task.nextID, { prevID: task.prevID });
+      const userRef = doc(db, 'users', userID);
+      const taskRef = doc(userRef, 'tasks', taskID);
+      tx.delete(taskRef);
+    });
   } catch (e) {
     console.error('Error deleting document: ', e);
   }

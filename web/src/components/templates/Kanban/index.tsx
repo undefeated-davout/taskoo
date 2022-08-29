@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-import HandymanIcon from '@mui/icons-material/Handyman';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
 import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
-import KanbanToolDialog from 'components/organisms/tasks/KanbanToolDialog';
 
 import { kanbanStatusType } from 'types/kanban';
 
@@ -21,16 +21,25 @@ const kanbanStatuses: kanbanStatusType[] = [
 ];
 
 const Kanban = (props: KanbanProps) => {
-  const [isOpenToolDialog, setIsOpenToolDialog] = useState(false);
   const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
 
   return (
     <>
       <Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button onClick={() => setIsOpenToolDialog(true)}>
-            <HandymanIcon />
-          </Button>
+          <FormControlLabel
+            control={
+              <Switch
+                name="displayDeleteButton"
+                color="success"
+                checked={displayDeleteButton}
+                onChange={(event) =>
+                  setDisplayDeleteButton(event.target.checked)
+                }
+              />
+            }
+            label={<DeleteOutlineOutlinedIcon sx={{ mt: 0.6 }} />}
+          />
         </Box>
 
         <Grid container spacing={2}>
@@ -44,15 +53,6 @@ const Kanban = (props: KanbanProps) => {
           ))}
         </Grid>
       </Box>
-
-      <KanbanToolDialog
-        displayDeleteButton={displayDeleteButton}
-        isOpen={isOpenToolDialog}
-        onClose={({ displayDeleteButton }) => {
-          setDisplayDeleteButton(displayDeleteButton);
-          setIsOpenToolDialog(false);
-        }}
-      />
     </>
   );
 };
