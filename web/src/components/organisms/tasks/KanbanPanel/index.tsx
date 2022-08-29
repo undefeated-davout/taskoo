@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useDrop } from 'react-dnd';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -9,23 +9,36 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
+import { UtilContext } from 'pages/_app';
+
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
 import TaskList from 'components/organisms/tasks/TaskList';
 
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
+import { getTasks } from 'lib/api/task';
 import { lastTaskID } from 'lib/models/task';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
-  tasks: taskType[];
   displayDeleteButton?: boolean;
 };
 
 const KanbanPanel = (props: KanbanPanelProps) => {
+  const { user } = useContext(UtilContext);
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
+  const [tasks, setTasks] = useState<taskType[] | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = getTasks(user!.uid, setTasks, {
+      statusID: props.kanbanStatus.id,
+    });
+    return () => unsubscribe();
+  }, [user]);
+
+  if (tasks === null) return <></>;
 
   // // --- ドロップ設定 ---
   // const [, drop] = useDrop(() => ({
@@ -68,7 +81,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <Box sx={{ mt: 2 }} />
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
-            lastTaskID={lastTaskID(props.tasks)}
+            lastTaskID={lastTaskID(tasks)}
             isMini={true}
             onBlur={() => setIsOpenAddForm(false)}
           />
@@ -79,7 +92,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       <TaskList
         isMini={true}
         displayDeleteButton={props.displayDeleteButton}
-        tasks={props.tasks}
+        tasks={tasks}
       />
     </Card>
   );

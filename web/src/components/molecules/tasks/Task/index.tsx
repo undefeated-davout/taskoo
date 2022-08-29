@@ -67,7 +67,6 @@ const Task = (props: TaskProps) => {
       nextID: props.task.nextID,
     }),
   }));
-
   drag(drop(ref));
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {

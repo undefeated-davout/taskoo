@@ -1,20 +1,14 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import HandymanIcon from '@mui/icons-material/Handyman';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { UtilContext } from 'pages/_app';
-
 import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
 import KanbanToolDialog from 'components/organisms/tasks/KanbanToolDialog';
 
 import { kanbanStatusType } from 'types/kanban';
-import { taskType } from 'types/task';
-
-import { getTasks } from 'lib/api/task';
-import { replaceStatusID } from 'lib/models/task';
 
 type KanbanProps = {};
 
@@ -27,26 +21,8 @@ const kanbanStatuses: kanbanStatusType[] = [
 ];
 
 const Kanban = (props: KanbanProps) => {
-  const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[] | null>(null);
   const [isOpenToolDialog, setIsOpenToolDialog] = useState(false);
   const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks, {});
-    return () => unsubscribe();
-  }, [user]);
-
-  if (tasks === null) return <></>;
-
-  const kanbanStatusTaskDict = tasks.reduce(
-    (dict: { [type: string]: taskType[] }, task) => {
-      const statusID = replaceStatusID(task.isDone, task.statusID);
-      dict[statusID] ? dict[statusID].push(task) : (dict[statusID] = [task]);
-      return dict;
-    },
-    {},
-  );
 
   return (
     <>
@@ -62,7 +38,6 @@ const Kanban = (props: KanbanProps) => {
             <Grid key={kanbanStatus.id}>
               <KanbanPanel
                 kanbanStatus={kanbanStatus}
-                tasks={kanbanStatusTaskDict[kanbanStatus.id] || []}
                 displayDeleteButton={displayDeleteButton}
               />
             </Grid>
