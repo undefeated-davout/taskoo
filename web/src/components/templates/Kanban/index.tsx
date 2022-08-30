@@ -40,7 +40,6 @@ const Kanban = (props: KanbanProps) => {
     const unsubscribe = getTasks(user!.uid, setTasks, {});
     return () => unsubscribe();
   }, [user]);
-
   useEffect(() => {
     const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
     return () => unsubscribe();
@@ -57,9 +56,27 @@ const Kanban = (props: KanbanProps) => {
       },
       {},
     );
+    let sortedStatusIDTasks: { [statusID: string]: taskType[] } = {};
+    for (const statusID in statusIDTasks) {
+      const tasks = statusIDTasks[statusID];
+      if (taskOrder === null || taskOrder.orderDict[statusID] === undefined) {
+        sortedStatusIDTasks[statusID] = tasks;
+        continue;
+      }
+      const orders = taskOrder.orderDict[statusID].split(',');
+      const taskIDTaskDict = tasks.reduce(
+        (dict: { [key: string]: taskType }, task) => {
+          dict[task.id] = task;
+          return dict;
+        },
+        {},
+      );
+      const sortedTasks = orders.map((taskID) => taskIDTaskDict[taskID]);
+      sortedStatusIDTasks[statusID] = sortedTasks;
+    }
     setKanbanTask({
       taskOrderID: taskOrder?.id ?? '',
-      statusIDTasks: statusIDTasks,
+      statusIDTasks: sortedStatusIDTasks,
     });
   }, [tasks, taskOrder, setKanbanTask]);
 
