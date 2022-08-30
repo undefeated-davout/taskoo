@@ -17,9 +17,6 @@ export const createUser = defaultFunctions.auth
     let result = 'error';
     let message = 'function failed';
 
-    // // CustomClaimsをセット
-    // admin.auth().setCustomUserClaims(user.uid, {});
-
     const mainFunc = async (user: admin.auth.UserRecord) => {
       await db.collection('users').doc(user.uid).set({
         createdAt: firestore.FieldValue.serverTimestamp(),
