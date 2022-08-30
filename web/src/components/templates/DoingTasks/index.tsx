@@ -17,6 +17,7 @@ import { taskOrderType } from 'types/task_order';
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { sortStatusIDTasks } from 'lib/models/task';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 // import { sortTasks } from 'lib/models/task';
@@ -34,7 +35,6 @@ const DoingTasks = (props: DoingTasksProps) => {
     const unsubscribe = getTasks(user!.uid, setTasks, {});
     return () => unsubscribe();
   }, [user]);
-
   useEffect(() => {
     const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
     return () => unsubscribe();
@@ -42,16 +42,10 @@ const DoingTasks = (props: DoingTasksProps) => {
 
   useEffect(() => {
     if (!tasks) return;
-    const statusIDTasks = tasks.reduce(
-      (dict: { [statusID: string]: taskType[] }, task) => {
-        dict[task.id] ? dict[task.id].push(task) : (dict[task.id] = [task]);
-        return dict;
-      },
-      {},
-    );
+    const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);
     setKanbanTask({
       taskOrderID: taskOrder?.id ?? '',
-      statusIDTasks: statusIDTasks,
+      statusIDTasks: sortedStatusIDTasks,
     });
   }, [tasks, taskOrder, setKanbanTask]);
 

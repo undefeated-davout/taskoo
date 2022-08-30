@@ -17,6 +17,7 @@ import { taskOrderType } from 'types/task_order';
 
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
+import { sortStatusIDTasks } from 'lib/models/task';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type KanbanProps = {};
@@ -47,33 +48,7 @@ const Kanban = (props: KanbanProps) => {
 
   useEffect(() => {
     if (!tasks) return;
-    const statusIDTasks = tasks.reduce(
-      (dict: { [statusID: string]: taskType[] }, task) => {
-        dict[task.statusID]
-          ? dict[task.statusID].push(task)
-          : (dict[task.statusID] = [task]);
-        return dict;
-      },
-      {},
-    );
-    let sortedStatusIDTasks: { [statusID: string]: taskType[] } = {};
-    for (const statusID in statusIDTasks) {
-      const tasks = statusIDTasks[statusID];
-      if (taskOrder === null || taskOrder.orderDict[statusID] === undefined) {
-        sortedStatusIDTasks[statusID] = tasks;
-        continue;
-      }
-      const orders = taskOrder.orderDict[statusID].split(',');
-      const taskIDTaskDict = tasks.reduce(
-        (dict: { [key: string]: taskType }, task) => {
-          dict[task.id] = task;
-          return dict;
-        },
-        {},
-      );
-      const sortedTasks = orders.map((taskID) => taskIDTaskDict[taskID]);
-      sortedStatusIDTasks[statusID] = sortedTasks;
-    }
+    const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);
     setKanbanTask({
       taskOrderID: taskOrder?.id ?? '',
       statusIDTasks: sortedStatusIDTasks,
