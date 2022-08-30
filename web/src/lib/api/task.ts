@@ -71,17 +71,20 @@ export const addTaskWithOrder = (
     const taskRef = addTask(userID, newTask);
     if (taskRef === undefined) return;
 
+    // statusIDごとのtaskIDリスト作成
     let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
     for (const statusID in statusIDTasks) {
       let taskIDs = statusIDTasks[statusID].map((task) => task.id);
       newStatusIDTaskIDs[statusID] = taskIDs;
     }
 
+    // INSERTしたtaskIDを追加上記リストに追加
     newStatusIDTaskIDs[newTask.statusID]
       ? newStatusIDTaskIDs[newTask.statusID].push(taskRef.id)
       : (newStatusIDTaskIDs[newTask.statusID] = [taskRef.id]);
 
     let taskOrder: updateTaskOrderType = { orderDict: {} };
+    // 書き込み用のorderDictを作成
     for (const statusID in newStatusIDTaskIDs) {
       taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
     }
@@ -125,17 +128,34 @@ export const deleteTaskWithOrder = (
   userID: string,
   task: taskType,
   taskOrderID: string,
-  tasks: taskType[],
+  statusIDTasks: statusIDTasksType,
 ) => {
   try {
     deleteTask(userID, task.id);
-    const taskIDs = tasks.map((task) => task.id).filter((id) => id !== task.id);
-    const orders = taskIDs.join(',');
-    if (orders === '') {
+
+    if (Object.keys(statusIDTasks).length === 0) {
       deleteTaskOrder(userID, taskOrderID);
     } else {
+      // statusIDごとのtaskIDリスト作成
+      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+      for (const statusID in statusIDTasks) {
+        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+        newStatusIDTaskIDs[statusID] = taskIDs;
+      }
+
+      // DELETEしたtaskIDを追加上記リストから除去
+      if (newStatusIDTaskIDs[task.statusID]) {
+        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
+          task.statusID
+        ].filter((taskID) => task.id !== taskID);
+      }
+
       let taskOrder: updateTaskOrderType = { orderDict: {} };
-      taskOrder['orderDict'][task.statusID] = orders;
+      // 書き込み用のorderDictを作成
+      for (const statusID in newStatusIDTaskIDs) {
+        taskOrder['orderDict'][statusID] =
+          newStatusIDTaskIDs[statusID].join(',');
+      }
       updateTaskOrder(userID, taskOrderID, taskOrder);
     }
   } catch (e) {
