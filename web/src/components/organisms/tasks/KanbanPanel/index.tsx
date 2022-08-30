@@ -20,6 +20,7 @@ import { taskOrderType } from 'types/task_order';
 
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
+import { sortTasks } from 'lib/models/task';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
@@ -32,6 +33,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
+  const [sortedTasks, setSortedTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {
@@ -41,11 +43,20 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   }, [user, props.kanbanStatus.id]);
 
   useEffect(() => {
-    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    const unsubscribe = getTaskOrder(
+      user!.uid,
+      props.kanbanStatus.id,
+      setTaskOrder,
+    );
     return () => unsubscribe();
   }, [user]);
 
-  if (tasks === null) return <></>;
+  useEffect(() => {
+    if (!tasks) return;
+    setSortedTasks(sortTasks(tasks, taskOrder));
+  }, [tasks, taskOrder]);
+
+  if (sortedTasks === null) return <></>;
 
   // // --- ドロップ設定 ---
   // const [, drop] = useDrop(() => ({
@@ -88,7 +99,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <Box sx={{ mt: 2 }} />
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
-            tasks={tasks}
+            tasks={sortedTasks}
             taskOrder={taskOrder}
             isMini={true}
             onBlur={() => setIsOpenAddForm(false)}
@@ -100,7 +111,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       <TaskList
         isMini={true}
         displayDeleteButton={props.displayDeleteButton}
-        tasks={tasks}
+        tasks={sortedTasks}
       />
     </Card>
   );

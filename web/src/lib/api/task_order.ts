@@ -2,8 +2,10 @@ import {
   collection,
   deleteDoc,
   doc,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
@@ -21,11 +23,13 @@ import { createStruct, updateStruct } from './common';
 // タスクソート順情報1件取得
 export const getTaskOrder = (
   userID: string,
+  statusID: string,
   setTaskOrder: Dispatch<SetStateAction<taskOrderType | null>>,
 ) => {
   const taskOrderColloctionRef = collection(db, 'users', userID, 'task_orders');
+  const q = query(taskOrderColloctionRef, where('statusID', '==', statusID));
 
-  const unsubscribe = onSnapshot(taskOrderColloctionRef, (docs) => {
+  const unsubscribe = onSnapshot(q, (docs) => {
     setTaskOrder(null);
     docs.forEach((doc) => {
       let taskOrderDoc = doc.data() as Omit<taskOrderType, 'id'>;

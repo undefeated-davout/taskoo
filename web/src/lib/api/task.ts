@@ -12,10 +12,12 @@ import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
 import { addTaskType, taskType, updateTaskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
 
 import { createStruct, updateStruct } from './common';
+import { addTaskOrder, updateTaskOrder } from './task_order';
 
 // タスク一覧取得
 export const getTasks = (
@@ -50,7 +52,34 @@ export const getTasks = (
 export const addTask = (userID: string, task: addTaskType) => {
   try {
     const taskColloctionRef = collection(db, 'users', userID, 'tasks');
-    setDoc(doc(taskColloctionRef), createStruct(task));
+    const taskRef = doc(taskColloctionRef);
+    setDoc(taskRef, createStruct(task));
+    return taskRef;
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
+
+export const addTaskWithOrder = (
+  userID: string,
+  newTask: addTaskType,
+  tasks: taskType[],
+  taskOrder: taskOrderType | null,
+) => {
+  try {
+    const taskRef = addTask(userID, newTask);
+    if (taskRef === undefined) return;
+    const taskIDs = tasks.map((task) => task.id);
+    taskIDs.push(taskRef.id);
+    const order = taskIDs.join(',');
+    if (taskOrder) {
+      updateTaskOrder(userID, taskOrder.id, {
+        statusID: newTask.statusID,
+        order: order,
+      });
+    } else {
+      addTaskOrder(userID, { statusID: newTask.statusID, order: order });
+    }
   } catch (e) {
     console.error('Error adding document: ', e);
   }

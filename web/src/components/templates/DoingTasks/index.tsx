@@ -16,6 +16,7 @@ import { taskOrderType } from 'types/task_order';
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { sortTasks } from 'lib/models/task';
 
 type DoingTasksProps = {};
 
@@ -25,6 +26,7 @@ const DoingTasks = (props: DoingTasksProps) => {
   const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
+  const [sortedTasks, setSortedTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {
@@ -34,11 +36,20 @@ const DoingTasks = (props: DoingTasksProps) => {
   }, [user]);
 
   useEffect(() => {
-    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    const unsubscribe = getTaskOrder(
+      user!.uid,
+      kanbanStatusConst.doing,
+      setTaskOrder,
+    );
     return () => unsubscribe();
   }, [user]);
 
-  if (tasks === null) return <></>;
+  useEffect(() => {
+    if (!tasks) return;
+    setSortedTasks(sortTasks(tasks, taskOrder));
+  }, [tasks, taskOrder]);
+
+  if (sortedTasks === null) return <></>;
 
   return (
     <HorizontalCenterContainerBox>
@@ -54,11 +65,11 @@ const DoingTasks = (props: DoingTasksProps) => {
         <Box sx={{ mt: 1 }} />
         <AddTaskForm
           kanbanStatusID={kanbanStatusConst.doing}
-          tasks={tasks}
+          tasks={sortedTasks}
           taskOrder={taskOrder}
         />
-        <Box sx={{ mt: tasks.length === 0 ? 1 : 3 }} />
-        <TaskList tasks={tasks} />
+        <Box sx={{ mt: sortedTasks.length === 0 ? 1 : 3 }} />
+        <TaskList tasks={sortedTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );
