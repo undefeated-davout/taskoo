@@ -33,20 +33,20 @@ jobs:
           node-version: 16.x
           check-latest: true
 
+      - name: install yarn
+        run: npm install -g yarn
+
       - name: get node_modules cache
         uses: actions/cache@v3
         with:
           path: |
             functions/node_modules
           key: ${{ runner.os }}-functions-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-
-      - name: install yarn
-        run: npm install -g yarn
-
-      # Cloud Functionのビルド
       - name: yarn install
         run: yarn --frozen-lockfile --prefer-offline
         working-directory: ./functions
+
+      # Cloud Functionのビルド
       - name: build
         run: yarn build
         working-directory: ./functions

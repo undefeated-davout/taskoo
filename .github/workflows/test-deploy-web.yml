@@ -37,25 +37,15 @@ jobs:
           node-version: 16.x
           check-latest: true
 
+      - name: install yarn
+        run: npm install -g yarn
+
       - name: get node_modules cache
         uses: actions/cache@v3
         with:
           path: |
             web/node_modules
           key: ${{ runner.os }}-nextjs-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
-
-      - name: get build cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/web/.next/cache
-          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}-
-
-      - name: install yarn
-        run: npm install -g yarn
       - name: yarn install
         run: yarn --frozen-lockfile --prefer-offline
         working-directory: ./web
@@ -70,6 +60,17 @@ jobs:
       - name: test
         run: yarn test
         working-directory: ./web
+
+      # ビルド
+      - name: get build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/web/.next/cache
+          key: ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-build-${{ hashFiles('**/yarn.lock') }}-
       - name: build
         run: yarn build
         working-directory: ./web
