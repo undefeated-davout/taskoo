@@ -86,7 +86,7 @@ const Task = (props: TaskProps) => {
       user!.uid,
       props.task,
       kanbanTask.taskOrderID,
-      kanbanTask.statusIDTasks[props.task.statusID] ?? [],
+      kanbanTask.statusIDTasks,
     );
   };
 

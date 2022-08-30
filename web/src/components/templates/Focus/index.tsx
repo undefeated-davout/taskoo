@@ -29,6 +29,7 @@ const Focus = (props: FocusProps) => {
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
 
+  useEffect(() => setKanbanTask(null), []);
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, { isDone: false });
     return () => unsubscribe();
@@ -47,7 +48,7 @@ const Focus = (props: FocusProps) => {
     });
   }, [tasks, taskOrder, setKanbanTask]);
 
-  if (kanbanTask === null) return <></>;
+  if (tasks === null || kanbanTask === null) return <></>;
 
   const sortedTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
 

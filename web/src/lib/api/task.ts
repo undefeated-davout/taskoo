@@ -133,31 +133,26 @@ export const deleteTaskWithOrder = (
   try {
     deleteTask(userID, task.id);
 
-    if (Object.keys(statusIDTasks).length === 0) {
-      deleteTaskOrder(userID, taskOrderID);
-    } else {
-      // statusIDごとのtaskIDリスト作成
-      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-      for (const statusID in statusIDTasks) {
-        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-        newStatusIDTaskIDs[statusID] = taskIDs;
-      }
-
-      // DELETEしたtaskIDを追加上記リストから除去
-      if (newStatusIDTaskIDs[task.statusID]) {
-        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
-          task.statusID
-        ].filter((taskID) => task.id !== taskID);
-      }
-
-      let taskOrder: updateTaskOrderType = { orderDict: {} };
-      // 書き込み用のorderDictを作成
-      for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] =
-          newStatusIDTaskIDs[statusID].join(',');
-      }
-      updateTaskOrder(userID, taskOrderID, taskOrder);
+    // statusIDごとのtaskIDリスト作成
+    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+    for (const statusID in statusIDTasks) {
+      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+      newStatusIDTaskIDs[statusID] = taskIDs;
     }
+
+    // DELETEしたtaskIDを追加上記リストから除去
+    if (newStatusIDTaskIDs[task.statusID]) {
+      newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
+        task.statusID
+      ].filter((taskID) => task.id !== taskID);
+    }
+
+    let taskOrder: updateTaskOrderType = { orderDict: {} };
+    // 書き込み用のorderDictを作成
+    for (const statusID in newStatusIDTaskIDs) {
+      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
+    }
+    updateTaskOrder(userID, taskOrderID, taskOrder);
   } catch (e) {
     console.error('Error deleting document: ', e);
   }

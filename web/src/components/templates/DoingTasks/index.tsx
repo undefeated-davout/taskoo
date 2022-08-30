@@ -20,8 +20,6 @@ import { kanbanStatusConst } from 'lib/constants/kanban';
 import { sortStatusIDTasks } from 'lib/models/task';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
-// import { sortTasks } from 'lib/models/task';
-
 type DoingTasksProps = {};
 
 const DoingTasks = (props: DoingTasksProps) => {
@@ -31,6 +29,7 @@ const DoingTasks = (props: DoingTasksProps) => {
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
 
+  useEffect(() => setKanbanTask(null), []);
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {});
     return () => unsubscribe();
@@ -49,7 +48,7 @@ const DoingTasks = (props: DoingTasksProps) => {
     });
   }, [tasks, taskOrder, setKanbanTask]);
 
-  if (kanbanTask === null) return <></>;
+  if (tasks === null || kanbanTask === null) return <></>;
 
   const sortedTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
 
