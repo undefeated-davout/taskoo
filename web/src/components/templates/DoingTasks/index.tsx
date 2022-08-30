@@ -66,10 +66,10 @@ const DoingTasks = (props: DoingTasksProps) => {
         <AddTaskForm
           kanbanStatusID={kanbanStatusConst.doing}
           tasks={sortedTasks}
-          taskOrder={taskOrder}
+          taskOrderID={taskOrder?.id ?? ''}
         />
         <Box sx={{ mt: sortedTasks.length === 0 ? 1 : 3 }} />
-        <TaskList tasks={sortedTasks} />
+        <TaskList tasks={sortedTasks} taskOrderID={taskOrder?.id ?? ''} />
       </Card>
     </HorizontalCenterContainerBox>
   );

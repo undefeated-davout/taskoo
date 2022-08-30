@@ -10,10 +10,12 @@ import { UtilContext } from 'pages/_app';
 
 import { taskType, updateTaskType } from 'types/task';
 
-import { deleteTask, updateTask } from 'lib/api/task';
+import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
 
 type EditTaskFormProps = {
   task: taskType;
+  tasks: taskType[];
+  taskOrderID: string;
   isOpen: boolean;
   onClose: VoidFunction;
 };
@@ -43,7 +45,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleDelete = () => {
-    deleteTask(user!.uid, props.task.id);
+    deleteTaskWithOrder(user!.uid, props.task, props.taskOrderID, props.tasks);
     props.onClose();
   };
 

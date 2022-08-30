@@ -17,7 +17,7 @@ import { taskOrderType } from 'types/task_order';
 import { db } from 'lib/infrastructure/firebase';
 
 import { createStruct, updateStruct } from './common';
-import { addTaskOrder, updateTaskOrder } from './task_order';
+import { addTaskOrder, deleteTaskOrder, updateTaskOrder } from './task_order';
 
 // タスク一覧取得
 export const getTasks = (
@@ -49,7 +49,7 @@ export const getTasks = (
 };
 
 // タスクソート順追加
-export const addTask = (userID: string, task: addTaskType) => {
+const addTask = (userID: string, task: addTaskType) => {
   try {
     const taskColloctionRef = collection(db, 'users', userID, 'tasks');
     const taskRef = doc(taskColloctionRef);
@@ -63,8 +63,8 @@ export const addTask = (userID: string, task: addTaskType) => {
 export const addTaskWithOrder = (
   userID: string,
   newTask: addTaskType,
+  taskOrderID: string,
   tasks: taskType[],
-  taskOrder: taskOrderType | null,
 ) => {
   try {
     const taskRef = addTask(userID, newTask);
@@ -72,13 +72,13 @@ export const addTaskWithOrder = (
     const taskIDs = tasks.map((task) => task.id);
     taskIDs.push(taskRef.id);
     const orders = taskIDs.join(',');
-    if (taskOrder) {
-      updateTaskOrder(userID, taskOrder.id, {
+    if (taskOrderID === '') {
+      addTaskOrder(userID, { statusID: newTask.statusID, orders: orders });
+    } else {
+      updateTaskOrder(userID, taskOrderID, {
         statusID: newTask.statusID,
         orders: orders,
       });
-    } else {
-      addTaskOrder(userID, { statusID: newTask.statusID, orders: orders });
     }
   } catch (e) {
     console.error('Error adding document: ', e);
@@ -101,11 +101,34 @@ export const updateTask = (
 };
 
 // タスク削除
-export const deleteTask = (userID: string, taskID: string) => {
+const deleteTask = (userID: string, taskID: string) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskRef = doc(userRef, 'tasks', taskID);
     deleteDoc(taskRef);
+  } catch (e) {
+    console.error('Error deleting document: ', e);
+  }
+};
+
+export const deleteTaskWithOrder = (
+  userID: string,
+  task: taskType,
+  taskOrderID: string,
+  tasks: taskType[],
+) => {
+  try {
+    deleteTask(userID, task.id);
+    const taskIDs = tasks.map((task) => task.id).filter((id) => id !== task.id);
+    const orders = taskIDs.join(',');
+    if (orders === '') {
+      deleteTaskOrder(userID, taskOrderID);
+    } else {
+      updateTaskOrder(userID, taskOrderID, {
+        statusID: task.statusID,
+        orders: orders,
+      });
+    }
   } catch (e) {
     console.error('Error deleting document: ', e);
   }

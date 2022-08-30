@@ -74,10 +74,15 @@ const Focus = (props: FocusProps) => {
           </Typography>
         )}
 
-        {sortedTasks.length > 0 && (
+        {sortedTasks.length > 0 && taskOrder && (
           <>
             <Box sx={{ mt: 2 }}></Box>
-            <Task isMini={false} task={sortedTasks[0]} />
+            <Task
+              isMini={false}
+              task={sortedTasks[0]}
+              tasks={sortedTasks}
+              taskOrderID={taskOrder.id}
+            />
           </>
         )}
       </Card>

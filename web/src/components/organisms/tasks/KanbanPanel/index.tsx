@@ -49,7 +49,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       setTaskOrder,
     );
     return () => unsubscribe();
-  }, [user]);
+  }, [user, props.kanbanStatus.id]);
 
   useEffect(() => {
     if (!tasks) return;
@@ -100,7 +100,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
           <AddTaskForm
             kanbanStatusID={props.kanbanStatus.id}
             tasks={sortedTasks}
-            taskOrder={taskOrder}
+            taskOrderID={taskOrder?.id ?? ''}
             isMini={true}
             onBlur={() => setIsOpenAddForm(false)}
           />
@@ -112,6 +112,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
         isMini={true}
         displayDeleteButton={props.displayDeleteButton}
         tasks={sortedTasks}
+        taskOrderID={taskOrder?.id ?? ''}
       />
     </Card>
   );

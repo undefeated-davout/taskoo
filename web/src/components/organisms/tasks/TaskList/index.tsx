@@ -9,6 +9,7 @@ type TaskListProps = {
   isMini?: boolean;
   displayDeleteButton?: boolean;
   tasks: taskType[];
+  taskOrderID: string;
 };
 
 const TaskList = (props: TaskListProps) => {
@@ -25,6 +26,8 @@ const TaskList = (props: TaskListProps) => {
             displayDeleteButton={props.displayDeleteButton}
             isDraggable
             task={task}
+            tasks={props.tasks}
+            taskOrderID={props.taskOrderID}
           />
         </ListItem>
       ))}

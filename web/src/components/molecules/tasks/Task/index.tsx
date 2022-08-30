@@ -16,7 +16,7 @@ import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
 import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
-import { deleteTask, updateTask } from 'lib/api/task';
+import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { replaceStatusID } from 'lib/models/task';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
@@ -26,6 +26,8 @@ type TaskProps = {
   displayDeleteButton?: boolean;
   isDraggable?: boolean;
   task: taskType;
+  tasks: taskType[];
+  taskOrderID: string;
 };
 
 const Task = (props: TaskProps) => {
@@ -76,7 +78,7 @@ const Task = (props: TaskProps) => {
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    deleteTask(user!.uid, props.task.id);
+    deleteTaskWithOrder(user!.uid, props.task, props.taskOrderID, props.tasks);
   };
 
   return (
@@ -138,6 +140,8 @@ const Task = (props: TaskProps) => {
       {/* 詳細編集フォーム */}
       <EditTaskForm
         task={props.task}
+        tasks={props.tasks}
+        taskOrderID={props.taskOrderID}
         isOpen={isOpenForm}
         onClose={() => setIsOpenForm(false)}
       />
