@@ -40,8 +40,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
+            ~/.npm
             functions/node_modules
-          key: ${{ runner.os }}-functions-node_modules-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
+          key: ${{ runner.os }}-functions-${{ hashFiles(format('{0}{1}', github.workspace, '/yarn.lock')) }}
       - name: yarn install
         run: yarn --frozen-lockfile --prefer-offline
         working-directory: ./functions
