@@ -11,9 +11,12 @@ import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import Task from 'components/molecules/tasks/Task';
 
 import { taskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
 
 import { getTasks } from 'lib/api/task';
+import { getTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { sortTasks } from 'lib/models/task';
 
 type FocusProps = {};
 
@@ -22,6 +25,8 @@ const Focus = (props: FocusProps) => {
 
   const { user } = useContext(UtilContext);
   const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
+  const [sortedTasks, setSortedTasks] = useState<taskType[] | null>(null);
 
   useEffect(() => {
     const unsubscribe = getTasks(user!.uid, setTasks, {
@@ -31,7 +36,21 @@ const Focus = (props: FocusProps) => {
     return () => unsubscribe();
   }, [user]);
 
-  if (tasks === null) return <></>;
+  useEffect(() => {
+    const unsubscribe = getTaskOrder(
+      user!.uid,
+      kanbanStatusConst.doing,
+      setTaskOrder,
+    );
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    if (!tasks) return;
+    setSortedTasks(sortTasks(tasks, taskOrder));
+  }, [tasks, taskOrder]);
+
+  if (sortedTasks === null) return <></>;
 
   return (
     <CenterContainerBox>
@@ -43,7 +62,7 @@ const Focus = (props: FocusProps) => {
           backgroundColor: theme.palette.action.disabledBackground,
         }}
       >
-        {tasks.length === 0 ? (
+        {sortedTasks.length === 0 ? (
           <Typography variant="h6" sx={{ fontWeight: 100 }}>
             {'NO TASKS IN "DOING".'}
           </Typography>
@@ -51,14 +70,14 @@ const Focus = (props: FocusProps) => {
           <Typography variant="h6" sx={{ fontWeight: 100 }}>
             FOCUS ON THE TASK.
             <br />
-            REMAINING: {tasks.length}
+            REMAINING: {sortedTasks.length}
           </Typography>
         )}
 
-        {tasks.length > 0 && (
+        {sortedTasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
-            <Task isMini={false} task={tasks[0]} />
+            <Task isMini={false} task={sortedTasks[0]} />
           </>
         )}
       </Card>

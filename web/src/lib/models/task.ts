@@ -18,7 +18,6 @@ export const sortTasks = (
 ) => {
   if (tasks.length === 0 || taskOrder === null) return [];
 
-  const orders = taskOrder.order.split(',');
   const taskIDTaskDict = tasks.reduce(
     (dict: { [key: string]: taskType }, task) => {
       dict[task.id] = task;
@@ -26,6 +25,10 @@ export const sortTasks = (
     },
     {},
   );
-  const sortedTasks = orders.map((taskID, _) => taskIDTaskDict[taskID]);
+
+  const orders = taskOrder.orders.split(',');
+  const sortedTasks = orders
+    .filter((taskID, _) => taskIDTaskDict[taskID])
+    .map((taskID, _) => taskIDTaskDict[taskID]);
   return sortedTasks;
 };

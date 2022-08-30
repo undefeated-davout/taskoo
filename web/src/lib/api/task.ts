@@ -71,14 +71,14 @@ export const addTaskWithOrder = (
     if (taskRef === undefined) return;
     const taskIDs = tasks.map((task) => task.id);
     taskIDs.push(taskRef.id);
-    const order = taskIDs.join(',');
+    const orders = taskIDs.join(',');
     if (taskOrder) {
       updateTaskOrder(userID, taskOrder.id, {
         statusID: newTask.statusID,
-        order: order,
+        orders: orders,
       });
     } else {
-      addTaskOrder(userID, { statusID: newTask.statusID, order: order });
+      addTaskOrder(userID, { statusID: newTask.statusID, orders: orders });
     }
   } catch (e) {
     console.error('Error adding document: ', e);
