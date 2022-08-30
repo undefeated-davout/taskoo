@@ -1,27 +1,28 @@
 import { useContext, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import TextField from '@mui/material/TextField';
 
 import { UtilContext } from 'pages/_app';
 
-import { addTaskType, taskType } from 'types/task';
-import { taskOrderType } from 'types/task_order';
+import { addTaskType } from 'types/task';
 
 import { addTaskWithOrder } from 'lib/api/task';
-import { addTaskOrder, updateTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
-  tasks: taskType[];
-  taskOrderID: string;
   isMini?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 
 const AddTaskForm = (props: AddTaskFormProps) => {
   const { user } = useContext(UtilContext);
+  const kanbanTask = useRecoilValue(kanbanTaskState);
   const [inputValue, setInputValue] = useState('');
+
+  if (kanbanTask === null) return <></>;
 
   const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -38,7 +39,12 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
     };
 
-    addTaskWithOrder(user!.uid, newTask, props.taskOrderID, props.tasks);
+    addTaskWithOrder(
+      user!.uid,
+      newTask,
+      kanbanTask.taskOrderID,
+      kanbanTask.statusIDTasks[props.kanbanStatusID] ?? [],
+    );
     setInputValue('');
   };
 

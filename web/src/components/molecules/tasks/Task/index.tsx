@@ -1,6 +1,6 @@
 import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -20,18 +20,18 @@ import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { replaceStatusID } from 'lib/models/task';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
+import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type TaskProps = {
   isMini?: boolean;
   displayDeleteButton?: boolean;
   isDraggable?: boolean;
   task: taskType;
-  tasks: taskType[];
-  taskOrderID: string;
 };
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UtilContext);
+  const kanbanTask = useRecoilValue(kanbanTaskState);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -45,6 +45,7 @@ const Task = (props: TaskProps) => {
       if (!dropResult) return;
       setDroppedColumnNumber({
         panelID: dropResult.panelID,
+        taskID: dropResult.taskID,
       });
       let editTask: updateTaskType = {};
       const statusID = replaceStatusID(props.task.isDone, props.task.statusID);
@@ -69,16 +70,24 @@ const Task = (props: TaskProps) => {
     accept: DnDItems.Task,
     drop: () => ({
       panelID: props.task.statusID,
+      taskID: props.task.id,
     }),
   }));
   drag(drop(ref));
+
+  if (kanbanTask === null) return <></>;
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     updateTask(user!.uid, props.task.id, { isDone: event.target.checked });
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    deleteTaskWithOrder(user!.uid, props.task, props.taskOrderID, props.tasks);
+    deleteTaskWithOrder(
+      user!.uid,
+      props.task,
+      kanbanTask.taskOrderID,
+      kanbanTask.statusIDTasks[props.task.statusID] ?? [],
+    );
   };
 
   return (
@@ -140,8 +149,6 @@ const Task = (props: TaskProps) => {
       {/* 詳細編集フォーム */}
       <EditTaskForm
         task={props.task}
-        tasks={props.tasks}
-        taskOrderID={props.taskOrderID}
         isOpen={isOpenForm}
         onClose={() => setIsOpenForm(false)}
       />

@@ -12,7 +12,7 @@ import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
 import { addTaskType, taskType, updateTaskType } from 'types/task';
-import { taskOrderType } from 'types/task_order';
+import { taskOrderType, updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
 
@@ -72,13 +72,12 @@ export const addTaskWithOrder = (
     const taskIDs = tasks.map((task) => task.id);
     taskIDs.push(taskRef.id);
     const orders = taskIDs.join(',');
+    let taskOrder: updateTaskOrderType = { orderDict: {} };
+    taskOrder['orderDict'][newTask.statusID] = orders;
     if (taskOrderID === '') {
-      addTaskOrder(userID, { statusID: newTask.statusID, orders: orders });
+      addTaskOrder(userID, taskOrder);
     } else {
-      updateTaskOrder(userID, taskOrderID, {
-        statusID: newTask.statusID,
-        orders: orders,
-      });
+      updateTaskOrder(userID, taskOrderID, taskOrder);
     }
   } catch (e) {
     console.error('Error adding document: ', e);
@@ -124,10 +123,9 @@ export const deleteTaskWithOrder = (
     if (orders === '') {
       deleteTaskOrder(userID, taskOrderID);
     } else {
-      updateTaskOrder(userID, taskOrderID, {
-        statusID: task.statusID,
-        orders: orders,
-      });
+      let taskOrder: updateTaskOrderType = { orderDict: {} };
+      taskOrder['orderDict'][task.statusID] = orders;
+      updateTaskOrder(userID, taskOrderID, taskOrder);
     }
   } catch (e) {
     console.error('Error deleting document: ', e);

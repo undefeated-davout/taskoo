@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -11,18 +12,24 @@ import { UtilContext } from 'pages/_app';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
+import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type EditTaskFormProps = {
   task: taskType;
-  tasks: taskType[];
-  taskOrderID: string;
   isOpen: boolean;
   onClose: VoidFunction;
 };
 
 const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UtilContext);
+  const kanbanTask = useRecoilValue(kanbanTaskState);
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    setInputValue(props.task.title.trim());
+  }, [props.isOpen, props.task.title]);
+
+  if (kanbanTask === null) return <></>;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
@@ -45,13 +52,14 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleDelete = () => {
-    deleteTaskWithOrder(user!.uid, props.task, props.taskOrderID, props.tasks);
+    deleteTaskWithOrder(
+      user!.uid,
+      props.task,
+      kanbanTask.taskOrderID,
+      kanbanTask.statusIDTasks[props.task.statusID] ?? [],
+    );
     props.onClose();
   };
-
-  useEffect(() => {
-    setInputValue(props.task.title.trim());
-  }, [props.isOpen, props.task.title]);
 
   return (
     <div>

@@ -12,23 +12,23 @@ export const lastTaskID = (tasks: taskType[]) => {
   return tasks.length === 0 ? '' : tasks[tasks.length - 1].id;
 };
 
-export const sortTasks = (
-  tasks: taskType[],
-  taskOrder: taskOrderType | null,
-) => {
-  if (tasks.length === 0 || taskOrder === null) return [];
+// export const sortTasks = (
+//   tasks: taskType[],
+//   taskOrder: taskOrderType | null,
+// ) => {
+//   if (tasks.length === 0 || taskOrder === null) return [];
 
-  const taskIDTaskDict = tasks.reduce(
-    (dict: { [key: string]: taskType }, task) => {
-      dict[task.id] = task;
-      return dict;
-    },
-    {},
-  );
+//   const taskIDTaskDict = tasks.reduce(
+//     (dict: { [key: string]: taskType }, task) => {
+//       dict[task.id] = task;
+//       return dict;
+//     },
+//     {},
+//   );
 
-  const orders = taskOrder.orders.split(',');
-  const sortedTasks = orders
-    .filter((taskID, _) => taskIDTaskDict[taskID])
-    .map((taskID, _) => taskIDTaskDict[taskID]);
-  return sortedTasks;
-};
+//   const orders = taskOrder.orders.split(',');
+//   const sortedTasks = orders
+//     .filter((taskID, _) => taskIDTaskDict[taskID])
+//     .map((taskID, _) => taskIDTaskDict[taskID]);
+//   return sortedTasks;
+// };

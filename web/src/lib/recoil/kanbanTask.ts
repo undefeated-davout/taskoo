@@ -1,6 +1,11 @@
 import { atom } from 'recoil';
 
-export const kanbanTaskState = atom({
+import { taskType } from 'types/task';
+
+export const kanbanTaskState = atom<{
+  taskOrderID: string;
+  statusIDTasks: { [statusID: string]: taskType[] };
+} | null>({
   key: 'kanbanTask',
-  default: {},
+  default: null,
 });

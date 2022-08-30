@@ -12,4 +12,5 @@ export type DnDItems = typeof DnDItems[keyof typeof DnDItems];
 
 export type DropResult = {
   panelID: string;
+  taskID: string;
 };

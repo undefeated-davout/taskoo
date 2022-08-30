@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import Box from '@mui/material/Box';
@@ -6,9 +7,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
+import { UtilContext } from 'pages/_app';
+
 import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
+import { taskType } from 'types/task';
+import { taskOrderType } from 'types/task_order';
+
+import { getTasks } from 'lib/api/task';
+import { getTaskOrder } from 'lib/api/task_order';
+import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type KanbanProps = {};
 
@@ -21,7 +30,38 @@ const kanbanStatuses: kanbanStatusType[] = [
 ];
 
 const Kanban = (props: KanbanProps) => {
+  const { user } = useContext(UtilContext);
+  const [tasks, setTasks] = useState<taskType[] | null>(null);
+  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
+  const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
   const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = getTasks(user!.uid, setTasks, {});
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    return () => unsubscribe();
+  }, [user]);
+
+  useEffect(() => {
+    if (!tasks) return;
+    const statusIDTasks = tasks.reduce(
+      (dict: { [statusID: string]: taskType[] }, task) => {
+        dict[task.id] ? dict[task.id].push(task) : (dict[task.id] = [task]);
+        return dict;
+      },
+      {},
+    );
+    setKanbanTask({
+      taskOrderID: taskOrder?.id ?? '',
+      statusIDTasks: statusIDTasks,
+    });
+  }, [tasks, taskOrder, setKanbanTask]);
+
+  if (kanbanTask === null) return <></>;
 
   return (
     <>
@@ -47,6 +87,7 @@ const Kanban = (props: KanbanProps) => {
             <Grid key={kanbanStatus.id}>
               <KanbanPanel
                 kanbanStatus={kanbanStatus}
+                tasks={kanbanTask.statusIDTasks[kanbanStatus.id] ?? []}
                 displayDeleteButton={displayDeleteButton}
               />
             </Grid>
