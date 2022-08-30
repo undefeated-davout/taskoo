@@ -12,9 +12,10 @@ import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
 import { addTaskType, taskType, updateTaskType } from 'types/task';
-import { taskOrderType, updateTaskOrderType } from 'types/task_order';
+import { updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
+import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
 import { createStruct, updateStruct } from './common';
 import { addTaskOrder, deleteTaskOrder, updateTaskOrder } from './task_order';
@@ -64,16 +65,26 @@ export const addTaskWithOrder = (
   userID: string,
   newTask: addTaskType,
   taskOrderID: string,
-  tasks: taskType[],
+  statusIDTasks: statusIDTasksType,
 ) => {
   try {
     const taskRef = addTask(userID, newTask);
     if (taskRef === undefined) return;
-    const taskIDs = tasks.map((task) => task.id);
-    taskIDs.push(taskRef.id);
-    const orders = taskIDs.join(',');
+
+    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+    for (const statusID in statusIDTasks) {
+      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+      newStatusIDTaskIDs[statusID] = taskIDs;
+    }
+
+    newStatusIDTaskIDs[newTask.statusID]
+      ? newStatusIDTaskIDs[newTask.statusID].push(taskRef.id)
+      : (newStatusIDTaskIDs[newTask.statusID] = [taskRef.id]);
+
     let taskOrder: updateTaskOrderType = { orderDict: {} };
-    taskOrder['orderDict'][newTask.statusID] = orders;
+    for (const statusID in newStatusIDTaskIDs) {
+      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
+    }
     if (taskOrderID === '') {
       addTaskOrder(userID, taskOrder);
     } else {

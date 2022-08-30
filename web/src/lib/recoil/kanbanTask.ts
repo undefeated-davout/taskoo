@@ -2,10 +2,14 @@ import { atom } from 'recoil';
 
 import { taskType } from 'types/task';
 
-export const kanbanTaskState = atom<{
+export type statusIDTasksType = { [statusID: string]: taskType[] };
+
+type kanbanTaskStateType = {
   taskOrderID: string;
-  statusIDTasks: { [statusID: string]: taskType[] };
-} | null>({
+  statusIDTasks: statusIDTasksType;
+};
+
+export const kanbanTaskState = atom<kanbanTaskStateType | null>({
   key: 'kanbanTask',
   default: null,
 });

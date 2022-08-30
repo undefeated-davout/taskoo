@@ -43,7 +43,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       user!.uid,
       newTask,
       kanbanTask.taskOrderID,
-      kanbanTask.statusIDTasks[props.kanbanStatusID] ?? [],
+      kanbanTask.statusIDTasks,
     );
     setInputValue('');
   };

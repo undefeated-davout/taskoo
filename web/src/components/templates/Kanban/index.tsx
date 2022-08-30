@@ -50,7 +50,9 @@ const Kanban = (props: KanbanProps) => {
     if (!tasks) return;
     const statusIDTasks = tasks.reduce(
       (dict: { [statusID: string]: taskType[] }, task) => {
-        dict[task.id] ? dict[task.id].push(task) : (dict[task.id] = [task]);
+        dict[task.statusID]
+          ? dict[task.statusID].push(task)
+          : (dict[task.statusID] = [task]);
         return dict;
       },
       {},
