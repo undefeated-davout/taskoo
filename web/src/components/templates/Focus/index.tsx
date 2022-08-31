@@ -31,7 +31,7 @@ const Focus = (props: FocusProps) => {
 
   useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
-    const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
+    const tasksUnsubscribe = getTasks(user!.uid, setTasks, { isDone: false });
     const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);
     return () => {
       tasksUnsubscribe();
