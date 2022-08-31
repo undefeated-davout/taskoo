@@ -21,7 +21,7 @@ import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
-  displayDeleteButton?: boolean;
+  displayToolButton?: boolean;
 };
 
 const KanbanPanel = (props: KanbanPanelProps) => {
@@ -81,7 +81,7 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       {/* タスクリスト */}
       <TaskList
         isMini={true}
-        displayDeleteButton={props.displayDeleteButton}
+        displayToolButton={props.displayToolButton}
         tasks={props.tasks}
       />
     </Card>

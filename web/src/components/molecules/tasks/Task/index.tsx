@@ -23,7 +23,7 @@ import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type TaskProps = {
   isMini?: boolean;
-  displayDeleteButton?: boolean;
+  displayToolButton?: boolean;
   isDraggable?: boolean;
   task: taskType;
 };
@@ -107,7 +107,7 @@ const Task = (props: TaskProps) => {
           '&:hover': { cursor: 'pointer' },
         }}
       >
-        {!props.isMini && (
+        {(!props.isMini || props.displayToolButton) && (
           <BaseCheckbox
             checked={props.task.isDone}
             onChange={handleChangeCheckbox}
@@ -137,7 +137,7 @@ const Task = (props: TaskProps) => {
           </Typography>
         </Button>
 
-        {(!props.isMini || props.displayDeleteButton) && (
+        {(!props.isMini || props.displayToolButton) && (
           <CardActions sx={{ pl: 0 }}>
             <Button
               color="primary"

@@ -7,7 +7,7 @@ import { taskType } from 'types/task';
 
 type TaskListProps = {
   isMini?: boolean;
-  displayDeleteButton?: boolean;
+  displayToolButton?: boolean;
   tasks: taskType[];
 };
 
@@ -22,7 +22,7 @@ const TaskList = (props: TaskListProps) => {
         >
           <Task
             isMini={props.isMini}
-            displayDeleteButton={props.displayDeleteButton}
+            displayToolButton={props.displayToolButton}
             isDraggable
             task={task}
           />

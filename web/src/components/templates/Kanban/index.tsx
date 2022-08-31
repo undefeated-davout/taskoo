@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import ConstructionIcon from '@mui/icons-material/Construction';
 import Box from '@mui/material/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -35,7 +35,7 @@ const Kanban = (props: KanbanProps) => {
   const [tasks, setTasks] = useState<taskType[] | null>(null);
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
-  const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
+  const [displayToolButton, setDisplayToolButton] = useState(false);
 
   useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
@@ -64,15 +64,13 @@ const Kanban = (props: KanbanProps) => {
           <FormControlLabel
             control={
               <Switch
-                name="displayDeleteButton"
+                name="displayToolButton"
                 color="success"
-                checked={displayDeleteButton}
-                onChange={(event) =>
-                  setDisplayDeleteButton(event.target.checked)
-                }
+                checked={displayToolButton}
+                onChange={(event) => setDisplayToolButton(event.target.checked)}
               />
             }
-            label={<DeleteOutlineOutlinedIcon sx={{ mt: 0.6 }} />}
+            label={<ConstructionIcon sx={{ mt: 0.6 }} />}
           />
         </Box>
 
@@ -82,7 +80,7 @@ const Kanban = (props: KanbanProps) => {
               <KanbanPanel
                 kanbanStatus={kanbanStatus}
                 tasks={kanbanTask.statusIDTasks[kanbanStatus.id] ?? []}
-                displayDeleteButton={displayDeleteButton}
+                displayToolButton={displayToolButton}
               />
             </Grid>
           ))}
