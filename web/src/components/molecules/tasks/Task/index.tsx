@@ -47,17 +47,20 @@ const Task = (props: TaskProps) => {
       if (kanbanTask === null) return;
       const dropResult = monitor.getDropResult() as DropResult;
       if (!dropResult) return;
-      let editTask: updateTaskType = {};
-      if (dropResult.panelID !== props.task.statusID) {
+      let editTask: updateTaskType;
+      if (dropResult.panelID === props.task.statusID) {
+        // パネル内移動
+        editTask = {};
+      } else {
+        // パネル間移動
+        editTask = {
+          statusID: dropResult.panelID,
+          prevStatusID: props.task.statusID,
+        };
         if (dropResult.panelID === kanbanStatusConst.done) {
           editTask = { isDone: true, ...editTask };
         } else {
-          editTask = {
-            statusID: dropResult.panelID,
-            prevStatusID: props.task.prevStatusID,
-            isDone: false,
-            ...editTask,
-          };
+          editTask = { isDone: false, ...editTask };
         }
       }
       updateTaskWithOrder(

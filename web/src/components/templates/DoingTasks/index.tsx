@@ -29,7 +29,6 @@ const DoingTasks = (props: DoingTasksProps) => {
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
 
-  useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
     const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
     const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);

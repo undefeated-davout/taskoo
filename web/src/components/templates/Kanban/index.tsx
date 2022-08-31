@@ -37,7 +37,6 @@ const Kanban = (props: KanbanProps) => {
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
   const [displayToolButton, setDisplayToolButton] = useState(false);
 
-  useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
     const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
     const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);

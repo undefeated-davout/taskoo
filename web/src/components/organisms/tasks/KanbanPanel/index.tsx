@@ -29,17 +29,17 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
   const kanbanTask = useRecoilValue(kanbanTaskState);
 
-  // // --- ドロップ設定 ---
-  // const [, drop] = useDrop(() => ({
-  //   accept: DnDItems.Task,
-  //   drop: () => ({ panelID: props.kanbanStatus.id }),
-  // }));
+  // --- ドロップ設定 ---
+  const [, drop] = useDrop(() => ({
+    accept: DnDItems.Task,
+    drop: () => ({ panelID: props.kanbanStatus.id }),
+  }));
 
   if (kanbanTask === null) return <></>;
 
   return (
     <Card
-      // ref={drop}
+      ref={drop}
       sx={{
         width: 280,
         minHeight: 86,
