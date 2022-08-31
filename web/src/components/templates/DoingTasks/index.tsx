@@ -52,6 +52,9 @@ const DoingTasks = (props: DoingTasksProps) => {
 
   const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
   const doneTasks = kanbanTask.statusIDTasks[kanbanStatusConst.done] ?? [];
+  const doneInDoingTasks = doneTasks.filter(
+    (task) => task.prevStatusID === kanbanStatusConst.doing,
+  );
 
   return (
     <HorizontalCenterContainerBox>
@@ -68,8 +71,8 @@ const DoingTasks = (props: DoingTasksProps) => {
         <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
         <Box sx={{ mt: doingTasks.length === 0 ? 1 : 3 }} />
         <TaskList tasks={doingTasks} />
-        <Box sx={{ mt: doneTasks.length === 0 ? 1 : 3 }} />
-        <TaskList tasks={doneTasks} />
+        <Box sx={{ mt: doneInDoingTasks.length === 0 ? 1 : 3 }} />
+        <TaskList tasks={doneInDoingTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );
