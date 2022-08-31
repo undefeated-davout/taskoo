@@ -50,7 +50,8 @@ const DoingTasks = (props: DoingTasksProps) => {
 
   if (tasks === null || kanbanTask === null) return <></>;
 
-  const sortedTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
+  const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
+  const doneTasks = kanbanTask.statusIDTasks[kanbanStatusConst.done] ?? [];
 
   return (
     <HorizontalCenterContainerBox>
@@ -65,8 +66,10 @@ const DoingTasks = (props: DoingTasksProps) => {
       >
         <Box sx={{ mt: 1 }} />
         <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
-        <Box sx={{ mt: sortedTasks.length === 0 ? 1 : 3 }} />
-        <TaskList tasks={sortedTasks} />
+        <Box sx={{ mt: doingTasks.length === 0 ? 1 : 3 }} />
+        <TaskList tasks={doingTasks} />
+        <Box sx={{ mt: doneTasks.length === 0 ? 1 : 3 }} />
+        <TaskList tasks={doneTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );

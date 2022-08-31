@@ -18,7 +18,7 @@ import { db } from 'lib/infrastructure/firebase';
 import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
 import { createStruct, updateStruct } from './common';
-import { addTaskOrder, deleteTaskOrder, updateTaskOrder } from './task_order';
+import { addTaskOrder, updateTaskOrder } from './task_order';
 
 // タスク一覧取得
 export const getTasks = (

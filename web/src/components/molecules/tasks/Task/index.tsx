@@ -74,7 +74,14 @@ const Task = (props: TaskProps) => {
   drag(drop(ref));
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
-    updateTask(user!.uid, props.task.id, { isDone: event.target.checked });
+    let updatedTask: updateTaskType = { isDone: event.target.checked };
+    if (event.target.checked) {
+      updatedTask.statusID = kanbanStatusConst.done;
+      updatedTask.prevStatusID = props.task.statusID;
+    } else {
+      updatedTask.statusID = props.task.prevStatusID;
+    }
+    updateTask(user!.uid, props.task.id, updatedTask);
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {

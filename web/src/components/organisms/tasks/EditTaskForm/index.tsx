@@ -41,9 +41,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   const handleClose = () => {
     if (inputValue.trim() === '') return;
 
-    const editTask: updateTaskType = {
-      title: inputValue.trim(),
-    };
+    const editTask: updateTaskType = { title: inputValue.trim() };
     updateTask(user!.uid, props.task.id, editTask);
 
     props.onClose();
