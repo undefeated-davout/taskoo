@@ -16,7 +16,11 @@ import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
 import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
-import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
+import {
+  deleteTaskWithOrder,
+  updateTask,
+  updateTaskWithOrder,
+} from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
@@ -74,14 +78,22 @@ const Task = (props: TaskProps) => {
   drag(drop(ref));
 
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+    if (kanbanTask === null) return;
     let updatedTask: updateTaskType = { isDone: event.target.checked };
     if (event.target.checked) {
       updatedTask.statusID = kanbanStatusConst.done;
       updatedTask.prevStatusID = props.task.statusID;
     } else {
       updatedTask.statusID = props.task.prevStatusID;
+      updatedTask.prevStatusID = props.task.statusID;
     }
-    updateTask(user!.uid, props.task.id, updatedTask);
+    updateTaskWithOrder(
+      user!.uid,
+      props.task.id,
+      updatedTask,
+      kanbanTask?.taskOrderID,
+      kanbanTask?.statusIDTasks,
+    );
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {

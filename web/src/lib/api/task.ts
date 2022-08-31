@@ -113,6 +113,54 @@ export const updateTask = (
   }
 };
 
+export const updateTaskWithOrder = (
+  userID: string,
+  taskID: string,
+  task: updateTaskType,
+  taskOrderID: string,
+  statusIDTasks: statusIDTasksType,
+) => {
+  try {
+    const userRef = doc(db, 'users', userID);
+    const taskRef = doc(userRef, 'tasks', taskID);
+    updateDoc(taskRef, updateStruct(task));
+
+    // --- taskOrder ---
+    // statusIDが不変なら終了
+    if (task.statusID === undefined || task.prevStatusID === undefined) return;
+    // statusIDごとのtaskIDリスト作成
+    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+    for (const statusID in statusIDTasks) {
+      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+      newStatusIDTaskIDs[statusID] = taskIDs;
+    }
+
+    // 移動先のstatusIDにtaskIDを追加
+    newStatusIDTaskIDs[task.statusID]
+      ? newStatusIDTaskIDs[task.statusID].push(taskRef.id)
+      : (newStatusIDTaskIDs[task.statusID] = [taskRef.id]);
+    // 移動元のstatusIDからtaskIDを除去
+    if (newStatusIDTaskIDs[task.prevStatusID]) {
+      newStatusIDTaskIDs[task.prevStatusID] = newStatusIDTaskIDs[
+        task.prevStatusID
+      ].filter((id) => id !== taskID);
+    }
+
+    let taskOrder: updateTaskOrderType = { orderDict: {} };
+    // 書き込み用のorderDictを作成
+    for (const statusID in newStatusIDTaskIDs) {
+      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
+    }
+    if (taskOrderID === '') {
+      addTaskOrder(userID, taskOrder);
+    } else {
+      updateTaskOrder(userID, taskOrderID, taskOrder);
+    }
+  } catch (e) {
+    console.error('Error updating document: ', e);
+  }
+};
+
 // タスク削除
 const deleteTask = (userID: string, taskID: string) => {
   try {
@@ -144,7 +192,7 @@ export const deleteTaskWithOrder = (
     if (newStatusIDTaskIDs[task.statusID]) {
       newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
         task.statusID
-      ].filter((taskID) => task.id !== taskID);
+      ].filter((id) => task.id !== id);
     }
 
     let taskOrder: updateTaskOrderType = { orderDict: {} };
