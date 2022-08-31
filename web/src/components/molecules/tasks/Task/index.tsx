@@ -44,12 +44,9 @@ const Task = (props: TaskProps) => {
     type: DnDItems.Task,
     collect: (monitor) => ({ dragging: monitor.isDragging() }),
     end: (_, monitor) => {
+      if (kanbanTask === null) return;
       const dropResult = monitor.getDropResult() as DropResult;
       if (!dropResult) return;
-      setDroppedColumnNumber({
-        panelID: dropResult.panelID,
-        taskID: dropResult.taskID,
-      });
       let editTask: updateTaskType = {};
       if (dropResult.panelID !== props.task.statusID) {
         if (dropResult.panelID === kanbanStatusConst.done) {
@@ -57,12 +54,23 @@ const Task = (props: TaskProps) => {
         } else {
           editTask = {
             statusID: dropResult.panelID,
+            prevStatusID: props.task.prevStatusID,
             isDone: false,
             ...editTask,
           };
         }
       }
-      updateTask(user!.uid, props.task.id, editTask);
+      updateTaskWithOrder(
+        user!.uid,
+        props.task.id,
+        editTask,
+        kanbanTask.taskOrderID,
+        kanbanTask.statusIDTasks,
+      );
+      setDroppedColumnNumber({
+        panelID: dropResult.panelID,
+        taskID: dropResult.taskID,
+      });
     },
   }));
   const { dragging } = collected;
