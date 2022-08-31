@@ -35,7 +35,10 @@ const AddTaskForm = (props: AddTaskFormProps) => {
 
     const newTask: addTaskType = {
       statusID: props.kanbanStatusID,
-      prevStatusID: '',
+      prevStatusID:
+        props.kanbanStatusID === kanbanStatusConst.done
+          ? kanbanStatusConst.doing
+          : '',
       title: inputValue.trim(),
       isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
     };

@@ -14,7 +14,6 @@ import { Dispatch, SetStateAction } from 'react';
 import { addTaskType, taskType, updateTaskType } from 'types/task';
 import { updateTaskOrderType } from 'types/task_order';
 
-import { kanbanStatusConst } from 'lib/constants/kanban';
 import { db } from 'lib/infrastructure/firebase';
 import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
