@@ -14,6 +14,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { addTaskType, taskType, updateTaskType } from 'types/task';
 import { updateTaskOrderType } from 'types/task_order';
 
+import { kanbanStatusConst } from 'lib/constants/kanban';
 import { db } from 'lib/infrastructure/firebase';
 import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
@@ -137,7 +138,7 @@ export const updateTaskWithOrder = (
 
     // 移動先のstatusIDにtaskIDを追加
     newStatusIDTaskIDs[task.statusID]
-      ? newStatusIDTaskIDs[task.statusID].push(taskRef.id)
+      ? newStatusIDTaskIDs[task.statusID].unshift(taskRef.id)
       : (newStatusIDTaskIDs[task.statusID] = [taskRef.id]);
     // 移動元のstatusIDからtaskIDを除去
     if (newStatusIDTaskIDs[task.prevStatusID]) {
