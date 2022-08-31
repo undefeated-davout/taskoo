@@ -34,8 +34,6 @@ export const sortStatusIDTasks = (
       sortedStatusIDTasks[statusID] = tasks;
       continue;
     }
-    // ソート順のtaskIDリスト
-    const orders = taskOrder.orderDict[statusID].split(',');
     // taskIDごとにtask情報を保持
     const taskIDTaskDict = tasks.reduce(
       (dict: { [key: string]: taskType }, task) => {
@@ -44,8 +42,13 @@ export const sortStatusIDTasks = (
       },
       {},
     );
+    // ソート順のtaskIDリスト
+    const orders = taskOrder.orderDict[statusID].split(',');
     // ソート順IDリストをもとに、task情報のリストを作成
-    const sortedTasks = orders.map((taskID) => taskIDTaskDict[taskID]);
+    let sortedTasks: taskType[] = [];
+    orders.forEach((taskID) => {
+      if (taskIDTaskDict[taskID]) sortedTasks.push(taskIDTaskDict[taskID]);
+    });
     // statusIDごとに詰める
     sortedStatusIDTasks[statusID] = sortedTasks;
   }

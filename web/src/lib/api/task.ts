@@ -30,9 +30,9 @@ export const getTasks = (
 
   let constraints: QueryConstraint[] = [];
   // --- WHERE ---
-  if (options?.statusID !== undefined)
+  if (options.statusID !== undefined)
     constraints.push(where('statusID', '==', options.statusID));
-  if (options?.isDone === false)
+  if (options.isDone === false)
     constraints.push(where('isDone', '==', options.isDone));
 
   let q = query(taskColloctionRef, ...constraints);
