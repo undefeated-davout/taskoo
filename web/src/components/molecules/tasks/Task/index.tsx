@@ -18,7 +18,6 @@ import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { replaceStatusID } from 'lib/models/task';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
@@ -48,8 +47,7 @@ const Task = (props: TaskProps) => {
         taskID: dropResult.taskID,
       });
       let editTask: updateTaskType = {};
-      const statusID = replaceStatusID(props.task.isDone, props.task.statusID);
-      if (dropResult.panelID !== statusID) {
+      if (dropResult.panelID !== props.task.statusID) {
         if (dropResult.panelID === kanbanStatusConst.done) {
           editTask = { isDone: true, ...editTask };
         } else {
