@@ -37,16 +37,15 @@ const Kanban = (props: KanbanProps) => {
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
   const [displayDeleteButton, setDisplayDeleteButton] = useState(false);
 
-  useEffect(() => setKanbanTask(null), []);
+  useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks, {});
-    return () => unsubscribe();
+    const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
+    const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    return () => {
+      tasksUnsubscribe();
+      taskOrderUnsubscribe();
+    };
   }, [user]);
-  useEffect(() => {
-    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
-    return () => unsubscribe();
-  }, [user]);
-
   useEffect(() => {
     if (!tasks) return;
     const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);

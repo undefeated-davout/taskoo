@@ -29,14 +29,14 @@ const DoingTasks = (props: DoingTasksProps) => {
   const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
   const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
 
-  useEffect(() => setKanbanTask(null), []);
+  useEffect(() => setKanbanTask(null), [setKanbanTask]);
   useEffect(() => {
-    const unsubscribe = getTasks(user!.uid, setTasks, {});
-    return () => unsubscribe();
-  }, [user]);
-  useEffect(() => {
-    const unsubscribe = getTaskOrder(user!.uid, setTaskOrder);
-    return () => unsubscribe();
+    const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
+    const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);
+    return () => {
+      tasksUnsubscribe();
+      taskOrderUnsubscribe();
+    };
   }, [user]);
 
   useEffect(() => {

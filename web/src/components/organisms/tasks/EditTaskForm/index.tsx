@@ -29,8 +29,6 @@ const EditTaskForm = (props: EditTaskFormProps) => {
     setInputValue(props.task.title.trim());
   }, [props.isOpen, props.task.title]);
 
-  if (kanbanTask === null) return <></>;
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
     handleClose();
@@ -52,11 +50,12 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleDelete = () => {
+    if (kanbanTask === null) return;
     deleteTaskWithOrder(
       user!.uid,
       props.task,
       kanbanTask.taskOrderID,
-      kanbanTask.statusIDTasks[props.task.statusID] ?? [],
+      kanbanTask.statusIDTasks,
     );
     props.onClose();
   };
