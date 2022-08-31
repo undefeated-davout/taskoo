@@ -1,10 +1,4 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { Transaction, collection, doc } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -39,7 +33,11 @@ export const getTaskOrder = (
 };
 
 // タスクソート順追加
-export const addTaskOrder = (userID: string, taskOrder: addTaskOrderType) => {
+export const addTaskOrderTx = (
+  tx: Transaction,
+  userID: string,
+  taskOrder: addTaskOrderType,
+) => {
   try {
     const taskOrderColloctionRef = collection(
       db,
@@ -47,14 +45,17 @@ export const addTaskOrder = (userID: string, taskOrder: addTaskOrderType) => {
       userID,
       'task_orders',
     );
-    setDoc(doc(taskOrderColloctionRef), createStruct(taskOrder));
+    const taskOrderRef = doc(taskOrderColloctionRef);
+    tx.set(taskOrderRef, createStruct(taskOrder));
+    return taskOrderRef;
   } catch (e) {
     console.error('Error adding document: ', e);
   }
 };
 
 // タスクソート順更新
-export const updateTaskOrder = (
+export const updateTaskOrderTx = (
+  tx: Transaction,
   userID: string,
   taskOrderID: string,
   taskOrder: updateTaskOrderType,
@@ -62,18 +63,22 @@ export const updateTaskOrder = (
   try {
     const userRef = doc(db, 'users', userID);
     const taskOrderRef = doc(userRef, 'task_orders', taskOrderID);
-    updateDoc(taskOrderRef, updateStruct(taskOrder));
+    tx.update(taskOrderRef, updateStruct(taskOrder));
   } catch (e) {
     console.error('Error updating document: ', e);
   }
 };
 
 // タスク削除
-export const deleteTaskOrder = (userID: string, taskOrderID: string) => {
+export const deleteTaskOrderTx = (
+  tx: Transaction,
+  userID: string,
+  taskOrderID: string,
+) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskOrderRef = doc(userRef, 'task_orders', taskOrderID);
-    deleteDoc(taskOrderRef);
+    tx.delete(taskOrderRef);
   } catch (e) {
     console.error('Error deleting document: ', e);
   }

@@ -1,3 +1,5 @@
+import { kanbanTaskStateType } from 'lib/recoil/kanbanTask';
+
 export type kanbanStatusType = {
   id: string;
   orderNum: number;
@@ -13,4 +15,5 @@ export type DnDItems = typeof DnDItems[keyof typeof DnDItems];
 export type DropResult = {
   panelID: string;
   taskID: string;
+  kanbanTask: kanbanTaskStateType;
 };

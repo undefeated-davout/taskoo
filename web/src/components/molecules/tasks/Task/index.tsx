@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useRef, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
@@ -16,11 +16,7 @@ import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
 import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
-import {
-  deleteTaskWithOrder,
-  updateTask,
-  updateTaskWithOrder,
-} from 'lib/api/task';
+import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
@@ -44,9 +40,8 @@ const Task = (props: TaskProps) => {
     type: DnDItems.Task,
     collect: (monitor) => ({ dragging: monitor.isDragging() }),
     end: (_, monitor) => {
-      if (kanbanTask === null) return;
       const dropResult = monitor.getDropResult() as DropResult;
-      if (!dropResult) return;
+      if (!dropResult || !dropResult.kanbanTask) return;
       let editTask: updateTaskType;
       if (dropResult.panelID === props.task.statusID) {
         // パネル内移動
@@ -67,8 +62,8 @@ const Task = (props: TaskProps) => {
         user!.uid,
         props.task.id,
         editTask,
-        kanbanTask.taskOrderID,
-        kanbanTask.statusIDTasks,
+        dropResult.kanbanTask.taskOrderID,
+        dropResult.kanbanTask.statusIDTasks,
       );
       setDroppedColumnNumber({
         panelID: dropResult.panelID,
@@ -84,10 +79,12 @@ const Task = (props: TaskProps) => {
     drop: () => ({
       panelID: props.task.statusID,
       taskID: props.task.id,
+      kanbanTask: kanbanTask,
     }),
   }));
   drag(drop(ref));
 
+  // チェックボックスON/OFF
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     if (kanbanTask === null) return;
     let updatedTask: updateTaskType = { isDone: event.target.checked };
@@ -107,6 +104,7 @@ const Task = (props: TaskProps) => {
     );
   };
 
+  // 削除ボタン押下時
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (kanbanTask === null) return;
     deleteTaskWithOrder(

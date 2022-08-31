@@ -4,7 +4,7 @@ import { taskType } from 'types/task';
 
 export type statusIDTasksType = { [statusID: string]: taskType[] };
 
-type kanbanTaskStateType = {
+export type kanbanTaskStateType = {
   taskOrderID: string;
   statusIDTasks: statusIDTasksType;
 };

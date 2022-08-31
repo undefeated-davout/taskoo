@@ -1,9 +1,10 @@
 import {
   QueryConstraint,
+  Transaction,
   collection,
   deleteDoc,
   doc,
-  setDoc,
+  runTransaction,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -18,7 +19,7 @@ import { db } from 'lib/infrastructure/firebase';
 import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
 import { createStruct, updateStruct } from './common';
-import { addTaskOrder, updateTaskOrder } from './task_order';
+import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
 
 // タスク一覧取得
 export const getTasks = (
@@ -50,49 +51,51 @@ export const getTasks = (
 };
 
 // タスクソート順追加
-const addTask = (userID: string, task: addTaskType) => {
+const addTaskTx = (tx: Transaction, userID: string, task: addTaskType) => {
   try {
     const taskColloctionRef = collection(db, 'users', userID, 'tasks');
     const taskRef = doc(taskColloctionRef);
-    setDoc(taskRef, createStruct(task));
+    tx.set(taskRef, createStruct(task));
     return taskRef;
   } catch (e) {
     console.error('Error adding document: ', e);
   }
 };
 
-export const addTaskWithOrder = (
+export const addTaskWithOrder = async (
   userID: string,
   newTask: addTaskType,
   taskOrderID: string,
   statusIDTasks: statusIDTasksType,
 ) => {
   try {
-    const taskRef = addTask(userID, newTask);
-    if (taskRef === undefined) return;
+    await runTransaction(db, async (tx) => {
+      const taskRef = addTaskTx(tx, userID, newTask);
+      if (taskRef === undefined) return;
+      // statusIDごとのtaskIDリスト作成
+      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+      for (const statusID in statusIDTasks) {
+        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+        newStatusIDTaskIDs[statusID] = taskIDs;
+      }
 
-    // statusIDごとのtaskIDリスト作成
-    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-    for (const statusID in statusIDTasks) {
-      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-      newStatusIDTaskIDs[statusID] = taskIDs;
-    }
+      // INSERTしたtaskIDを追加上記リストに追加
+      newStatusIDTaskIDs[newTask.statusID]
+        ? newStatusIDTaskIDs[newTask.statusID].push(taskRef.id)
+        : (newStatusIDTaskIDs[newTask.statusID] = [taskRef.id]);
 
-    // INSERTしたtaskIDを追加上記リストに追加
-    newStatusIDTaskIDs[newTask.statusID]
-      ? newStatusIDTaskIDs[newTask.statusID].push(taskRef.id)
-      : (newStatusIDTaskIDs[newTask.statusID] = [taskRef.id]);
-
-    let taskOrder: updateTaskOrderType = { orderDict: {} };
-    // 書き込み用のorderDictを作成
-    for (const statusID in newStatusIDTaskIDs) {
-      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
-    }
-    if (taskOrderID === '') {
-      addTaskOrder(userID, taskOrder);
-    } else {
-      updateTaskOrder(userID, taskOrderID, taskOrder);
-    }
+      let taskOrder: updateTaskOrderType = { orderDict: {} };
+      // 書き込み用のorderDictを作成
+      for (const statusID in newStatusIDTaskIDs) {
+        taskOrder['orderDict'][statusID] =
+          newStatusIDTaskIDs[statusID].join(',');
+      }
+      if (taskOrderID === '') {
+        addTaskOrderTx(tx, userID, taskOrder);
+      } else {
+        updateTaskOrderTx(tx, userID, taskOrderID, taskOrder);
+      }
+    });
   } catch (e) {
     console.error('Error adding document: ', e);
   }
@@ -113,7 +116,22 @@ export const updateTask = (
   }
 };
 
-export const updateTaskWithOrder = (
+export const updateTaskTx = (
+  tx: Transaction,
+  userID: string,
+  taskID: string,
+  task: updateTaskType,
+) => {
+  try {
+    const userRef = doc(db, 'users', userID);
+    const taskRef = doc(userRef, 'tasks', taskID);
+    updateDoc(taskRef, updateStruct(task));
+  } catch (e) {
+    console.error('Error updating document: ', e);
+  }
+};
+
+export const updateTaskWithOrder = async (
   userID: string,
   taskID: string,
   task: updateTaskType,
@@ -121,86 +139,90 @@ export const updateTaskWithOrder = (
   statusIDTasks: statusIDTasksType,
 ) => {
   try {
-    const userRef = doc(db, 'users', userID);
-    const taskRef = doc(userRef, 'tasks', taskID);
-    updateDoc(taskRef, updateStruct(task));
+    await runTransaction(db, async (tx) => {
+      updateTaskTx(tx, userID, taskID, task);
+      // --- taskOrder ---
+      // statusIDが不変なら終了
+      if (task.statusID === undefined || task.prevStatusID === undefined)
+        return;
+      // statusIDごとのtaskIDリスト作成
+      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+      for (const statusID in statusIDTasks) {
+        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+        newStatusIDTaskIDs[statusID] = taskIDs;
+      }
 
-    // --- taskOrder ---
-    // statusIDが不変なら終了
-    if (task.statusID === undefined || task.prevStatusID === undefined) return;
-    // statusIDごとのtaskIDリスト作成
-    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-    for (const statusID in statusIDTasks) {
-      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-      newStatusIDTaskIDs[statusID] = taskIDs;
-    }
+      // 移動先のstatusIDにtaskIDを追加
+      newStatusIDTaskIDs[task.statusID]
+        ? newStatusIDTaskIDs[task.statusID].unshift(taskID)
+        : (newStatusIDTaskIDs[task.statusID] = [taskID]);
+      // 移動元のstatusIDからtaskIDを除去
+      if (newStatusIDTaskIDs[task.prevStatusID]) {
+        newStatusIDTaskIDs[task.prevStatusID] = newStatusIDTaskIDs[
+          task.prevStatusID
+        ].filter((id) => id !== taskID);
+      }
 
-    // 移動先のstatusIDにtaskIDを追加
-    newStatusIDTaskIDs[task.statusID]
-      ? newStatusIDTaskIDs[task.statusID].unshift(taskRef.id)
-      : (newStatusIDTaskIDs[task.statusID] = [taskRef.id]);
-    // 移動元のstatusIDからtaskIDを除去
-    if (newStatusIDTaskIDs[task.prevStatusID]) {
-      newStatusIDTaskIDs[task.prevStatusID] = newStatusIDTaskIDs[
-        task.prevStatusID
-      ].filter((id) => id !== taskID);
-    }
-
-    let taskOrder: updateTaskOrderType = { orderDict: {} };
-    // 書き込み用のorderDictを作成
-    for (const statusID in newStatusIDTaskIDs) {
-      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
-    }
-    if (taskOrderID === '') {
-      addTaskOrder(userID, taskOrder);
-    } else {
-      updateTaskOrder(userID, taskOrderID, taskOrder);
-    }
+      let taskOrder: updateTaskOrderType = { orderDict: {} };
+      // 書き込み用のorderDictを作成
+      for (const statusID in newStatusIDTaskIDs) {
+        taskOrder['orderDict'][statusID] =
+          newStatusIDTaskIDs[statusID].join(',');
+      }
+      if (taskOrderID === '') {
+        addTaskOrderTx(tx, userID, taskOrder);
+      } else {
+        updateTaskOrderTx(tx, userID, taskOrderID, taskOrder);
+      }
+    });
   } catch (e) {
     console.error('Error updating document: ', e);
   }
 };
 
 // タスク削除
-const deleteTask = (userID: string, taskID: string) => {
+const deleteTaskTx = (tx: Transaction, userID: string, taskID: string) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskRef = doc(userRef, 'tasks', taskID);
-    deleteDoc(taskRef);
+    tx.delete(taskRef);
   } catch (e) {
     console.error('Error deleting document: ', e);
   }
 };
 
-export const deleteTaskWithOrder = (
+export const deleteTaskWithOrder = async (
   userID: string,
   task: taskType,
   taskOrderID: string,
   statusIDTasks: statusIDTasksType,
 ) => {
   try {
-    deleteTask(userID, task.id);
+    await runTransaction(db, async (tx) => {
+      deleteTaskTx(tx, userID, task.id);
 
-    // statusIDごとのtaskIDリスト作成
-    let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-    for (const statusID in statusIDTasks) {
-      let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-      newStatusIDTaskIDs[statusID] = taskIDs;
-    }
+      // statusIDごとのtaskIDリスト作成
+      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
+      for (const statusID in statusIDTasks) {
+        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+        newStatusIDTaskIDs[statusID] = taskIDs;
+      }
 
-    // DELETEしたtaskIDを追加上記リストから除去
-    if (newStatusIDTaskIDs[task.statusID]) {
-      newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
-        task.statusID
-      ].filter((id) => task.id !== id);
-    }
+      // DELETEしたtaskIDを追加上記リストから除去
+      if (newStatusIDTaskIDs[task.statusID]) {
+        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
+          task.statusID
+        ].filter((id) => task.id !== id);
+      }
 
-    let taskOrder: updateTaskOrderType = { orderDict: {} };
-    // 書き込み用のorderDictを作成
-    for (const statusID in newStatusIDTaskIDs) {
-      taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
-    }
-    updateTaskOrder(userID, taskOrderID, taskOrder);
+      let taskOrder: updateTaskOrderType = { orderDict: {} };
+      // 書き込み用のorderDictを作成
+      for (const statusID in newStatusIDTaskIDs) {
+        taskOrder['orderDict'][statusID] =
+          newStatusIDTaskIDs[statusID].join(',');
+      }
+      updateTaskOrderTx(tx, userID, taskOrderID, taskOrder);
+    });
   } catch (e) {
     console.error('Error deleting document: ', e);
   }
