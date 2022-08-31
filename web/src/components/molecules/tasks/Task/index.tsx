@@ -75,13 +75,12 @@ const Task = (props: TaskProps) => {
   }));
   drag(drop(ref));
 
-  if (kanbanTask === null) return <></>;
-
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     updateTask(user!.uid, props.task.id, { isDone: event.target.checked });
   };
 
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (kanbanTask === null) return;
     deleteTaskWithOrder(
       user!.uid,
       props.task,

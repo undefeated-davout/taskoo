@@ -74,7 +74,7 @@ const Focus = (props: FocusProps) => {
           </Typography>
         )}
 
-        {sortedTasks.length > 0 && taskOrder && (
+        {sortedTasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
             <Task isMini={false} task={sortedTasks[0]} />
