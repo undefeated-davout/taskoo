@@ -34,7 +34,6 @@ const KanbanPanel = (props: KanbanPanelProps) => {
     accept: DnDItems.Task,
     drop: () => ({
       panelID: props.kanbanStatus.id,
-      kanbanTask: kanbanTask,
     }),
   }));
 

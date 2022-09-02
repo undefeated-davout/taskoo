@@ -1,6 +1,6 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -18,7 +18,6 @@ import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { droppedKanbanPanelState } from 'lib/recoil/droppedKanbanPanel';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type TaskProps = {
@@ -35,13 +34,13 @@ const Task = (props: TaskProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   // --- ドラッグ設定 ---
-  const [_, setDroppedColumnNumber] = useRecoilState(droppedKanbanPanelState);
   const [collected, drag] = useDrag(() => ({
     type: DnDItems.Task,
     collect: (monitor) => ({ dragging: monitor.isDragging() }),
     end: (_, monitor) => {
       const dropResult = monitor.getDropResult() as DropResult;
-      if (!dropResult || !dropResult.kanbanTask) return;
+      if (!dropResult || !kanbanTask) return;
+      console.log('kanbanTask.statusIDTasks', kanbanTask.statusIDTasks);
       let editTask: updateTaskType;
       if (dropResult.panelID === props.task.statusID) {
         // パネル内移動
@@ -62,13 +61,9 @@ const Task = (props: TaskProps) => {
         user!.uid,
         props.task.id,
         editTask,
-        dropResult.kanbanTask.taskOrderID,
-        dropResult.kanbanTask.statusIDTasks,
+        kanbanTask.taskOrderID,
+        kanbanTask.statusIDTasks,
       );
-      setDroppedColumnNumber({
-        panelID: dropResult.panelID,
-        taskID: dropResult.taskID,
-      });
     },
   }));
   const { dragging } = collected;
@@ -79,7 +74,6 @@ const Task = (props: TaskProps) => {
     drop: () => ({
       panelID: props.task.statusID,
       taskID: props.task.id,
-      kanbanTask: kanbanTask,
     }),
   }));
   drag(drop(ref));

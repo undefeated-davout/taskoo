@@ -12,6 +12,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 
+import RecoilDebugObserver from 'components/atoms/RecoilDebugObserver';
 import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
 import { getUser } from 'lib/api/user';
@@ -81,6 +82,7 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
     <>
       <UtilThemeProvider>
         <RecoilRoot>
+          <RecoilDebugObserver />
           <DndProvider backend={HTML5Backend}>
             <UtilContext.Provider
               value={{

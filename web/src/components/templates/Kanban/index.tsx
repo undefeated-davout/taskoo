@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useContext, useState } from 'react';
 
 import ConstructionIcon from '@mui/icons-material/Construction';
 import Box from '@mui/material/Box';
@@ -12,13 +11,8 @@ import { UtilContext } from 'pages/_app';
 import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
-import { taskType } from 'types/task';
-import { taskOrderType } from 'types/task_order';
 
-import { getTasks } from 'lib/api/task';
-import { getTaskOrder } from 'lib/api/task_order';
-import { sortStatusIDTasks } from 'lib/models/task';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
+import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
 type KanbanProps = {};
 
@@ -32,29 +26,10 @@ const kanbanStatuses: kanbanStatusType[] = [
 
 const Kanban = (props: KanbanProps) => {
   const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[] | null>(null);
-  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
-  const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
   const [displayToolButton, setDisplayToolButton] = useState(false);
 
-  useEffect(() => {
-    const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
-    const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);
-    return () => {
-      tasksUnsubscribe();
-      taskOrderUnsubscribe();
-    };
-  }, [user]);
-  useEffect(() => {
-    if (!tasks) return;
-    const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);
-    setKanbanTask({
-      taskOrderID: taskOrder?.id ?? '',
-      statusIDTasks: sortedStatusIDTasks,
-    });
-  }, [tasks, taskOrder, setKanbanTask]);
-
-  if (tasks === null || kanbanTask === null) return <></>;
+  const kanbanTask = useKanbanTask(user!.uid, {});
+  if (kanbanTask === null) return <></>;
 
   return (
     <>

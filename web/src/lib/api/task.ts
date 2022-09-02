@@ -24,7 +24,7 @@ import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
 // タスク一覧取得
 export const getTasks = (
   userID: string,
-  setTasks: Dispatch<SetStateAction<taskType[] | null>>,
+  setTasks: Dispatch<SetStateAction<taskType[] | undefined>>,
   options: { isDone?: boolean; statusID?: string },
 ) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');

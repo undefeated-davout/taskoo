@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -11,43 +10,17 @@ import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterConta
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
 import TaskList from 'components/organisms/tasks/TaskList';
 
-import { taskType } from 'types/task';
-import { taskOrderType } from 'types/task_order';
-
-import { getTasks } from 'lib/api/task';
-import { getTaskOrder } from 'lib/api/task_order';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { sortStatusIDTasks } from 'lib/models/task';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
+import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
 type DoingTasksProps = {};
 
 const DoingTasks = (props: DoingTasksProps) => {
   const theme = useTheme();
   const { user } = useContext(UtilContext);
-  const [tasks, setTasks] = useState<taskType[] | null>(null);
-  const [taskOrder, setTaskOrder] = useState<taskOrderType | null>(null);
-  const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
 
-  useEffect(() => {
-    const tasksUnsubscribe = getTasks(user!.uid, setTasks, {});
-    const taskOrderUnsubscribe = getTaskOrder(user!.uid, setTaskOrder);
-    return () => {
-      tasksUnsubscribe();
-      taskOrderUnsubscribe();
-    };
-  }, [user]);
-
-  useEffect(() => {
-    if (!tasks) return;
-    const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);
-    setKanbanTask({
-      taskOrderID: taskOrder?.id ?? '',
-      statusIDTasks: sortedStatusIDTasks,
-    });
-  }, [tasks, taskOrder, setKanbanTask]);
-
-  if (tasks === null || kanbanTask === null) return <></>;
+  const kanbanTask = useKanbanTask(user!.uid, {});
+  if (kanbanTask === null) return <></>;
 
   const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
   const doneTasks = kanbanTask.statusIDTasks[kanbanStatusConst.done] ?? [];
