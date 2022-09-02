@@ -30,6 +30,7 @@ export const useKanbanTask = (userID: string) => {
   useEffect(() => {
     if (tasks === undefined || taskOrder === undefined) return;
     const sortedStatusIDTasks = sortStatusIDTasks(tasks, taskOrder);
+    if (sortedStatusIDTasks === null) return;
     setKanbanTask({
       taskOrderID: taskOrder?.id ?? '',
       statusIDTasks: sortedStatusIDTasks,
