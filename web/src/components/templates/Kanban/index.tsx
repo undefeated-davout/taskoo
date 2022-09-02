@@ -28,7 +28,7 @@ const Kanban = (props: KanbanProps) => {
   const { user } = useContext(UtilContext);
   const [displayToolButton, setDisplayToolButton] = useState(false);
 
-  const kanbanTask = useKanbanTask(user!.uid, {});
+  const kanbanTask = useKanbanTask(user!.uid);
   if (kanbanTask === null) return <></>;
 
   return (

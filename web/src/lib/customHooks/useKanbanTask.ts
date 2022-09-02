@@ -9,13 +9,7 @@ import { getTaskOrder } from 'lib/api/task_order';
 import { sortStatusIDTasks } from 'lib/models/task';
 import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
-export const useKanbanTask = (
-  userID: string,
-  options: {
-    isDone?: boolean | undefined;
-    statusID?: string | undefined;
-  },
-) => {
+export const useKanbanTask = (userID: string) => {
   const [tasks, setTasks] = useState<taskType[] | undefined>();
   const [taskOrder, setTaskOrder] = useState<
     taskOrderType | null | undefined
@@ -24,7 +18,7 @@ export const useKanbanTask = (
 
   // tasks, taskOrder情報取得
   useEffect(() => {
-    const tasksUnsubscribe = getTasks(userID, setTasks, {});
+    const tasksUnsubscribe = getTasks(userID, setTasks);
     const taskOrderUnsubscribe = getTaskOrder(userID, setTaskOrder);
     return () => {
       tasksUnsubscribe();

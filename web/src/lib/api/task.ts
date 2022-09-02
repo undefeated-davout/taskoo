@@ -25,17 +25,9 @@ import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
 export const getTasks = (
   userID: string,
   setTasks: Dispatch<SetStateAction<taskType[] | undefined>>,
-  options: { isDone?: boolean; statusID?: string },
 ) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');
-
   let constraints: QueryConstraint[] = [];
-  // --- WHERE ---
-  if (options.statusID !== undefined)
-    constraints.push(where('statusID', '==', options.statusID));
-  if (options.isDone === false)
-    constraints.push(where('isDone', '==', options.isDone));
-
   let q = query(taskColloctionRef, ...constraints);
   const unsubscribe = onSnapshot(q, (docs) => {
     let workTasks: taskType[] = [];

@@ -19,7 +19,7 @@ const Focus = (props: FocusProps) => {
   const theme = useTheme();
   const { user } = useContext(UtilContext);
 
-  const kanbanTask = useKanbanTask(user!.uid, { isDone: false });
+  const kanbanTask = useKanbanTask(user!.uid);
   if (kanbanTask === null) return <></>;
 
   const sortedTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
