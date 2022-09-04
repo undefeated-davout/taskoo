@@ -50,20 +50,18 @@ const Task = (props: TaskProps) => {
           updatedTask = {};
         } else {
           // パネル間移動
-          updatedTask = {
-            statusID: dropResult.panelID,
-            prevStatusID: props.task.statusID,
-          };
+          updatedTask = { statusID: dropResult.panelID };
           if (dropResult.panelID === kanbanStatusConst.done) {
-            updatedTask = { isDone: true, ...updatedTask };
+            updatedTask = { isChecked: true, ...updatedTask };
           } else {
-            updatedTask = { isDone: false, ...updatedTask };
+            updatedTask = { isChecked: false, ...updatedTask };
           }
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
           updatedTask,
           kanbanTask.statusIDTasks,
+          props.task.statusID,
         );
         setKanbanTask({
           taskOrderID: kanbanTask.taskOrderID,
@@ -95,18 +93,12 @@ const Task = (props: TaskProps) => {
   // チェックボックスON/OFF
   const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
     if (kanbanTask === null) return;
-    let updatedTask: updateTaskType = { isDone: event.target.checked };
-    if (event.target.checked) {
-      updatedTask.statusID = kanbanStatusConst.done;
-      updatedTask.prevStatusID = props.task.statusID;
-    } else {
-      updatedTask.statusID = props.task.prevStatusID;
-      updatedTask.prevStatusID = props.task.statusID;
-    }
+    let updatedTask: updateTaskType = { isChecked: event.target.checked };
     const newStatusIDTasks = calcStatusIDTasks(
       props.task.id,
       updatedTask,
       kanbanTask.statusIDTasks,
+      props.task.statusID,
     );
     setKanbanTask({
       taskOrderID: kanbanTask.taskOrderID,
@@ -147,7 +139,7 @@ const Task = (props: TaskProps) => {
       >
         {(!props.isMini || props.displayToolButton) && (
           <BaseCheckbox
-            checked={props.task.isDone}
+            checked={props.task.isChecked}
             onChange={handleChangeCheckbox}
           />
         )}

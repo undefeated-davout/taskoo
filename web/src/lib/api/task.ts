@@ -137,10 +137,6 @@ export const updateTaskWithOrder = async (
     await runTransaction(db, async (tx) => {
       updateTaskTx(tx, userID, taskID, task);
       // --- taskOrder ---
-      // statusIDが不変なら終了
-      if (task.statusID === undefined || task.prevStatusID === undefined)
-        return;
-
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成
       for (const statusID in newStatusIDTasks) {

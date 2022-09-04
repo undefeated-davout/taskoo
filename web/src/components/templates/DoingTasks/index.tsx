@@ -1,10 +1,6 @@
-import { useContext } from 'react';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
-
-import { UserContext } from 'pages/_app';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
@@ -21,11 +17,14 @@ const DoingTasks = (props: DoingTasksProps) => {
   const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
-  const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
-  const doneTasks = kanbanTask.statusIDTasks[kanbanStatusConst.done] ?? [];
-  const doneInDoingTasks = doneTasks.filter(
-    (task) => task.prevStatusID === kanbanStatusConst.doing,
-  );
+  const doingTasks =
+    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
+      (task) => !task.isChecked,
+    ) ?? [];
+  const checkedTasks =
+    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
+      (task) => task.isChecked,
+    ) ?? [];
 
   return (
     <HorizontalCenterContainerBox>
@@ -40,10 +39,13 @@ const DoingTasks = (props: DoingTasksProps) => {
       >
         <Box sx={{ mt: 1 }} />
         <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
-        <Box sx={{ mt: doingTasks.length === 0 ? 1 : 3 }} />
+        <Box sx={{ mt: 1 }} />
+
+        <Box sx={{ mt: doingTasks.length === 0 ? 0 : 3 }} />
         <TaskList tasks={doingTasks} />
-        <Box sx={{ mt: doneInDoingTasks.length === 0 ? 1 : 3 }} />
-        <TaskList tasks={doneInDoingTasks} />
+
+        <Box sx={{ mt: checkedTasks.length === 0 ? 0 : 3 }} />
+        <TaskList tasks={checkedTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );

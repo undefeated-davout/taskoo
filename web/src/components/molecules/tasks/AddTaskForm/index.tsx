@@ -9,7 +9,6 @@ import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider
 import { addTaskType } from 'types/task';
 
 import { addTaskWithOrder } from 'lib/api/task';
-import { kanbanStatusConst } from 'lib/constants/kanban';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
@@ -37,12 +36,8 @@ const AddTaskForm = (props: AddTaskFormProps) => {
 
     const newTask: addTaskType = {
       statusID: props.kanbanStatusID,
-      prevStatusID:
-        props.kanbanStatusID === kanbanStatusConst.done
-          ? kanbanStatusConst.doing
-          : '',
       title: inputValue.trim(),
-      isDone: props.kanbanStatusID === kanbanStatusConst.done ? true : false,
+      isChecked: false,
     };
 
     addTaskWithOrder(

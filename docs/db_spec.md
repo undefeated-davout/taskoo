@@ -9,7 +9,7 @@
 ## tasks
 
 - orderNum
-- isDone
+- isChecked
 - title
 - activeStatus
 - isAllDay

@@ -2,9 +2,8 @@ import { modelBaseType } from './common';
 
 export type addTaskType = {
   statusID: string;
-  prevStatusID: string;
   title: string;
-  isDone: boolean;
+  isChecked: boolean;
 };
 
 export type updateTaskType = Partial<addTaskType>;

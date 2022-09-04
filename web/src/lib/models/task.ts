@@ -49,6 +49,7 @@ export const calcStatusIDTasks = (
   taskID: string,
   updatedTask: updateTaskType,
   statusIDTasks: statusIDTasksType,
+  prevStatusID: string,
 ): statusIDTasksType => {
   // 引数を値渡し化
   let newStatusIDTasksType: statusIDTasksType = {};
@@ -56,11 +57,7 @@ export const calcStatusIDTasks = (
     newStatusIDTasksType[statusID] = [...statusIDTasks[statusID]];
   }
   // statusIDが不変なら終了
-  if (
-    updatedTask.statusID === undefined ||
-    updatedTask.prevStatusID === undefined
-  )
-    return newStatusIDTasksType;
+  if (updatedTask.statusID === undefined) return newStatusIDTasksType;
 
   let idTaskDict: { [id: string]: taskType } = {};
   for (const statusID in newStatusIDTasksType) {
@@ -76,9 +73,9 @@ export const calcStatusIDTasks = (
     ? newStatusIDTasksType[updatedTask.statusID].unshift(newTask)
     : (newStatusIDTasksType[updatedTask.statusID] = [newTask]);
   // 移動元のstatusIDからtaskIDを除去
-  if (newStatusIDTasksType[updatedTask.prevStatusID]) {
-    newStatusIDTasksType[updatedTask.prevStatusID] = newStatusIDTasksType[
-      updatedTask.prevStatusID
+  if (newStatusIDTasksType[prevStatusID]) {
+    newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
+      prevStatusID
     ].filter((task) => task.id !== taskID);
   }
 
