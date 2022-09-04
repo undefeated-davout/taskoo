@@ -1,50 +1,20 @@
 import { User } from 'firebase/auth';
 import { AppProps } from 'next/app';
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createGlobalStyle } from 'styled-components';
 
-import UtilThemeProvider from 'components/templates/UtilThemeProvider';
-
-import { kanbanTaskStateType } from 'types/task';
+import KanbanTaskContextProvider from 'components/contexts/KanbanTaskContextProvider';
+import UtilContextProvider from 'components/contexts/UtilContextProvider';
+import UtilThemeProvider from 'components/contexts/UtilThemeProvider';
 
 import { getUser } from 'lib/api/user';
 
-
-
-export const UtilContext = createContext<{
-  isMenuOpen: boolean;
-  setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
-}>({
-  isMenuOpen: null as unknown as boolean,
-  setIsMenuOpen: null as unknown as Dispatch<SetStateAction<boolean>>,
-});
-
 export const UserContext = createContext<{ user: User | null }>({ user: null });
-
-export const KanbanTaskContext = createContext<{
-  kanbanTask: kanbanTaskStateType | null;
-  setKanbanTask: Dispatch<SetStateAction<kanbanTaskStateType | null>>;
-}>({
-  kanbanTask: null,
-  setKanbanTask: null as unknown as Dispatch<
-    SetStateAction<kanbanTaskStateType | null>
-  >,
-});
 
 const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [kanbanTask, setKanbanTask] = useState<kanbanTaskStateType | null>(
-    null,
-  );
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -72,14 +42,14 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
     <>
       <UtilThemeProvider>
         <DndProvider backend={HTML5Backend}>
-          <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>
+          <UtilContextProvider>
             <UserContext.Provider value={{ user }}>
-              <KanbanTaskContext.Provider value={{ kanbanTask, setKanbanTask }}>
+              <KanbanTaskContextProvider>
                 <GlobalStyle />
                 {isReady && <Component {...pageProps} />}
-              </KanbanTaskContext.Provider>
+              </KanbanTaskContextProvider>
             </UserContext.Provider>
-          </UtilContext.Provider>
+          </UtilContextProvider>
         </DndProvider>
       </UtilThemeProvider>
     </>
@@ -116,6 +86,3 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default UtilApp;
-
-
-

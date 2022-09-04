@@ -6,7 +6,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 
-import { KanbanTaskContext, UserContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
+
+import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 
 import { taskType, updateTaskType } from 'types/task';
 

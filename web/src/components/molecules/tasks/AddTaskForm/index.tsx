@@ -2,7 +2,9 @@ import { useContext, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 
-import { KanbanTaskContext, UserContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
+
+import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 
 import { addTaskType } from 'types/task';
 

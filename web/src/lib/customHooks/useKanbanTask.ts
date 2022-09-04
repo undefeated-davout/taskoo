@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { KanbanTaskContext, UserContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
+
+import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 
 import { taskType } from 'types/task';
 import { taskOrderType } from 'types/task_order';

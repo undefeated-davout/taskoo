@@ -9,8 +9,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import { KanbanTaskContext } from 'pages/_app';
-
+import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
 import TaskList from 'components/organisms/tasks/TaskList';
 

@@ -8,9 +8,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 
-import { KanbanTaskContext, UserContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
+import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
 
 import { DnDItems, DropResult } from 'types/kanban';

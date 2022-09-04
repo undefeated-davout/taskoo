@@ -4,8 +4,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useTheme } from '@mui/material/styles';
 
-import { UtilContext } from 'pages/_app';
-
+import { UtilContext } from 'components/contexts/UtilContextProvider';
 import HeaderBar from 'components/organisms/common/HeaderBar';
 import SideBar, { DrawerHeader } from 'components/organisms/common/SideBar';
 
