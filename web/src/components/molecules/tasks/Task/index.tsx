@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -135,23 +136,25 @@ const Task = (props: TaskProps) => {
           disableRipple
           sx={{
             height: '100%',
-            width: '100%',
             justifyContent: 'flex-start',
             textTransform: 'none',
             '&:hover': { backgroundColor: 'transparent' },
           }}
           onClick={() => setIsOpenForm(true)}
         >
-          <Typography
-            sx={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              fontSize: 16,
-            }}
-          >
-            {props.task.title}
-          </Typography>
+          <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+            <Typography
+              sx={{
+                height: '100%',
+                fontSize: 16,
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {props.task.title}
+            </Typography>
+          </Box>
         </Button>
 
         {(!props.isMini || props.displayToolButton) && (
