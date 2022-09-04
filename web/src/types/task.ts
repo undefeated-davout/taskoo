@@ -1,4 +1,4 @@
-import { idType, metaType } from './common';
+import { modelBaseType } from './common';
 
 export type addTaskType = {
   statusID: string;
@@ -7,14 +7,9 @@ export type addTaskType = {
   isDone: boolean;
 };
 
-export type updateTaskType = {
-  statusID?: string;
-  prevStatusID?: string;
-  title?: string;
-  isDone?: boolean;
-};
+export type updateTaskType = Partial<addTaskType>;
 
-export type taskType = addTaskType & idType & metaType;
+export type taskType = addTaskType & modelBaseType;
 
 export type statusIDTasksType = { [statusID: string]: taskType[] };
 

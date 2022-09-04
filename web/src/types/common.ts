@@ -8,3 +8,5 @@ export type metaType = {
 export type idType = {
   id: string;
 };
+
+export type modelBaseType = idType & metaType;

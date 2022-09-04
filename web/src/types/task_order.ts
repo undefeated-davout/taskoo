@@ -1,4 +1,4 @@
-import { idType, metaType } from './common';
+import { modelBaseType } from './common';
 
 export type addTaskOrderType = {
   orderDict: {
@@ -6,10 +6,6 @@ export type addTaskOrderType = {
   };
 };
 
-export type updateTaskOrderType = {
-  orderDict: {
-    [statusID: string]: string;
-  };
-};
+export type updateTaskOrderType = addTaskOrderType;
 
-export type taskOrderType = addTaskOrderType & idType & metaType;
+export type taskOrderType = addTaskOrderType & modelBaseType;
