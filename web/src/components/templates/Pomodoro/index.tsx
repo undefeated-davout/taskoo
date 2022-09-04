@@ -11,7 +11,7 @@ import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 
-import { UtilContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
@@ -27,7 +27,7 @@ type PomodoroProps = {};
 const timerMinutesList = [5, 10, 15, 25];
 
 const Pomodoro = (props: PomodoroProps) => {
-  const { user } = useContext(UtilContext);
+  const { user } = useContext(UserContext);
 
   const [status, setStatus] = useState(timerStatusConst.unset);
   const [timerSeconds, setTimerSeconds] = useState(0);

@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 
-import { UtilContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import { taskType, updateTaskType } from 'types/task';
 
@@ -21,7 +21,7 @@ type EditTaskFormProps = {
 };
 
 const EditTaskForm = (props: EditTaskFormProps) => {
-  const { user } = useContext(UtilContext);
+  const { user } = useContext(UserContext);
   const kanbanTask = useRecoilValue(kanbanTaskState);
   const [inputValue, setInputValue] = useState('');
 

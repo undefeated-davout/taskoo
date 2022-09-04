@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import { UtilContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import Task from 'components/molecules/tasks/Task';
@@ -17,7 +17,7 @@ type FocusProps = {};
 
 const Focus = (props: FocusProps) => {
   const theme = useTheme();
-  const { user } = useContext(UtilContext);
+  const { user } = useContext(UserContext);
 
   const kanbanTask = useKanbanTask(user!.uid);
   if (kanbanTask === null) return <></>;

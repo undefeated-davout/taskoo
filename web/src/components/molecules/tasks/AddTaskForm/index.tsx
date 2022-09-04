@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 
 import TextField from '@mui/material/TextField';
 
-import { UtilContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import { addTaskType } from 'types/task';
 
@@ -18,7 +18,7 @@ type AddTaskFormProps = {
 };
 
 const AddTaskForm = (props: AddTaskFormProps) => {
-  const { user } = useContext(UtilContext);
+  const { user } = useContext(UserContext);
   const kanbanTask = useRecoilValue(kanbanTaskState);
   const [inputValue, setInputValue] = useState('');
 

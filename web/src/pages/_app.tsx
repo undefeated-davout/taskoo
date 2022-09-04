@@ -47,10 +47,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export const UtilContext = createContext<{
-  user: User | null;
   isMenuOpen: boolean;
-  setIsMenuOpen: Dispatch<SetStateAction<boolean>> | null;
-}>({ user: null, isMenuOpen: true, setIsMenuOpen: null });
+  setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
+}>({
+  isMenuOpen: null as unknown as boolean,
+  setIsMenuOpen: null as unknown as Dispatch<SetStateAction<boolean>>,
+});
+
+export const UserContext = createContext<{ user: User | null }>({ user: null });
 
 const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -85,14 +89,12 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
           <RecoilDebugObserver />
           <DndProvider backend={HTML5Backend}>
             <UtilContext.Provider
-              value={{
-                user: user,
-                isMenuOpen: isMenuOpen,
-                setIsMenuOpen: setIsMenuOpen,
-              }}
+              value={{ isMenuOpen: isMenuOpen, setIsMenuOpen: setIsMenuOpen }}
             >
-              <GlobalStyle />
-              {isReady && <Component {...pageProps} />}
+              <UserContext.Provider value={{ user: user }}>
+                <GlobalStyle />
+                {isReady && <Component {...pageProps} />}
+              </UserContext.Provider>
             </UtilContext.Provider>
           </DndProvider>
         </RecoilRoot>

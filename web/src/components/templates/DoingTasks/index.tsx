@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
-import { UtilContext } from 'pages/_app';
+import { UserContext } from 'pages/_app';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
@@ -17,7 +17,7 @@ type DoingTasksProps = {};
 
 const DoingTasks = (props: DoingTasksProps) => {
   const theme = useTheme();
-  const { user } = useContext(UtilContext);
+  const { user } = useContext(UserContext);
 
   const kanbanTask = useKanbanTask(user!.uid);
   if (kanbanTask === null) return <></>;
