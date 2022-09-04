@@ -17,9 +17,8 @@ type DoingTasksProps = {};
 
 const DoingTasks = (props: DoingTasksProps) => {
   const theme = useTheme();
-  const { user } = useContext(UserContext);
 
-  const kanbanTask = useKanbanTask(user!.uid);
+  const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
   const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];

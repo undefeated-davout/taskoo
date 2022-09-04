@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useRecoilValue } from 'recoil';
 
@@ -9,6 +9,8 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
+
+import { KanbanTaskContext } from 'pages/_app';
 
 import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
 import TaskList from 'components/organisms/tasks/TaskList';
@@ -27,7 +29,8 @@ type KanbanPanelProps = {
 const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
   const [isOpenAddForm, setIsOpenAddForm] = useState(false);
-  const kanbanTask = useRecoilValue(kanbanTaskState);
+  // const kanbanTask = useRecoilValue(kanbanTaskState);
+  const { kanbanTask } = useContext(KanbanTaskContext);
 
   // --- ドロップ設定 ---
   const [, drop] = useDrop(() => ({

@@ -8,7 +8,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 
-import { UserContext } from 'pages/_app';
+import { KanbanTaskContext, UserContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
@@ -29,7 +29,8 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UserContext);
-  const kanbanTask = useRecoilValue(kanbanTaskState);
+  // const kanbanTask = useRecoilValue(kanbanTaskState);
+  const { kanbanTask } = useContext(KanbanTaskContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

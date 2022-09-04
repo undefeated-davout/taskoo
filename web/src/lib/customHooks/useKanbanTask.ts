@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useContext, useEffect, useState } from 'react';
+
+import { KanbanTaskContext, UserContext } from 'pages/_app';
 
 import { taskType } from 'types/task';
 import { taskOrderType } from 'types/task_order';
@@ -7,14 +8,21 @@ import { taskOrderType } from 'types/task_order';
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
 import { sortStatusIDTasks } from 'lib/models/task';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
-export const useKanbanTask = (userID: string) => {
+// import { useRecoilState } from 'recoil';
+// import { kanbanTaskState } from 'lib/recoil/kanbanTask';
+
+export const useKanbanTask = () => {
+  const { user } = useContext(UserContext);
+
   const [tasks, setTasks] = useState<taskType[] | undefined>();
   const [taskOrder, setTaskOrder] = useState<
     taskOrderType | null | undefined
   >();
-  const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
+  // const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
+  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
+
+  const userID = user!.uid;
 
   // tasks, taskOrder情報取得
   useEffect(() => {

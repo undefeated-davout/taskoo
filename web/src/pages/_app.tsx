@@ -16,6 +16,7 @@ import RecoilDebugObserver from 'components/atoms/RecoilDebugObserver';
 import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
 import { getUser } from 'lib/api/user';
+import { kanbanTaskStateType } from 'lib/recoil/kanbanTask';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -56,8 +57,21 @@ export const UtilContext = createContext<{
 
 export const UserContext = createContext<{ user: User | null }>({ user: null });
 
+export const KanbanTaskContext = createContext<{
+  kanbanTask: kanbanTaskStateType | null;
+  setKanbanTask: Dispatch<SetStateAction<kanbanTaskStateType | null>>;
+}>({
+  kanbanTask: null,
+  setKanbanTask: null as unknown as Dispatch<
+    SetStateAction<kanbanTaskStateType | null>
+  >,
+});
+
 const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [kanbanTask, setKanbanTask] = useState<kanbanTaskStateType | null>(
+    null,
+  );
   const [isMenuOpen, setIsMenuOpen] = useState(true);
   const [isReady, setIsReady] = useState(false);
 
@@ -88,12 +102,14 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
         <RecoilRoot>
           <RecoilDebugObserver />
           <DndProvider backend={HTML5Backend}>
-            <UtilContext.Provider
-              value={{ isMenuOpen: isMenuOpen, setIsMenuOpen: setIsMenuOpen }}
-            >
-              <UserContext.Provider value={{ user: user }}>
-                <GlobalStyle />
-                {isReady && <Component {...pageProps} />}
+            <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>
+              <UserContext.Provider value={{ user }}>
+                <KanbanTaskContext.Provider
+                  value={{ kanbanTask, setKanbanTask }}
+                >
+                  <GlobalStyle />
+                  {isReady && <Component {...pageProps} />}
+                </KanbanTaskContext.Provider>
               </UserContext.Provider>
             </UtilContext.Provider>
           </DndProvider>

@@ -6,8 +6,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import { UserContext } from 'pages/_app';
-
 import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
@@ -25,10 +23,9 @@ const kanbanStatuses: kanbanStatusType[] = [
 ];
 
 const Kanban = (props: KanbanProps) => {
-  const { user } = useContext(UserContext);
   const [displayToolButton, setDisplayToolButton] = useState(false);
 
-  const kanbanTask = useKanbanTask(user!.uid);
+  const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
   return (
