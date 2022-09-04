@@ -136,6 +136,7 @@ const Task = (props: TaskProps) => {
           disableRipple
           sx={{
             height: '100%',
+            width: '100%',
             justifyContent: 'flex-start',
             textTransform: 'none',
             '&:hover': { backgroundColor: 'transparent' },
