@@ -19,6 +19,7 @@ import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { calcStatusIDTasks } from 'lib/models/task';
 
 type TaskProps = {
   isMini?: boolean;
@@ -29,7 +30,7 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UserContext);
-  const { kanbanTask } = useContext(KanbanTaskContext);
+  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -59,12 +60,22 @@ const Task = (props: TaskProps) => {
             editTask = { isDone: false, ...editTask };
           }
         }
+        const newStatusIDTasks = calcStatusIDTasks(
+          props.task.id,
+          kanbanTask.statusIDTasks,
+          editTask.statusID,
+          editTask.prevStatusID,
+        );
+        setKanbanTask({
+          taskOrderID: kanbanTask.taskOrderID,
+          statusIDTasks: newStatusIDTasks,
+        });
         updateTaskWithOrder(
           userID,
           props.task.id,
           editTask,
           kanbanTask.taskOrderID,
-          kanbanTask.statusIDTasks,
+          newStatusIDTasks,
         );
       },
     }),

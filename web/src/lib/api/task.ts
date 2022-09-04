@@ -19,6 +19,7 @@ import {
 import { updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
+import { calcStatusIDTasks } from 'lib/models/task';
 
 import { createStruct, updateStruct } from './common';
 import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
@@ -130,7 +131,7 @@ export const updateTaskWithOrder = async (
   taskID: string,
   task: updateTaskType,
   taskOrderID: string,
-  statusIDTasks: statusIDTasksType,
+  newStatusIDTasks: statusIDTasksType,
 ) => {
   try {
     await runTransaction(db, async (tx) => {
@@ -139,29 +140,13 @@ export const updateTaskWithOrder = async (
       // statusIDが不変なら終了
       if (task.statusID === undefined || task.prevStatusID === undefined)
         return;
-      // statusIDごとのtaskIDリスト作成
-      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-      for (const statusID in statusIDTasks) {
-        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-        newStatusIDTaskIDs[statusID] = taskIDs;
-      }
-
-      // 移動先のstatusIDにtaskIDを追加
-      newStatusIDTaskIDs[task.statusID]
-        ? newStatusIDTaskIDs[task.statusID].unshift(taskID)
-        : (newStatusIDTaskIDs[task.statusID] = [taskID]);
-      // 移動元のstatusIDからtaskIDを除去
-      if (newStatusIDTaskIDs[task.prevStatusID]) {
-        newStatusIDTaskIDs[task.prevStatusID] = newStatusIDTaskIDs[
-          task.prevStatusID
-        ].filter((id) => id !== taskID);
-      }
 
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成
-      for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] =
-          newStatusIDTaskIDs[statusID].join(',');
+      for (const statusID in newStatusIDTasks) {
+        taskOrder['orderDict'][statusID] = newStatusIDTasks[statusID]
+          .map((t) => t.id)
+          .join(',');
       }
       if (taskOrderID === '') {
         addTaskOrderTx(tx, userID, taskOrder);
