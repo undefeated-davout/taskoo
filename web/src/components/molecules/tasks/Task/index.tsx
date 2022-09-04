@@ -44,27 +44,26 @@ const Task = (props: TaskProps) => {
       end: (_, monitor) => {
         const dropResult = monitor.getDropResult() as DropResult;
         if (!dropResult || !kanbanTask) return;
-        let editTask: updateTaskType;
+        let updatedTask: updateTaskType;
         if (dropResult.panelID === props.task.statusID) {
           // パネル内移動
-          editTask = {};
+          updatedTask = {};
         } else {
           // パネル間移動
-          editTask = {
+          updatedTask = {
             statusID: dropResult.panelID,
             prevStatusID: props.task.statusID,
           };
           if (dropResult.panelID === kanbanStatusConst.done) {
-            editTask = { isDone: true, ...editTask };
+            updatedTask = { isDone: true, ...updatedTask };
           } else {
-            editTask = { isDone: false, ...editTask };
+            updatedTask = { isDone: false, ...updatedTask };
           }
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
+          updatedTask,
           kanbanTask.statusIDTasks,
-          editTask.statusID,
-          editTask.prevStatusID,
         );
         setKanbanTask({
           taskOrderID: kanbanTask.taskOrderID,
@@ -73,7 +72,7 @@ const Task = (props: TaskProps) => {
         updateTaskWithOrder(
           userID,
           props.task.id,
-          editTask,
+          updatedTask,
           kanbanTask.taskOrderID,
           newStatusIDTasks,
         );
@@ -104,12 +103,21 @@ const Task = (props: TaskProps) => {
       updatedTask.statusID = props.task.prevStatusID;
       updatedTask.prevStatusID = props.task.statusID;
     }
+    const newStatusIDTasks = calcStatusIDTasks(
+      props.task.id,
+      updatedTask,
+      kanbanTask.statusIDTasks,
+    );
+    setKanbanTask({
+      taskOrderID: kanbanTask.taskOrderID,
+      statusIDTasks: newStatusIDTasks,
+    });
     updateTaskWithOrder(
       user!.uid,
       props.task.id,
       updatedTask,
-      kanbanTask?.taskOrderID,
-      kanbanTask?.statusIDTasks,
+      kanbanTask.taskOrderID,
+      newStatusIDTasks,
     );
   };
 

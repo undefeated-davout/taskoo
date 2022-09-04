@@ -1,5 +1,5 @@
 import { statusIDTasksType, taskType, updateTaskType } from 'types/task';
-import { taskOrderType, updateTaskOrderType } from 'types/task_order';
+import { taskOrderType } from 'types/task_order';
 
 export const sortStatusIDTasks = (
   tasks: taskType[],
@@ -47,9 +47,8 @@ export const sortStatusIDTasks = (
 
 export const calcStatusIDTasks = (
   taskID: string,
+  updatedTask: updateTaskType,
   statusIDTasks: statusIDTasksType,
-  statusID?: string,
-  prevStatusID?: string,
 ): statusIDTasksType => {
   // 引数を値渡し化
   let newStatusIDTasksType: statusIDTasksType = {};
@@ -57,7 +56,10 @@ export const calcStatusIDTasks = (
     newStatusIDTasksType[statusID] = [...statusIDTasks[statusID]];
   }
   // statusIDが不変なら終了
-  if (statusID === undefined || prevStatusID === undefined)
+  if (
+    updatedTask.statusID === undefined ||
+    updatedTask.prevStatusID === undefined
+  )
     return newStatusIDTasksType;
 
   let idTaskDict: { [id: string]: taskType } = {};
@@ -67,14 +69,16 @@ export const calcStatusIDTasks = (
     });
   }
 
-  // 移動先のstatusIDにtaskIDを追加
-  newStatusIDTasksType[statusID]
-    ? newStatusIDTasksType[statusID].unshift(idTaskDict[taskID])
-    : (newStatusIDTasksType[statusID] = [idTaskDict[taskID]]);
+  const newTask = { ...idTaskDict[taskID], ...updatedTask };
+
+  // 移動先のstatusIDにtaskを追加
+  newStatusIDTasksType[updatedTask.statusID]
+    ? newStatusIDTasksType[updatedTask.statusID].unshift(newTask)
+    : (newStatusIDTasksType[updatedTask.statusID] = [newTask]);
   // 移動元のstatusIDからtaskIDを除去
-  if (newStatusIDTasksType[prevStatusID]) {
-    newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
-      prevStatusID
+  if (newStatusIDTasksType[updatedTask.prevStatusID]) {
+    newStatusIDTasksType[updatedTask.prevStatusID] = newStatusIDTasksType[
+      updatedTask.prevStatusID
     ].filter((task) => task.id !== taskID);
   }
 
