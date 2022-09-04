@@ -15,3 +15,10 @@ export type updateTaskType = {
 };
 
 export type taskType = addTaskType & idType & metaType;
+
+export type statusIDTasksType = { [statusID: string]: taskType[] };
+
+export type kanbanTaskStateType = {
+  taskOrderID: string;
+  statusIDTasks: statusIDTasksType;
+};

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +11,6 @@ import { KanbanTaskContext, UserContext } from 'pages/_app';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type EditTaskFormProps = {
   task: taskType;
@@ -22,7 +20,6 @@ type EditTaskFormProps = {
 
 const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UserContext);
-  // const kanbanTask = useRecoilValue(kanbanTaskState);
   const { kanbanTask } = useContext(KanbanTaskContext);
   const [inputValue, setInputValue] = useState('');
 

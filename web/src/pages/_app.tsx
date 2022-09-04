@@ -9,43 +9,15 @@ import {
 } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { RecoilRoot } from 'recoil';
 import { createGlobalStyle } from 'styled-components';
 
-import RecoilDebugObserver from 'components/atoms/RecoilDebugObserver';
 import UtilThemeProvider from 'components/templates/UtilThemeProvider';
 
+import { kanbanTaskStateType } from 'types/task';
+
 import { getUser } from 'lib/api/user';
-import { kanbanTaskStateType } from 'lib/recoil/kanbanTask';
 
-const GlobalStyle = createGlobalStyle`
-  html,
-  body {
-    padding: 0;
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  * {
-    box-sizing: border-box;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: dark;
-    }
-    body {
-      color: white;
-      background: black;
-    }
-  }
-`;
 
 export const UtilContext = createContext<{
   isMenuOpen: boolean;
@@ -99,24 +71,51 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <>
       <UtilThemeProvider>
-        <RecoilRoot>
-          <RecoilDebugObserver />
-          <DndProvider backend={HTML5Backend}>
-            <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>
-              <UserContext.Provider value={{ user }}>
-                <KanbanTaskContext.Provider
-                  value={{ kanbanTask, setKanbanTask }}
-                >
-                  <GlobalStyle />
-                  {isReady && <Component {...pageProps} />}
-                </KanbanTaskContext.Provider>
-              </UserContext.Provider>
-            </UtilContext.Provider>
-          </DndProvider>
-        </RecoilRoot>
+        <DndProvider backend={HTML5Backend}>
+          <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>
+            <UserContext.Provider value={{ user }}>
+              <KanbanTaskContext.Provider value={{ kanbanTask, setKanbanTask }}>
+                <GlobalStyle />
+                {isReady && <Component {...pageProps} />}
+              </KanbanTaskContext.Provider>
+            </UserContext.Provider>
+          </UtilContext.Provider>
+        </DndProvider>
       </UtilThemeProvider>
     </>
   );
 };
 
+const GlobalStyle = createGlobalStyle`
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: dark;
+    }
+    body {
+      color: white;
+      background: black;
+    }
+  }
+`;
+
 export default UtilApp;
+
+
+

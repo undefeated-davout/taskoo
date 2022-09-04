@@ -9,9 +9,6 @@ import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
 import { sortStatusIDTasks } from 'lib/models/task';
 
-// import { useRecoilState } from 'recoil';
-// import { kanbanTaskState } from 'lib/recoil/kanbanTask';
-
 export const useKanbanTask = () => {
   const { user } = useContext(UserContext);
 
@@ -19,7 +16,6 @@ export const useKanbanTask = () => {
   const [taskOrder, setTaskOrder] = useState<
     taskOrderType | null | undefined
   >();
-  // const [kanbanTask, setKanbanTask] = useRecoilState(kanbanTaskState);
   const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
 
   const userID = user!.uid;

@@ -1,6 +1,5 @@
 import { ChangeEvent, useContext, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useRecoilValue } from 'recoil';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Button from '@mui/material/Button';
@@ -18,7 +17,6 @@ import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type TaskProps = {
   isMini?: boolean;
@@ -29,44 +27,47 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UserContext);
-  // const kanbanTask = useRecoilValue(kanbanTaskState);
   const { kanbanTask } = useContext(KanbanTaskContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const userID = user!.uid;
+
   // --- ドラッグ設定 ---
-  const [collected, drag] = useDrag(() => ({
-    type: DnDItems.Task,
-    collect: (monitor) => ({ dragging: monitor.isDragging() }),
-    end: (_, monitor) => {
-      const dropResult = monitor.getDropResult() as DropResult;
-      if (!dropResult || !kanbanTask) return;
-      console.log('kanbanTask.statusIDTasks', kanbanTask.statusIDTasks);
-      let editTask: updateTaskType;
-      if (dropResult.panelID === props.task.statusID) {
-        // パネル内移動
-        editTask = {};
-      } else {
-        // パネル間移動
-        editTask = {
-          statusID: dropResult.panelID,
-          prevStatusID: props.task.statusID,
-        };
-        if (dropResult.panelID === kanbanStatusConst.done) {
-          editTask = { isDone: true, ...editTask };
+  const [collected, drag] = useDrag(
+    () => ({
+      type: DnDItems.Task,
+      collect: (monitor) => ({ dragging: monitor.isDragging() }),
+      end: (_, monitor) => {
+        const dropResult = monitor.getDropResult() as DropResult;
+        if (!dropResult || !kanbanTask) return;
+        let editTask: updateTaskType;
+        if (dropResult.panelID === props.task.statusID) {
+          // パネル内移動
+          editTask = {};
         } else {
-          editTask = { isDone: false, ...editTask };
+          // パネル間移動
+          editTask = {
+            statusID: dropResult.panelID,
+            prevStatusID: props.task.statusID,
+          };
+          if (dropResult.panelID === kanbanStatusConst.done) {
+            editTask = { isDone: true, ...editTask };
+          } else {
+            editTask = { isDone: false, ...editTask };
+          }
         }
-      }
-      updateTaskWithOrder(
-        user!.uid,
-        props.task.id,
-        editTask,
-        kanbanTask.taskOrderID,
-        kanbanTask.statusIDTasks,
-      );
-    },
-  }));
+        updateTaskWithOrder(
+          userID,
+          props.task.id,
+          editTask,
+          kanbanTask.taskOrderID,
+          kanbanTask.statusIDTasks,
+        );
+      },
+    }),
+    [kanbanTask],
+  );
   const { dragging } = collected;
 
   // --- ドロップ設定 ---

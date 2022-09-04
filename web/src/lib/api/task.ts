@@ -2,21 +2,23 @@ import {
   QueryConstraint,
   Transaction,
   collection,
-  deleteDoc,
   doc,
   runTransaction,
   updateDoc,
-  where,
 } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
-import { addTaskType, taskType, updateTaskType } from 'types/task';
+import {
+  addTaskType,
+  statusIDTasksType,
+  taskType,
+  updateTaskType,
+} from 'types/task';
 import { updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
-import { statusIDTasksType } from 'lib/recoil/kanbanTask';
 
 import { createStruct, updateStruct } from './common';
 import { addTaskOrderTx, updateTaskOrderTx } from './task_order';

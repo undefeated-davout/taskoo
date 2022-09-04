@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 
 import TextField from '@mui/material/TextField';
 
@@ -9,7 +8,6 @@ import { addTaskType } from 'types/task';
 
 import { addTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;
@@ -19,7 +17,6 @@ type AddTaskFormProps = {
 
 const AddTaskForm = (props: AddTaskFormProps) => {
   const { user } = useContext(UserContext);
-  // const kanbanTask = useRecoilValue(kanbanTaskState);
   const { kanbanTask } = useContext(KanbanTaskContext);
 
   const [inputValue, setInputValue] = useState('');

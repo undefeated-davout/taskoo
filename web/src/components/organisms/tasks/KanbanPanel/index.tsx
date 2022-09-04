@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import { useDrop } from 'react-dnd';
-import { useRecoilValue } from 'recoil';
 
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
@@ -18,8 +17,6 @@ import TaskList from 'components/organisms/tasks/TaskList';
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
 
-import { kanbanTaskState } from 'lib/recoil/kanbanTask';
-
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
@@ -28,15 +25,15 @@ type KanbanPanelProps = {
 
 const KanbanPanel = (props: KanbanPanelProps) => {
   const theme = useTheme();
-  const [isOpenAddForm, setIsOpenAddForm] = useState(false);
-  // const kanbanTask = useRecoilValue(kanbanTaskState);
   const { kanbanTask } = useContext(KanbanTaskContext);
+  const [isOpenAddForm, setIsOpenAddForm] = useState(false);
 
   // --- ドロップ設定 ---
   const [, drop] = useDrop(() => ({
     accept: DnDItems.Task,
     drop: () => ({
       panelID: props.kanbanStatus.id,
+      kanbanTask: kanbanTask,
     }),
   }));
 
