@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 
 import { preparedFirebase } from 'lib/infrastructure/firebase';
 
-type LoginProps = {};
+type LoginFormProps = {};
 
 const uiConfig = {
   signInFlow: 'popup',
@@ -13,7 +13,7 @@ const uiConfig = {
   signInOptions: [preparedFirebase.auth.EmailAuthProvider.PROVIDER_ID],
 };
 
-const Login = (props: LoginProps) => {
+const LoginForm = (props: LoginFormProps) => {
   return (
     <Box sx={{ width: '100%' }}>
       <StyledFirebaseAuth
@@ -24,4 +24,4 @@ const Login = (props: LoginProps) => {
   );
 };
 
-export default Login;
+export default LoginForm;

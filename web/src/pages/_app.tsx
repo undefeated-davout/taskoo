@@ -5,9 +5,11 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createGlobalStyle } from 'styled-components';
 
+import LoadingCircular from 'components/atoms/LoadingCircular';
 import KanbanTaskContextProvider from 'components/contexts/KanbanTaskContextProvider';
 import UtilContextProvider from 'components/contexts/UtilContextProvider';
 import UtilThemeProvider from 'components/contexts/UtilThemeProvider';
+import LoggedOut from 'components/templates/LoggedOut';
 
 import { getUser } from 'lib/api/user';
 
@@ -46,7 +48,13 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
             <UserContext.Provider value={{ user }}>
               <KanbanTaskContextProvider>
                 <GlobalStyle />
-                {isReady && <Component {...pageProps} />}
+                {isReady ? (
+                  <Component {...pageProps} />
+                ) : (
+                  <LoggedOut>
+                    <LoadingCircular />
+                  </LoggedOut>
+                )}
               </KanbanTaskContextProvider>
             </UserContext.Provider>
           </UtilContextProvider>
