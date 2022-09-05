@@ -41,6 +41,8 @@ export const useKanbanTask = () => {
       taskOrderID: taskOrder?.id ?? '',
       statusIDTasks: sortedStatusIDTasks,
     });
+    setTasks(undefined);
+    setTaskOrder(undefined);
   }, [setKanbanTask, taskOrder, tasks]);
 
   return kanbanTask;
