@@ -173,7 +173,7 @@ const Task = (props: TaskProps) => {
         </Button>
 
         {(!props.isMini || props.displayToolButton) && (
-          <CardActions sx={{ pl: 0 }}>
+          <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
             <Button
               color="primary"
               sx={{ maxWidth: 32, minWidth: 32 }}
