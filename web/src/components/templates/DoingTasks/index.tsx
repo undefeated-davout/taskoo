@@ -17,14 +17,7 @@ const DoingTasks = (props: DoingTasksProps) => {
   const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
-  const doingTasks =
-    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
-      (task) => !task.isChecked,
-    ) ?? [];
-  const checkedTasks =
-    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
-      (task) => task.isChecked,
-    ) ?? [];
+  const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
 
   return (
     <HorizontalCenterContainerBox>
@@ -43,9 +36,6 @@ const DoingTasks = (props: DoingTasksProps) => {
 
         <Box sx={{ mt: doingTasks.length === 0 ? 0 : 3 }} />
         <TaskList tasks={doingTasks} />
-
-        <Box sx={{ mt: checkedTasks.length === 0 ? 0 : 3 }} />
-        <TaskList tasks={checkedTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );
