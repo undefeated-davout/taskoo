@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
+import { SxProps, Theme } from '@mui/material/styles';
 
 import { UserContext } from 'pages/_app';
 
@@ -26,6 +27,7 @@ type TaskProps = {
   displayToolButton: boolean;
   isDraggable?: boolean;
   task: taskType;
+  sx?: SxProps<Theme>;
 };
 
 const Task = (props: TaskProps) => {
@@ -138,63 +140,64 @@ const Task = (props: TaskProps) => {
   return (
     <>
       {/* タスク要素 */}
-      <Card
-        ref={props.isDraggable ? ref : undefined}
-        sx={{
-          height: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          opacity: dragging ? 0.3 : 1,
-          '&:hover': { cursor: 'pointer' },
-        }}
-      >
-        {(!props.isMini || props.displayToolButton) && (
-          <BaseCheckbox
-            sx={{ p: props.isMini ? '4px' : undefined }}
-            checked={props.task.isChecked}
-            onChange={handleChangeCheckbox}
-          />
-        )}
-
-        <Button
-          disableRipple
+      <Box ref={props.isDraggable ? ref : undefined} sx={{ pt: 1 }}>
+        <Card
           sx={{
-            p: props.displayToolButton ? 0 : undefined,
             height: '100%',
-            width: '100%',
-            justifyContent: 'flex-start',
-            textTransform: 'none',
-            '&:hover': { backgroundColor: 'transparent' },
+            display: 'flex',
+            alignItems: 'center',
+            opacity: dragging ? 0.3 : 1,
+            '&:hover': { cursor: 'pointer' },
           }}
-          onClick={() => setIsOpenForm(true)}
         >
-          <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-            <Typography
-              sx={{
-                height: '100%',
-                fontSize: props.isMini ? 15 : 18,
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {props.task.title}
-            </Typography>
-          </Box>
-        </Button>
+          {(!props.isMini || props.displayToolButton) && (
+            <BaseCheckbox
+              sx={{ p: props.isMini ? '4px' : undefined }}
+              checked={props.task.isChecked}
+              onChange={handleChangeCheckbox}
+            />
+          )}
 
-        {(!props.isMini || props.displayToolButton) && (
-          <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
-            <Button
-              color="primary"
-              sx={{ maxWidth: 32, minWidth: 32 }}
-              onClick={handleDeleteButton}
-            >
-              <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
-            </Button>
-          </CardActions>
-        )}
-      </Card>
+          <Button
+            disableRipple
+            sx={{
+              p: props.displayToolButton ? 0 : undefined,
+              height: '100%',
+              width: '100%',
+              justifyContent: 'flex-start',
+              textTransform: 'none',
+              '&:hover': { backgroundColor: 'transparent' },
+            }}
+            onClick={() => setIsOpenForm(true)}
+          >
+            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+              <Typography
+                sx={{
+                  height: '100%',
+                  fontSize: props.isMini ? 15 : 18,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {props.task.title}
+              </Typography>
+            </Box>
+          </Button>
+
+          {(!props.isMini || props.displayToolButton) && (
+            <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
+              <Button
+                color="primary"
+                sx={{ maxWidth: 32, minWidth: 32 }}
+                onClick={handleDeleteButton}
+              >
+                <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
+              </Button>
+            </CardActions>
+          )}
+        </Card>
+      </Box>
 
       {/* 詳細編集フォーム */}
       <EditTaskForm

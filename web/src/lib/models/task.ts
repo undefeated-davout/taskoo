@@ -16,10 +16,16 @@ export const sortStatusIDTasks = (
     {},
   );
 
+  // ソート順が破損しているのでそのまま並べて返す
+  if (taskOrder == null) {
+    return statusIDTasks;
+  }
+
   let sortedStatusIDTasks: { [statusID: string]: taskType[] } = {};
   for (const statusID in statusIDTasks) {
     const tasks = statusIDTasks[statusID];
-    if (taskOrder === null || taskOrder.orderDict[statusID] === undefined) {
+    // 該当statusIDの情報がなければそのままtasksを詰める
+    if (taskOrder.orderDict[statusID] === undefined) {
       sortedStatusIDTasks[statusID] = tasks;
       continue;
     }
@@ -33,7 +39,8 @@ export const sortStatusIDTasks = (
     );
     // ソート順のtaskIDリスト
     const orders = taskOrder.orderDict[statusID].split(',');
-    if (orders.length !== tasks.length) return null;
+    // ソート順の数と異なる場合は破損しているのでそのままかえす
+    if (orders.length !== tasks.length) return statusIDTasks;
     // ソート順IDリストをもとに、task情報のリストを作成
     let sortedTasks: taskType[] = [];
     orders.forEach((taskID) => {

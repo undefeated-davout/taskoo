@@ -18,13 +18,14 @@ const TaskList = (props: TaskListProps) => {
         <ListItem
           key={task.id}
           disablePadding
-          sx={{ display: 'block', mt: 1, height: props.isMini ? 34 : 50 }}
+          sx={{ display: 'block', height: props.isMini ? 42 : 58 }}
         >
           <Task
             isMini={props.isMini}
             displayToolButton={props.displayToolButton}
             isDraggable
             task={task}
+            sx={{ mt: 1 }}
           />
         </ListItem>
       ))}
