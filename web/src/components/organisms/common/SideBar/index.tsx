@@ -79,7 +79,6 @@ const SideBar = (props: SideBarProps) => {
     { key: 'doing', icon: <FormatListBulletedOutlinedIcon /> },
     { key: 'routine', icon: <RepeatOutlinedIcon /> },
     { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
-    { key: 'calendar', icon: <CalendarMonthOutlinedIcon /> },
     { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
   ];
   const secondMenuList: menuType[] = [
