@@ -32,7 +32,7 @@ const Task = (props: TaskProps) => {
   const { user } = useContext(UserContext);
   const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
 
   const userID = user!.uid;
 
@@ -56,6 +56,7 @@ const Task = (props: TaskProps) => {
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
           dropResult.taskID ?? '',
+          dropResult.isSetNext,
           dropResult.panelID,
           props.task.statusID,
           updatedTask,
@@ -81,10 +82,19 @@ const Task = (props: TaskProps) => {
   // --- ドロップ設定 ---
   const [, drop] = useDrop(() => ({
     accept: DnDItems.Task,
-    drop: () => ({
-      panelID: props.task.statusID,
-      taskID: props.task.id,
-    }),
+    drop: (_, monitor) => {
+      const hoverRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoverRect.bottom - hoverRect.top) / 2;
+      const mousePosition = monitor.getClientOffset();
+      if (!mousePosition) return;
+      const hoverClientY = mousePosition.y - hoverRect.top;
+      const isSetNext = hoverClientY >= hoverMiddleY;
+      return {
+        panelID: props.task.statusID,
+        taskID: props.task.id,
+        isSetNext: isSetNext,
+      };
+    },
   }));
   drag(drop(ref));
 
@@ -95,6 +105,7 @@ const Task = (props: TaskProps) => {
     const newStatusIDTasks = calcStatusIDTasks(
       props.task.id,
       '',
+      false,
       props.task.statusID,
       props.task.statusID,
       updatedTask,

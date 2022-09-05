@@ -47,7 +47,8 @@ export const sortStatusIDTasks = (
 
 export const calcStatusIDTasks = (
   taskID: string,
-  nextTaskID: string,
+  distTaskID: string,
+  isSetNext: boolean,
   statusID: string,
   prevStatusID: string,
   updatedTask: updateTaskType,
@@ -67,19 +68,30 @@ export const calcStatusIDTasks = (
   }
   const newTask = { ...idTaskDict[taskID], ...updatedTask };
 
-  // 移動元のstatusIDからtaskIDを除去
-  if (newStatusIDTasksType[prevStatusID]) {
-    newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
-      prevStatusID
-    ].filter((task) => task.id !== taskID);
+  if (statusID === prevStatusID && distTaskID === '') {
+    // 移動しない（タスクの更新のみ）
+    newStatusIDTasksType[statusID]?.forEach((task) => {
+      if (task.id === taskID) {
+        task = newTask;
+      }
+    });
+  } else {
+    // 移動を伴う処理
+    // 移動元のstatusIDからtaskIDを除去
+    if (newStatusIDTasksType[prevStatusID]) {
+      newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
+        prevStatusID
+      ].filter((task) => task.id !== taskID);
+    }
+    // 移動先のstatusIDにtaskを追加
+    const distTaskIndex =
+      newStatusIDTasksType[statusID]?.findIndex(
+        (task) => task.id === distTaskID,
+      ) ?? 0;
+    const setTaskIndex = isSetNext ? distTaskIndex + 1 : distTaskIndex;
+    newStatusIDTasksType[statusID] === undefined
+      ? (newStatusIDTasksType[statusID] = [newTask])
+      : newStatusIDTasksType[statusID].splice(setTaskIndex, 0, newTask);
   }
-  // 移動先のstatusIDにtaskを追加
-  const nextTaskIndex =
-    newStatusIDTasksType[statusID]?.findIndex(
-      (task) => task.id === nextTaskID,
-    ) ?? 0;
-  newStatusIDTasksType[statusID] === undefined
-    ? (newStatusIDTasksType[statusID] = [newTask])
-    : newStatusIDTasksType[statusID].splice(nextTaskIndex, 0, newTask);
   return newStatusIDTasksType;
 };
