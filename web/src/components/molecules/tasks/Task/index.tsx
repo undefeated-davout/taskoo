@@ -44,11 +44,8 @@ const Task = (props: TaskProps) => {
       end: (_, monitor) => {
         const dropResult = monitor.getDropResult() as DropResult;
         if (!dropResult || !kanbanTask) return;
-        let updatedTask: updateTaskType;
-        if (dropResult.panelID === props.task.statusID) {
-          // パネル内移動
-          updatedTask = {};
-        } else {
+        let updatedTask: updateTaskType = {};
+        if (dropResult.panelID !== props.task.statusID) {
           // パネル間移動
           updatedTask = { statusID: dropResult.panelID };
           updatedTask =
@@ -58,9 +55,11 @@ const Task = (props: TaskProps) => {
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
+          dropResult.taskID ?? '',
+          dropResult.panelID,
+          props.task.statusID,
           updatedTask,
           kanbanTask.statusIDTasks,
-          props.task.statusID,
         );
         setKanbanTask({
           taskOrderID: kanbanTask.taskOrderID,
@@ -95,9 +94,11 @@ const Task = (props: TaskProps) => {
     let updatedTask: updateTaskType = { isChecked: event.target.checked };
     const newStatusIDTasks = calcStatusIDTasks(
       props.task.id,
+      '',
+      props.task.statusID,
+      props.task.statusID,
       updatedTask,
       kanbanTask.statusIDTasks,
-      props.task.statusID,
     );
     setKanbanTask({
       taskOrderID: kanbanTask.taskOrderID,

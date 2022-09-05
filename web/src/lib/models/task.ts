@@ -47,17 +47,17 @@ export const sortStatusIDTasks = (
 
 export const calcStatusIDTasks = (
   taskID: string,
+  nextTaskID: string,
+  statusID: string,
+  prevStatusID: string,
   updatedTask: updateTaskType,
   statusIDTasks: statusIDTasksType,
-  prevStatusID: string,
 ): statusIDTasksType => {
   // 引数を値渡し化
   let newStatusIDTasksType: statusIDTasksType = {};
   for (const statusID in statusIDTasks) {
     newStatusIDTasksType[statusID] = [...statusIDTasks[statusID]];
   }
-  // statusIDが不変なら終了
-  if (updatedTask.statusID === undefined) return newStatusIDTasksType;
 
   let idTaskDict: { [id: string]: taskType } = {};
   for (const statusID in newStatusIDTasksType) {
@@ -65,19 +65,21 @@ export const calcStatusIDTasks = (
       idTaskDict[task.id] = task;
     });
   }
-
   const newTask = { ...idTaskDict[taskID], ...updatedTask };
 
-  // 移動先のstatusIDにtaskを追加
-  newStatusIDTasksType[updatedTask.statusID]
-    ? newStatusIDTasksType[updatedTask.statusID].unshift(newTask)
-    : (newStatusIDTasksType[updatedTask.statusID] = [newTask]);
   // 移動元のstatusIDからtaskIDを除去
   if (newStatusIDTasksType[prevStatusID]) {
     newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
       prevStatusID
     ].filter((task) => task.id !== taskID);
   }
-
+  // 移動先のstatusIDにtaskを追加
+  const nextTaskIndex =
+    newStatusIDTasksType[statusID]?.findIndex(
+      (task) => task.id === nextTaskID,
+    ) ?? 0;
+  newStatusIDTasksType[statusID] === undefined
+    ? (newStatusIDTasksType[statusID] = [newTask])
+    : newStatusIDTasksType[statusID].splice(nextTaskIndex, 0, newTask);
   return newStatusIDTasksType;
 };

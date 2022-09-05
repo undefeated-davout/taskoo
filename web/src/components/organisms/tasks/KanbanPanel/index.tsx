@@ -30,10 +30,13 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   // --- ドロップ設定 ---
   const [, drop] = useDrop(() => ({
     accept: DnDItems.Task,
-    drop: () => ({
-      panelID: props.kanbanStatus.id,
-      kanbanTask: kanbanTask,
-    }),
+    drop: (_, monitor) => {
+      if (monitor.didDrop()) return;
+      return {
+        panelID: props.kanbanStatus.id,
+        kanbanTask: kanbanTask,
+      };
+    },
   }));
 
   if (kanbanTask === null) return <></>;

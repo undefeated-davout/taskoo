@@ -19,7 +19,6 @@ import {
 import { updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
-import { calcStatusIDTasks } from 'lib/models/task';
 
 import { createStruct, updateStruct } from './common';
 import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
