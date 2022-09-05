@@ -51,11 +51,10 @@ const Task = (props: TaskProps) => {
         } else {
           // パネル間移動
           updatedTask = { statusID: dropResult.panelID };
-          if (dropResult.panelID === kanbanStatusConst.done) {
-            updatedTask = { isChecked: true, ...updatedTask };
-          } else {
-            updatedTask = { isChecked: false, ...updatedTask };
-          }
+          updatedTask =
+            dropResult.panelID === kanbanStatusConst.done
+              ? { isChecked: true, ...updatedTask }
+              : { isChecked: false, ...updatedTask };
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
