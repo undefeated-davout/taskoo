@@ -19,7 +19,7 @@ import { taskType } from 'types/task';
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;
   tasks: taskType[];
-  displayToolButton?: boolean;
+  displayToolButton: boolean;
 };
 
 const KanbanPanel = (props: KanbanPanelProps) => {

@@ -23,7 +23,7 @@ import { calcStatusIDTasks } from 'lib/models/task';
 
 type TaskProps = {
   isMini?: boolean;
-  displayToolButton?: boolean;
+  displayToolButton: boolean;
   isDraggable?: boolean;
   task: taskType;
 };
@@ -139,6 +139,7 @@ const Task = (props: TaskProps) => {
       >
         {(!props.isMini || props.displayToolButton) && (
           <BaseCheckbox
+            sx={{ p: props.isMini ? '4px' : undefined }}
             checked={props.task.isChecked}
             onChange={handleChangeCheckbox}
           />
@@ -147,6 +148,7 @@ const Task = (props: TaskProps) => {
         <Button
           disableRipple
           sx={{
+            p: props.displayToolButton ? 0 : undefined,
             height: '100%',
             width: '100%',
             justifyContent: 'flex-start',
@@ -159,7 +161,7 @@ const Task = (props: TaskProps) => {
             <Typography
               sx={{
                 height: '100%',
-                fontSize: 16,
+                fontSize: props.isMini ? 15 : 18,
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',

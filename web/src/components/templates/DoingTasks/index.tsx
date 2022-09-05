@@ -35,7 +35,7 @@ const DoingTasks = (props: DoingTasksProps) => {
         <Box sx={{ mt: 1 }} />
 
         <Box sx={{ mt: doingTasks.length === 0 ? 0 : 3 }} />
-        <TaskList tasks={doingTasks} />
+        <TaskList displayToolButton={true} tasks={doingTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );

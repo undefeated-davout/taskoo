@@ -1,11 +1,7 @@
-import { useContext } from 'react';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-
-import { UserContext } from 'pages/_app';
 
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import Task from 'components/molecules/tasks/Task';
@@ -48,7 +44,11 @@ const Focus = (props: FocusProps) => {
         {sortedTasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
-            <Task isMini={false} task={sortedTasks[0]} />
+            <Task
+              isMini={false}
+              displayToolButton={true}
+              task={sortedTasks[0]}
+            />
           </>
         )}
       </Card>

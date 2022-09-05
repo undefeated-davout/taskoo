@@ -7,7 +7,7 @@ import { taskType } from 'types/task';
 
 type TaskListProps = {
   isMini?: boolean;
-  displayToolButton?: boolean;
+  displayToolButton: boolean;
   tasks: taskType[];
 };
 
