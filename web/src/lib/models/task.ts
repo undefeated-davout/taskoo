@@ -77,11 +77,11 @@ export const calcStatusIDTasks = (
 
   if (statusID === prevStatusID && distTaskID === '') {
     // 移動しない（タスクの更新のみ）
-    newStatusIDTasksType[statusID]?.forEach((task) => {
-      if (task.id === taskID) {
-        task = newTask;
-      }
-    });
+    newStatusIDTasksType[statusID] = newStatusIDTasksType[statusID]?.map(
+      (task) => {
+        return task.id === taskID ? newTask : task;
+      },
+    );
   } else {
     // 移動を伴う処理
     // 移動元のstatusIDからtaskIDを除去

@@ -13,6 +13,7 @@ import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
+import { calcStatusIDTasks } from 'lib/models/task';
 
 type EditTaskFormProps = {
   task: taskType;
@@ -22,7 +23,7 @@ type EditTaskFormProps = {
 
 const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UserContext);
-  const { kanbanTask } = useContext(KanbanTaskContext);
+  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -39,10 +40,24 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleClose = () => {
+    if (kanbanTask === null) return;
     if (inputValue.trim() === '') return;
 
-    const editTask: updateTaskType = { title: inputValue.trim() };
-    updateTask(user!.uid, props.task.id, editTask);
+    const updatedTask: updateTaskType = { title: inputValue.trim() };
+    const newStatusIDTasks = calcStatusIDTasks(
+      props.task.id,
+      '',
+      false,
+      props.task.statusID,
+      props.task.statusID,
+      updatedTask,
+      kanbanTask.statusIDTasks,
+    );
+    setKanbanTask({
+      taskOrderID: kanbanTask.taskOrderID,
+      statusIDTasks: newStatusIDTasks,
+    });
+    updateTask(user!.uid, props.task.id, updatedTask);
 
     props.onClose();
   };
