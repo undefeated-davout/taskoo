@@ -4,7 +4,8 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
-import Task from 'components/molecules/tasks/Task';
+
+import Task from 'containers/molecules/tasks/Task';
 
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { useKanbanTask } from 'lib/customHooks/useKanbanTask';

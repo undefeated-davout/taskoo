@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import MenuContainer from 'components/templates/MenuContainer';
+
+import MenuContainer from 'containers/templates/MenuContainer';
 
 const HomePage: NextPage = () => {
   return (

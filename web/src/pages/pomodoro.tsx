@@ -1,8 +1,9 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import MenuContainer from 'components/templates/MenuContainer';
-import Pomodoro from 'components/templates/Pomodoro';
+
+import MenuContainer from 'containers/templates/MenuContainer';
+import Pomodoro from 'containers/templates/Pomodoro';
 
 const PomodoroPage: NextPage = () => {
   return (

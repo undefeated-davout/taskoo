@@ -1,13 +1,17 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import MenuContainer from 'components/templates/MenuContainer';
+
+import MenuContainer from 'containers/templates/MenuContainer';
+import Routine from 'containers/templates/Routine';
 
 const RoutinePage: NextPage = () => {
   return (
     <>
       <HeadHelper titleElem="ROUTINE" />
-      <MenuContainer isLoggedIn={true}>ROUTINE</MenuContainer>
+      <MenuContainer isLoggedIn={true}>
+        <Routine />
+      </MenuContainer>
     </>
   );
 };

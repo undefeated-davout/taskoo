@@ -8,11 +8,10 @@ import TextField from '@mui/material/TextField';
 
 import { UserContext } from 'pages/_app';
 
-import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
-
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
+import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 import { calcStatusIDTasks } from 'lib/models/task';
 
 type EditTaskFormProps = {

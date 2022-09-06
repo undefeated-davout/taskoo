@@ -9,12 +9,13 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
-import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
-import TaskList from 'components/organisms/tasks/TaskList';
+import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
+import TaskList from 'containers/organisms/tasks/TaskList';
 
 import { DnDItems, kanbanStatusType } from 'types/kanban';
 import { taskType } from 'types/task';
+
+import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 
 type KanbanPanelProps = {
   kanbanStatus: kanbanStatusType;

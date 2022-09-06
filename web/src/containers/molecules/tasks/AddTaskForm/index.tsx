@@ -4,11 +4,10 @@ import TextField from '@mui/material/TextField';
 
 import { UserContext } from 'pages/_app';
 
-import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
-
 import { addTaskType } from 'types/task';
 
 import { addTaskWithOrder } from 'lib/api/task';
+import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 
 type AddTaskFormProps = {
   kanbanStatusID: string;

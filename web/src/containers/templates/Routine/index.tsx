@@ -3,15 +3,16 @@ import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
-import AddTaskForm from 'components/molecules/tasks/AddTaskForm';
-import TaskList from 'components/organisms/tasks/TaskList';
+
+import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
+import TaskList from 'containers/organisms/tasks/TaskList';
 
 import { kanbanStatusConst } from 'lib/constants/kanban';
 import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
-type DoingTasksProps = {};
+type RoutineProps = {};
 
-const DoingTasks = (props: DoingTasksProps) => {
+const Routine = (props: RoutineProps) => {
   const theme = useTheme();
 
   const kanbanTask = useKanbanTask();
@@ -28,6 +29,7 @@ const DoingTasks = (props: DoingTasksProps) => {
           maxWidth: 600,
           width: '100%',
           backgroundColor: theme.palette.action.disabledBackground,
+          outline: `2px solid ${theme.palette.success.main}`,
         }}
       >
         <Box sx={{ mt: 1 }} />
@@ -41,4 +43,4 @@ const DoingTasks = (props: DoingTasksProps) => {
   );
 };
 
-export default DoingTasks;
+export default Routine;

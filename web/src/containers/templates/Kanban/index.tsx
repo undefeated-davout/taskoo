@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
-import KanbanPanel from 'components/organisms/tasks/KanbanPanel';
+import KanbanPanel from 'containers/organisms/tasks/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
 

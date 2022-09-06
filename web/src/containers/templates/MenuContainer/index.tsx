@@ -4,9 +4,10 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useTheme } from '@mui/material/styles';
 
-import { UtilContext } from 'components/contexts/UtilContextProvider';
-import HeaderBar from 'components/organisms/common/HeaderBar';
-import SideBar, { DrawerHeader } from 'components/organisms/common/SideBar';
+import HeaderBar from 'containers/organisms/common/HeaderBar';
+import SideBar, { DrawerHeader } from 'containers/organisms/common/SideBar';
+
+import { UtilContext } from 'lib/contexts/UtilContextProvider';
 
 type MenuContainerProps = {
   children: React.ReactNode;

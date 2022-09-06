@@ -4,7 +4,9 @@
   "trailingComma": "all",
   "singleQuote": true,
   "semi": true,
-  "importOrder": ["^@mui/(.*)$", "^pages/(.*)$", "^components/(.*)$", "^types/(.*)$", "^lib/(.*)$", "^[./]"],
+  "importOrder": [
+    "^@mui/(.*)$", "^pages/(.*)$", "^components/(.*)$", "^containers/(.*)$", "^types/(.*)$", "^lib/(.*)$", "^[./]"
+  ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "overrides": [

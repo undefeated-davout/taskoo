@@ -12,14 +12,15 @@ import { SxProps, Theme } from '@mui/material/styles';
 import { UserContext } from 'pages/_app';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
-import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
-import EditTaskForm from 'components/organisms/tasks/EditTaskForm';
+
+import EditTaskForm from 'containers/organisms/tasks/EditTaskForm';
 
 import { DnDItems, DropResult } from 'types/kanban';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst } from 'lib/constants/kanban';
+import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 import { calcStatusIDTasks } from 'lib/models/task';
 
 type TaskProps = {

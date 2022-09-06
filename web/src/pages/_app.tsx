@@ -6,12 +6,13 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { createGlobalStyle } from 'styled-components';
 
 import LoadingCircular from 'components/atoms/LoadingCircular';
-import KanbanTaskContextProvider from 'components/contexts/KanbanTaskContextProvider';
-import UtilContextProvider from 'components/contexts/UtilContextProvider';
-import UtilThemeProvider from 'components/contexts/UtilThemeProvider';
-import LoggedOut from 'components/templates/LoggedOut';
+
+import LoggedOut from 'containers/templates/LoggedOut';
 
 import { getUser } from 'lib/api/user';
+import KanbanTaskContextProvider from 'lib/contexts/KanbanTaskContextProvider';
+import UtilContextProvider from 'lib/contexts/UtilContextProvider';
+import UtilThemeProvider from 'lib/contexts/UtilThemeProvider';
 
 export const UserContext = createContext<{ user: User | null }>({ user: null });
 

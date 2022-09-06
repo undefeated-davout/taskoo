@@ -1,8 +1,9 @@
 import type { NextPage } from 'next';
 
 import HeadHelper from 'components/atoms/HeadHelper';
-import LoggedOut from 'components/templates/LoggedOut';
-import LoginForm from 'components/templates/LoginForm';
+
+import LoggedOut from 'containers/templates/LoggedOut';
+import LoginForm from 'containers/templates/LoginForm';
 
 const LoginPage: NextPage = () => {
   return (
