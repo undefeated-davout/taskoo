@@ -4,21 +4,13 @@ import { UserContext } from 'pages/_app';
 
 import { KanbanTaskContext } from 'components/contexts/KanbanTaskContextProvider';
 
-import { taskType } from 'types/task';
-import { taskOrderType } from 'types/task_order';
-
 import { getTasks } from 'lib/api/task';
 import { getTaskOrder } from 'lib/api/task_order';
 import { sortStatusIDTasks } from 'lib/models/task';
 
 export const useKanbanTask = () => {
   const { user } = useContext(UserContext);
-
-  const [tasks, setTasks] = useState<taskType[] | undefined>();
-  const [taskOrder, setTaskOrder] = useState<
-    taskOrderType | null | undefined
-  >();
-  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
+  const { tasks, setTasks, taskOrder, setTaskOrder, kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
 
   const userID = user!.uid;
 
@@ -30,7 +22,7 @@ export const useKanbanTask = () => {
       tasksUnsubscribe();
       taskOrderUnsubscribe();
     };
-  }, [userID]);
+  }, [setTaskOrder, setTasks, userID]);
 
   // tasks, taskOrder情報をもとに、statusIDごとのソート済みtasksを作成
   useEffect(() => {
@@ -41,8 +33,6 @@ export const useKanbanTask = () => {
       taskOrderID: taskOrder?.id ?? '',
       statusIDTasks: sortedStatusIDTasks,
     });
-    setTasks(undefined);
-    setTaskOrder(undefined);
   }, [setKanbanTask, taskOrder, tasks]);
 
   return kanbanTask;

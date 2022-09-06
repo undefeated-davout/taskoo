@@ -42,31 +42,17 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   if (kanbanTask === null) return <></>;
 
   return (
-    <Card
-      ref={drop}
-      sx={{
-        width: 280,
-        minHeight: 86,
-        p: 1,
-        backgroundColor: theme.palette.action.disabledBackground,
-      }}
-    >
+    <Card ref={drop} sx={{ width: 280, minHeight: 86, p: 1, backgroundColor: theme.palette.action.disabledBackground }}>
       <CardHeader
         action={
           !isOpenAddForm && (
             <Button sx={{ mr: 0.5 }} onClick={() => setIsOpenAddForm(true)}>
               <AddIcon sx={{ mr: 1 }} />
-              <Typography sx={{ fontSize: 14, fontWeight: 100 }}>
-                ADD TASK
-              </Typography>
+              <Typography sx={{ fontSize: 14, fontWeight: 100 }}>ADD TASK</Typography>
             </Button>
           )
         }
-        title={
-          <Typography sx={{ ml: 0.5, fontSize: 14, fontWeight: 100 }}>
-            {props.kanbanStatus.name}
-          </Typography>
-        }
+        title={<Typography sx={{ ml: 0.5, fontSize: 14, fontWeight: 100 }}>{props.kanbanStatus.name}</Typography>}
         sx={{ m: 0, p: 0 }}
       />
 
@@ -74,20 +60,12 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       {isOpenAddForm && (
         <>
           <Box sx={{ mt: 2 }} />
-          <AddTaskForm
-            kanbanStatusID={props.kanbanStatus.id}
-            isMini={true}
-            onBlur={() => setIsOpenAddForm(false)}
-          />
+          <AddTaskForm kanbanStatusID={props.kanbanStatus.id} isMini={true} onBlur={() => setIsOpenAddForm(false)} />
         </>
       )}
 
       {/* タスクリスト */}
-      <TaskList
-        isMini={true}
-        displayToolButton={props.displayToolButton}
-        tasks={props.tasks}
-      />
+      <TaskList isMini={true} displayToolButton={props.displayToolButton} tasks={props.tasks} />
     </Card>
   );
 };

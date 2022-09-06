@@ -23,7 +23,7 @@ type EditTaskFormProps = {
 
 const EditTaskForm = (props: EditTaskFormProps) => {
   const { user } = useContext(UserContext);
-  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
+  const { setTasks, setTaskOrder, kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
@@ -57,6 +57,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
       taskOrderID: kanbanTask.taskOrderID,
       statusIDTasks: newStatusIDTasks,
     });
+    setTasks(undefined);
     updateTask(user!.uid, props.task.id, updatedTask);
 
     props.onClose();
@@ -64,22 +65,15 @@ const EditTaskForm = (props: EditTaskFormProps) => {
 
   const handleDelete = () => {
     if (kanbanTask === null) return;
-    deleteTaskWithOrder(
-      user!.uid,
-      props.task,
-      kanbanTask.taskOrderID,
-      kanbanTask.statusIDTasks,
-    );
+    setTasks(undefined);
+    setTaskOrder(undefined);
+    deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
     props.onClose();
   };
 
   return (
     <div>
-      <Dialog
-        open={props.isOpen}
-        onClose={handleClose}
-        onKeyDown={handleKeyDown}
-      >
+      <Dialog open={props.isOpen} onClose={handleClose} onKeyDown={handleKeyDown}>
         <DialogContent sx={{ width: 500, maxWidth: '100%' }}>
           <TextField
             fullWidth

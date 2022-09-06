@@ -32,7 +32,7 @@ type TaskProps = {
 
 const Task = (props: TaskProps) => {
   const { user } = useContext(UserContext);
-  const { kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
+  const { setTasks, setTaskOrder, kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
 
@@ -68,13 +68,9 @@ const Task = (props: TaskProps) => {
           taskOrderID: kanbanTask.taskOrderID,
           statusIDTasks: newStatusIDTasks,
         });
-        updateTaskWithOrder(
-          userID,
-          props.task.id,
-          updatedTask,
-          kanbanTask.taskOrderID,
-          newStatusIDTasks,
-        );
+        setTasks(undefined);
+        setTaskOrder(undefined);
+        updateTaskWithOrder(userID, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
       },
     }),
     [kanbanTask],
@@ -117,24 +113,17 @@ const Task = (props: TaskProps) => {
       taskOrderID: kanbanTask.taskOrderID,
       statusIDTasks: newStatusIDTasks,
     });
-    updateTaskWithOrder(
-      user!.uid,
-      props.task.id,
-      updatedTask,
-      kanbanTask.taskOrderID,
-      newStatusIDTasks,
-    );
+    setTasks(undefined);
+    setTaskOrder(undefined);
+    updateTaskWithOrder(user!.uid, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
   };
 
   // 削除ボタン押下時
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (kanbanTask === null) return;
-    deleteTaskWithOrder(
-      user!.uid,
-      props.task,
-      kanbanTask.taskOrderID,
-      kanbanTask.statusIDTasks,
-    );
+    setTasks(undefined);
+    setTaskOrder(undefined);
+    deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
   };
 
   return (
@@ -187,11 +176,7 @@ const Task = (props: TaskProps) => {
 
           {(!props.isMini || props.displayToolButton) && (
             <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
-              <Button
-                color="primary"
-                sx={{ maxWidth: 32, minWidth: 32 }}
-                onClick={handleDeleteButton}
-              >
+              <Button color="primary" sx={{ maxWidth: 32, minWidth: 32 }} onClick={handleDeleteButton}>
                 <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
               </Button>
             </CardActions>
@@ -200,11 +185,7 @@ const Task = (props: TaskProps) => {
       </Box>
 
       {/* 詳細編集フォーム */}
-      <EditTaskForm
-        task={props.task}
-        isOpen={isOpenForm}
-        onClose={() => setIsOpenForm(false)}
-      />
+      <EditTaskForm task={props.task} isOpen={isOpenForm} onClose={() => setIsOpenForm(false)} />
     </>
   );
 };
