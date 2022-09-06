@@ -5,7 +5,8 @@
   "singleQuote": true,
   "semi": true,
   "importOrder": [
-    "^@mui/(.*)$", "^pages/(.*)$", "^components/(.*)$", "^containers/(.*)$", "^types/(.*)$", "^lib/(.*)$", "^[./]"
+    "^@mui/(.*)$", "^pages/(.*)$", "^hooks/(.*)$", "^components/(.*)$", "^containers/(.*)$", "^types/(.*)$","^lib/(.*)$",
+    "^[./]"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,

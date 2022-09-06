@@ -2,13 +2,14 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
+import { useKanbanTask } from 'hooks/useKanbanTask';
+
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
 
 import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
 import TaskList from 'containers/organisms/tasks/TaskList';
 
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
 type DoingTasksProps = {};
 

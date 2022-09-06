@@ -6,11 +6,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 
+import { useKanbanTask } from 'hooks/useKanbanTask';
+
 import KanbanPanel from 'containers/organisms/tasks/KanbanPanel';
 
 import { kanbanStatusType } from 'types/kanban';
-
-import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
 type KanbanProps = {};
 

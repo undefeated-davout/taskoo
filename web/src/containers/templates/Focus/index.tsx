@@ -3,12 +3,13 @@ import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
+import { useKanbanTask } from 'hooks/useKanbanTask';
+
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
 import Task from 'containers/molecules/tasks/Task';
 
 import { kanbanStatusConst } from 'lib/constants/kanban';
-import { useKanbanTask } from 'lib/customHooks/useKanbanTask';
 
 type FocusProps = {};
 
