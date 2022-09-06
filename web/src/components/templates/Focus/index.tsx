@@ -17,7 +17,10 @@ const Focus = (props: FocusProps) => {
   const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
-  const sortedTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
+  const doingActiveTasks =
+    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
+      (task) => !task.isChecked,
+    ) ?? [];
 
   return (
     <CenterContainerBox>
@@ -29,7 +32,7 @@ const Focus = (props: FocusProps) => {
           backgroundColor: theme.palette.action.disabledBackground,
         }}
       >
-        {sortedTasks.length === 0 ? (
+        {doingActiveTasks.length === 0 ? (
           <Typography variant="h6" sx={{ fontWeight: 100 }}>
             {'NO TASKS IN "DOING".'}
           </Typography>
@@ -37,17 +40,17 @@ const Focus = (props: FocusProps) => {
           <Typography variant="h6" sx={{ fontWeight: 100 }}>
             FOCUS ON THE TASK.
             <br />
-            REMAINING: {sortedTasks.length}
+            REMAINING: {doingActiveTasks.length}
           </Typography>
         )}
 
-        {sortedTasks.length > 0 && (
+        {doingActiveTasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
             <Task
               isMini={false}
               displayToolButton={true}
-              task={sortedTasks[0]}
+              task={doingActiveTasks[0]}
             />
           </>
         )}
