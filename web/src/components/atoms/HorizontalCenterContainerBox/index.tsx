@@ -4,9 +4,7 @@ type HorizontalCenterContainerBoxProps = {
   children: React.ReactNode;
 };
 
-const HorizontalCenterContainerBox = (
-  props: HorizontalCenterContainerBoxProps,
-) => {
+const HorizontalCenterContainerBox = (props: HorizontalCenterContainerBoxProps) => {
   return (
     <Box
       sx={{

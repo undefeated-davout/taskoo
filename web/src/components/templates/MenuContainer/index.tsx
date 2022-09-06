@@ -21,15 +21,9 @@ const MenuContainer = (props: MenuContainerProps) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <HeaderBar
-        onClickEvent={toggleSideBarOpen}
-        isLoggedIn={props.isLoggedIn}
-      />
+      <HeaderBar onClickEvent={toggleSideBarOpen} isLoggedIn={props.isLoggedIn} />
       {props.isLoggedIn && <SideBar open={isMenuOpen}></SideBar>}
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'gray' }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, height: '100vh', backgroundColor: 'gray' }}>
         <DrawerHeader />
         {/* メインコンテンツ */}
         <Box

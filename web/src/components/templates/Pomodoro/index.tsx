@@ -41,15 +41,11 @@ const Pomodoro = (props: PomodoroProps) => {
 
   const title = (timerStatus: number) => {
     const minutes = (seconds: number) => Math.floor(seconds / 60);
-    const timeFormat = (seconds: number) =>
-      seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`;
+    const timeFormat = (seconds: number) => (seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`);
 
     if (timerStatus === timerStatusConst.unset) {
       return 'SELECT TIMER';
-    } else if (
-      timerStatus === timerStatusConst.working ||
-      timerStatus === timerStatusConst.stopped
-    ) {
+    } else if (timerStatus === timerStatusConst.working || timerStatus === timerStatusConst.stopped) {
       return timeFormat(remainSeconds());
     } else {
       return `${timeFormat(timerSeconds)} OVER`;
@@ -113,8 +109,7 @@ const Pomodoro = (props: PomodoroProps) => {
   // タイマー動作中監視
   useEffect(() => {
     // タイマーが動作中に、指定時間以上経過したら対象
-    if (!(status === timerStatusConst.working && passedSeconds >= timerSeconds))
-      return;
+    if (!(status === timerStatusConst.working && passedSeconds >= timerSeconds)) return;
     clearInterval(timerRef.current);
     setStatus(timerStatusConst.done);
     playAlerm();
@@ -160,17 +155,14 @@ const Pomodoro = (props: PomodoroProps) => {
               <CircularProgress
                 variant="determinate"
                 size="12rem"
-                color={
-                  status === timerStatusConst.working ? 'success' : 'secondary'
-                }
+                color={status === timerStatusConst.working ? 'success' : 'secondary'}
                 value={progress(timerSeconds, passedSeconds)}
               />
             </Box>
           </CardContent>
 
           <CardActions sx={{ display: 'flex', justifyContent: 'center' }}>
-            {status === timerStatusConst.working ||
-            status === timerStatusConst.stopped ? (
+            {status === timerStatusConst.working || status === timerStatusConst.stopped ? (
               <>
                 {status === timerStatusConst.working ? (
                   <BaseButton color="error" onClick={() => stopTimer()}>
@@ -189,10 +181,7 @@ const Pomodoro = (props: PomodoroProps) => {
             ) : (
               <>
                 {timerMinutesList.map((minutes, _) => (
-                  <BaseButton
-                    key={minutes.toString()}
-                    onClick={() => startTimer(minutes * 60)}
-                  >
+                  <BaseButton key={minutes.toString()} onClick={() => startTimer(minutes * 60)}>
                     {minutes}min
                   </BaseButton>
                 ))}

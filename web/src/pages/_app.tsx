@@ -24,10 +24,7 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
       const currentUser = await getUser();
       setUser(currentUser);
       let isLoggedIn = !!currentUser;
-      if (
-        isLoggedIn &&
-        ['/', '/login', '/_error'].indexOf(router.pathname) > -1
-      ) {
+      if (isLoggedIn && ['/', '/login', '/_error'].indexOf(router.pathname) > -1) {
         // ログイン状態でloginページor不正なページにアクセスしたらトップページへリダイレクト
         router.push('/focus');
         return;

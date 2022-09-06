@@ -1,10 +1,4 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, deleteDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -15,10 +9,7 @@ import { db } from 'lib/infrastructure/firebase';
 import { createStruct, updateStruct } from './common';
 
 // タイマー情報1件取得
-export const getTimer = (
-  userID: string,
-  setTimer: Dispatch<SetStateAction<timerType | null | undefined>>,
-) => {
+export const getTimer = (userID: string, setTimer: Dispatch<SetStateAction<timerType | null | undefined>>) => {
   const timerColloctionRef = collection(db, 'users', userID, 'timers');
 
   const unsubscribe = onSnapshot(timerColloctionRef, (docs) => {
@@ -45,11 +36,7 @@ export const addTimer = (userID: string, timer: addTimerType) => {
 };
 
 // タイマー更新
-export const updateTimer = (
-  userID: string,
-  timerID: string,
-  timer: updateTimerType,
-) => {
+export const updateTimer = (userID: string, timerID: string, timer: updateTimerType) => {
   try {
     const userRef = doc(db, 'users', userID);
     const timerRef = doc(userRef, 'timers', timerID);

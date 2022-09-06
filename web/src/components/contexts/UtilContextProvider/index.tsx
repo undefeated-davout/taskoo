@@ -15,11 +15,7 @@ type UtilContextProviderProps = {
 const UtilContextProvider = (props: UtilContextProviderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
 
-  return (
-    <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>
-      {props.children}
-    </UtilContext.Provider>
-  );
+  return <UtilContext.Provider value={{ isMenuOpen, setIsMenuOpen }}>{props.children}</UtilContext.Provider>;
 };
 
 export default UtilContextProvider;

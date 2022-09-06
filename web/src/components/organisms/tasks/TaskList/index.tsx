@@ -15,11 +15,7 @@ const TaskList = (props: TaskListProps) => {
   return (
     <List sx={{ width: '100%', p: 0 }}>
       {props.tasks.map((task, _) => (
-        <ListItem
-          key={task.id}
-          disablePadding
-          sx={{ display: 'block', height: props.isMini ? 42 : 58 }}
-        >
+        <ListItem key={task.id} disablePadding sx={{ display: 'block', height: props.isMini ? 42 : 58 }}>
           <Task
             isMini={props.isMini}
             displayToolButton={props.displayToolButton}

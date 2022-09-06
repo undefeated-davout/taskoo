@@ -17,10 +17,7 @@ const Focus = (props: FocusProps) => {
   const kanbanTask = useKanbanTask();
   if (kanbanTask === null) return <></>;
 
-  const doingActiveTasks =
-    kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter(
-      (task) => !task.isChecked,
-    ) ?? [];
+  const doingActiveTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter((task) => !task.isChecked) ?? [];
 
   return (
     <CenterContainerBox>
@@ -47,11 +44,7 @@ const Focus = (props: FocusProps) => {
         {doingActiveTasks.length > 0 && (
           <>
             <Box sx={{ mt: 2 }}></Box>
-            <Task
-              isMini={false}
-              displayToolButton={true}
-              task={doingActiveTasks[0]}
-            />
+            <Task isMini={false} displayToolButton={true} task={doingActiveTasks[0]} />
           </>
         )}
       </Card>

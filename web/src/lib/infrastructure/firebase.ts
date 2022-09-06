@@ -1,10 +1,6 @@
 import { Auth, connectAuthEmulator, getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
-import {
-  Firestore,
-  connectFirestoreEmulator,
-  getFirestore,
-} from 'firebase/firestore';
+import { Firestore, connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectFunctionsEmulator, getFunctions } from 'firebase/functions';
 
 const firebaseConfig = {

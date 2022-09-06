@@ -15,11 +15,7 @@ type SideMenuListProps = {
   selected: boolean;
 };
 
-const MenuElem = (props: {
-  path: string;
-  onClick?: VoidFunction;
-  children: React.ReactNode;
-}) => {
+const MenuElem = (props: { path: string; onClick?: VoidFunction; children: React.ReactNode }) => {
   return (
     <>
       {props.onClick ? (
@@ -39,9 +35,7 @@ const SideMenuList = (props: SideMenuListProps) => {
       disablePadding
       sx={{
         display: 'block',
-        backgroundColor: props.selected
-          ? theme.palette.action.selected
-          : undefined,
+        backgroundColor: props.selected ? theme.palette.action.selected : undefined,
       }}
     >
       <MenuElem path={`/${props.keyName}`} onClick={props.onClick}>

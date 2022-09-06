@@ -14,11 +14,7 @@ const HeaderBar = (props: HeaderBarProps) => {
   const theme = useTheme();
 
   return (
-    <AppBar
-      position="fixed"
-      color="default"
-      sx={{ zIndex: theme.zIndex.drawer + 1 }}
-    >
+    <AppBar position="fixed" color="default" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
       <Toolbar>
         {props.isLoggedIn && (
           <IconButton
@@ -32,12 +28,7 @@ const HeaderBar = (props: HeaderBarProps) => {
           </IconButton>
         )}
 
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ fontWeight: 100, fontFamily: 'Helvetica' }}
-        >
+        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 100, fontFamily: 'Helvetica' }}>
           TASKOO
         </Typography>
       </Toolbar>

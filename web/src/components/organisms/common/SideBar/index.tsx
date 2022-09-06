@@ -1,7 +1,6 @@
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
 
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';

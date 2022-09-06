@@ -16,10 +16,7 @@ const uiConfig = {
 const LoginForm = (props: LoginFormProps) => {
   return (
     <Box sx={{ width: '100%' }}>
-      <StyledFirebaseAuth
-        uiConfig={uiConfig}
-        firebaseAuth={preparedFirebase.auth()}
-      />
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={preparedFirebase.auth()} />
     </Box>
   );
 };

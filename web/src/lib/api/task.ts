@@ -1,21 +1,9 @@
-import {
-  QueryConstraint,
-  Transaction,
-  collection,
-  doc,
-  runTransaction,
-  updateDoc,
-} from 'firebase/firestore';
+import { QueryConstraint, Transaction, collection, doc, runTransaction, updateDoc } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
-import {
-  addTaskType,
-  statusIDTasksType,
-  taskType,
-  updateTaskType,
-} from 'types/task';
+import { addTaskType, statusIDTasksType, taskType, updateTaskType } from 'types/task';
 import { updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
@@ -24,10 +12,7 @@ import { createStruct, updateStruct } from './common';
 import { addTaskOrderTx, updateTaskOrderTx } from './task_order';
 
 // タスク一覧取得
-export const getTasks = (
-  userID: string,
-  setTasks: Dispatch<SetStateAction<taskType[] | undefined>>,
-) => {
+export const getTasks = (userID: string, setTasks: Dispatch<SetStateAction<taskType[] | undefined>>) => {
   const taskColloctionRef = collection(db, 'users', userID, 'tasks');
   let constraints: QueryConstraint[] = [];
   let q = query(taskColloctionRef, ...constraints);
@@ -81,8 +66,7 @@ export const addTaskWithOrder = async (
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成
       for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] =
-          newStatusIDTaskIDs[statusID].join(',');
+        taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
       }
       if (taskOrderID === '') {
         addTaskOrderTx(tx, userID, taskOrder);
@@ -96,11 +80,7 @@ export const addTaskWithOrder = async (
 };
 
 // タスクソート順更新
-export const updateTask = (
-  userID: string,
-  taskID: string,
-  task: updateTaskType,
-) => {
+export const updateTask = (userID: string, taskID: string, task: updateTaskType) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskRef = doc(userRef, 'tasks', taskID);
@@ -110,12 +90,7 @@ export const updateTask = (
   }
 };
 
-export const updateTaskTx = (
-  tx: Transaction,
-  userID: string,
-  taskID: string,
-  task: updateTaskType,
-) => {
+export const updateTaskTx = (tx: Transaction, userID: string, taskID: string, task: updateTaskType) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskRef = doc(userRef, 'tasks', taskID);
@@ -139,9 +114,7 @@ export const updateTaskWithOrder = async (
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成
       for (const statusID in newStatusIDTasks) {
-        taskOrder['orderDict'][statusID] = newStatusIDTasks[statusID]
-          .map((t) => t.id)
-          .join(',');
+        taskOrder['orderDict'][statusID] = newStatusIDTasks[statusID].map((t) => t.id).join(',');
       }
       if (taskOrderID === '') {
         addTaskOrderTx(tx, userID, taskOrder);
@@ -184,16 +157,13 @@ export const deleteTaskWithOrder = async (
 
       // DELETEしたtaskIDを追加上記リストから除去
       if (newStatusIDTaskIDs[task.statusID]) {
-        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[
-          task.statusID
-        ].filter((id) => task.id !== id);
+        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[task.statusID].filter((id) => task.id !== id);
       }
 
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成
       for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] =
-          newStatusIDTaskIDs[statusID].join(',');
+        taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
       }
       updateTaskOrderTx(tx, userID, taskOrderID, taskOrder);
     });

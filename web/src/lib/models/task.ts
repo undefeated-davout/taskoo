@@ -6,15 +6,10 @@ export const sortStatusIDTasks = (
   taskOrder: taskOrderType | null,
 ): { [statusID: string]: taskType[] } | null => {
   // タスクの一覧を、statusIDごとのリストに変換
-  const statusIDTasks = tasks.reduce(
-    (dict: { [statusID: string]: taskType[] }, task) => {
-      dict[task.statusID]
-        ? dict[task.statusID].push(task)
-        : (dict[task.statusID] = [task]);
-      return dict;
-    },
-    {},
-  );
+  const statusIDTasks = tasks.reduce((dict: { [statusID: string]: taskType[] }, task) => {
+    dict[task.statusID] ? dict[task.statusID].push(task) : (dict[task.statusID] = [task]);
+    return dict;
+  }, {});
 
   // ソート順が破損しているのでそのまま並べて返す
   if (taskOrder == null) {
@@ -30,13 +25,10 @@ export const sortStatusIDTasks = (
       continue;
     }
     // taskIDごとにtask情報を保持
-    const taskIDTaskDict = tasks.reduce(
-      (dict: { [key: string]: taskType }, task) => {
-        dict[task.id] = task;
-        return dict;
-      },
-      {},
-    );
+    const taskIDTaskDict = tasks.reduce((dict: { [key: string]: taskType }, task) => {
+      dict[task.id] = task;
+      return dict;
+    }, {});
     // ソート順のtaskIDリスト
     const orders = taskOrder.orderDict[statusID].split(',');
     // ソート順の数と異なる場合は破損しているのでそのままかえす
@@ -77,24 +69,17 @@ export const calcStatusIDTasks = (
 
   if (statusID === prevStatusID && distTaskID === '') {
     // 移動しない（タスクの更新のみ）
-    newStatusIDTasksType[statusID] = newStatusIDTasksType[statusID]?.map(
-      (task) => {
-        return task.id === taskID ? newTask : task;
-      },
-    );
+    newStatusIDTasksType[statusID] = newStatusIDTasksType[statusID]?.map((task) => {
+      return task.id === taskID ? newTask : task;
+    });
   } else {
     // 移動を伴う処理
     // 移動元のstatusIDからtaskIDを除去
     if (newStatusIDTasksType[prevStatusID]) {
-      newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[
-        prevStatusID
-      ].filter((task) => task.id !== taskID);
+      newStatusIDTasksType[prevStatusID] = newStatusIDTasksType[prevStatusID].filter((task) => task.id !== taskID);
     }
     // 移動先のstatusIDにtaskを追加
-    const distTaskIndex =
-      newStatusIDTasksType[statusID]?.findIndex(
-        (task) => task.id === distTaskID,
-      ) ?? 0;
+    const distTaskIndex = newStatusIDTasksType[statusID]?.findIndex((task) => task.id === distTaskID) ?? 0;
     const setTaskIndex = isSetNext ? distTaskIndex + 1 : distTaskIndex;
     newStatusIDTasksType[statusID] === undefined
       ? (newStatusIDTasksType[statusID] = [newTask])

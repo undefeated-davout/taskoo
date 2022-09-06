@@ -14,11 +14,7 @@ const BaseCheckbox = (props: BaseCheckboxProps) => {
     <Checkbox
       sx={props.sx}
       color="default"
-      icon={
-        <CheckBoxOutlineBlankOutlinedIcon
-          sx={{ color: theme.palette.grey[600] }}
-        />
-      }
+      icon={<CheckBoxOutlineBlankOutlinedIcon sx={{ color: theme.palette.grey[600] }} />}
       checked={props.checked}
       onChange={props.onChange}
     />

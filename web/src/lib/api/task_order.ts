@@ -2,11 +2,7 @@ import { Transaction, collection, doc } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
 
-import {
-  addTaskOrderType,
-  taskOrderType,
-  updateTaskOrderType,
-} from 'types/task_order';
+import { addTaskOrderType, taskOrderType, updateTaskOrderType } from 'types/task_order';
 
 import { db } from 'lib/infrastructure/firebase';
 
@@ -33,18 +29,9 @@ export const getTaskOrder = (
 };
 
 // タスクソート順追加
-export const addTaskOrderTx = (
-  tx: Transaction,
-  userID: string,
-  taskOrder: addTaskOrderType,
-) => {
+export const addTaskOrderTx = (tx: Transaction, userID: string, taskOrder: addTaskOrderType) => {
   try {
-    const taskOrderColloctionRef = collection(
-      db,
-      'users',
-      userID,
-      'task_orders',
-    );
+    const taskOrderColloctionRef = collection(db, 'users', userID, 'task_orders');
     const taskOrderRef = doc(taskOrderColloctionRef);
     tx.set(taskOrderRef, createStruct(taskOrder));
     return taskOrderRef;
@@ -70,11 +57,7 @@ export const updateTaskOrderTx = (
 };
 
 // タスク削除
-export const deleteTaskOrderTx = (
-  tx: Transaction,
-  userID: string,
-  taskOrderID: string,
-) => {
+export const deleteTaskOrderTx = (tx: Transaction, userID: string, taskOrderID: string) => {
   try {
     const userRef = doc(db, 'users', userID);
     const taskOrderRef = doc(userRef, 'task_orders', taskOrderID);
