@@ -6,7 +6,7 @@ import { useKanbanTask } from 'hooks/useKanbanTask';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
 
-import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
+import AddRoutineForm from 'containers/molecules/routines/AddRoutineForm';
 import TaskList from 'containers/organisms/tasks/TaskList';
 
 import { kanbanStatusConst } from 'lib/constants/kanban';
@@ -34,7 +34,7 @@ const Routine = (props: RoutineProps) => {
         }}
       >
         <Box sx={{ mt: 1 }} />
-        <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
+        <AddRoutineForm />
         <Box sx={{ mt: 1 }} />
 
         <Box sx={{ mt: doingTasks.length === 0 ? 0 : 3 }} />

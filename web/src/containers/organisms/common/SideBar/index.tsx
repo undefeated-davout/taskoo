@@ -12,7 +12,7 @@ import MuiDrawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import { CSSObject, Theme, styled } from '@mui/material/styles';
 
-import SideMenuList from 'containers/molecules/common/SideMenuList';
+import SideMenuList from 'components/molecules/common/SideMenuList';
 
 import { auth } from 'lib/infrastructure/firebase';
 
