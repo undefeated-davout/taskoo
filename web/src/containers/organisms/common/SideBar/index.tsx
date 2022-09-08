@@ -1,5 +1,6 @@
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import FilterCenterFocusIcon from '@mui/icons-material/FilterCenterFocus';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
@@ -73,13 +74,16 @@ const SideBar = (props: SideBarProps) => {
   const router = useRouter();
   const pageKey = router.pathname.slice(1, router.pathname.length);
 
-  const firstMenuList: menuType[] = [
-    { key: 'focus', icon: <FilterCenterFocusIcon /> },
-    { key: 'doing', icon: <FormatListBulletedOutlinedIcon /> },
-    { key: 'routine', icon: <RepeatOutlinedIcon /> },
-    { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
-    { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
-  ];
+  const firstMenuList = useMemo(
+    (): menuType[] => [
+      { key: 'focus', icon: <FilterCenterFocusIcon /> },
+      { key: 'doing', icon: <FormatListBulletedOutlinedIcon /> },
+      { key: 'routine', icon: <RepeatOutlinedIcon /> },
+      { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
+      { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
+    ],
+    [],
+  );
   const secondMenuList: menuType[] = [
     {
       key: 'logout',
@@ -91,6 +95,28 @@ const SideBar = (props: SideBarProps) => {
       },
     },
   ];
+
+  // 上下キーでメニューを遷移する
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowDown') {
+        const nowIndex = firstMenuList.findIndex((menu) => menu.key === pageKey);
+        nowIndex < firstMenuList.length - 1
+          ? router.push(firstMenuList[nowIndex + 1].key)
+          : router.push(firstMenuList[0].key);
+      } else if (event.key === 'ArrowUp') {
+        const nowIndex = firstMenuList.findIndex((menu) => menu.key === pageKey);
+        nowIndex > 0
+          ? router.push(firstMenuList[nowIndex - 1].key)
+          : router.push(firstMenuList[firstMenuList.length - 1].key);
+      }
+    },
+    [firstMenuList, pageKey, router],
+  );
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown, false);
+  }, [handleKeyDown]);
 
   return (
     <Drawer variant="permanent" open={props.open}>
