@@ -46,6 +46,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
   return (
     <AddTaskRoutineForm
       title="ENTER YOUR TASK"
+      onBlur={props.onBlur}
       inputValue={inputValue}
       handleTextFieldChange={handleTextFieldChange}
       handleKeyDown={handleKeyDown}

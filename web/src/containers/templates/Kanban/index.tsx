@@ -10,7 +10,7 @@ import { useKanbanTask } from 'hooks/useKanbanTask';
 
 import KanbanPanel from 'containers/organisms/tasks/KanbanPanel';
 
-import { kanbanStatusType } from 'types/kanban';
+import { kanbanStatusType } from 'types/task';
 
 type KanbanProps = {};
 

@@ -16,13 +16,7 @@ const TaskList = (props: TaskListProps) => {
     <List sx={{ width: '100%', p: 0 }}>
       {props.tasks.map((task, _) => (
         <ListItem key={task.id} disablePadding sx={{ display: 'block', height: props.isMini ? 42 : 58 }}>
-          <Task
-            isMini={props.isMini}
-            displayToolButton={props.displayToolButton}
-            isDraggable
-            task={task}
-            sx={{ mt: 1 }}
-          />
+          <Task isMini={props.isMini} displayToolButton={props.displayToolButton} isDraggable task={task} />
         </ListItem>
       ))}
     </List>

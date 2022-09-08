@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
 import TaskList from 'containers/organisms/tasks/TaskList';
 
-import { DnDItems, kanbanStatusType } from 'types/kanban';
+import { DnDItems, kanbanStatusType } from 'types/task';
 import { taskType } from 'types/task';
 
 import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';

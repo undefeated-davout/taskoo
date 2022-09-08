@@ -7,3 +7,8 @@ export type addRoutineType = {
 export type updateRoutineType = Partial<addRoutineType>;
 
 export type routineType = addRoutineType & modelBaseType;
+
+export type DropRoutineResult = {
+  routineID: string;
+  isSetNext: boolean;
+};

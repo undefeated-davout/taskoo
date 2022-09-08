@@ -4,7 +4,7 @@ import { SxProps, Theme, useTheme } from '@mui/material/styles';
 
 type BaseCheckboxProps = {
   sx?: SxProps<Theme>;
-  checked: boolean;
+  checked?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

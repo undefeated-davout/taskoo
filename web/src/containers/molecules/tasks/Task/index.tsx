@@ -1,21 +1,13 @@
-import { ChangeEvent, useContext, useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
-import { SxProps, Theme } from '@mui/material/styles';
 
 import { UserContext } from 'pages/_app';
 
-import BaseCheckbox from 'components/atoms/BaseCheckbox';
+import TaskRoutine from 'components/molecules/tasks/TaskRoutine';
 
 import EditTaskForm from 'containers/organisms/tasks/EditTaskForm';
 
-import { DnDItems, DropResult } from 'types/kanban';
+import { DnDItems, DropTaskResult } from 'types/task';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
@@ -28,7 +20,6 @@ type TaskProps = {
   displayToolButton: boolean;
   isDraggable?: boolean;
   task: taskType;
-  sx?: SxProps<Theme>;
 };
 
 const Task = (props: TaskProps) => {
@@ -45,22 +36,22 @@ const Task = (props: TaskProps) => {
       type: DnDItems.Task,
       collect: (monitor) => ({ dragging: monitor.isDragging() }),
       end: (_, monitor) => {
-        const dropResult = monitor.getDropResult() as DropResult;
-        if (!dropResult || !kanbanTask) return;
+        const DropTaskResult = monitor.getDropResult() as DropTaskResult;
+        if (!DropTaskResult || !kanbanTask) return;
         let updatedTask: updateTaskType = {};
-        if (dropResult.panelID !== props.task.statusID) {
+        if (DropTaskResult.panelID !== props.task.statusID) {
           // パネル間移動
-          updatedTask = { statusID: dropResult.panelID };
+          updatedTask = { statusID: DropTaskResult.panelID };
           updatedTask =
-            dropResult.panelID === kanbanStatusConst.done
+            DropTaskResult.panelID === kanbanStatusConst.done
               ? { isChecked: true, ...updatedTask }
               : { isChecked: false, ...updatedTask };
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
-          dropResult.taskID ?? '',
-          dropResult.isSetNext,
-          dropResult.panelID,
+          DropTaskResult.taskID ?? '',
+          DropTaskResult.isSetNext,
+          DropTaskResult.panelID,
           props.task.statusID,
           updatedTask,
           kanbanTask.statusIDTasks,
@@ -98,7 +89,7 @@ const Task = (props: TaskProps) => {
   drag(drop(ref));
 
   // チェックボックスON/OFF
-  const handleChangeCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (kanbanTask === null) return;
     let updatedTask: updateTaskType = { isChecked: event.target.checked };
     const newStatusIDTasks = calcStatusIDTasks(
@@ -130,60 +121,18 @@ const Task = (props: TaskProps) => {
   return (
     <>
       {/* タスク要素 */}
-      <Box ref={props.isDraggable ? ref : undefined} sx={{ pt: 1 }}>
-        <Card
-          sx={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            opacity: dragging ? 0.3 : 1,
-            '&:hover': { cursor: 'pointer' },
-          }}
-        >
-          {(!props.isMini || props.displayToolButton) && (
-            <BaseCheckbox
-              sx={{ p: props.isMini ? '4px' : undefined }}
-              checked={props.task.isChecked}
-              onChange={handleChangeCheckbox}
-            />
-          )}
-
-          <Button
-            disableRipple
-            sx={{
-              p: props.displayToolButton ? 0 : undefined,
-              height: '100%',
-              width: '100%',
-              justifyContent: 'flex-start',
-              textTransform: 'none',
-              '&:hover': { backgroundColor: 'transparent' },
-            }}
-            onClick={() => setIsOpenForm(true)}
-          >
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
-              <Typography
-                sx={{
-                  height: '100%',
-                  fontSize: props.isMini ? 15 : 18,
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                }}
-              >
-                {props.task.title}
-              </Typography>
-            </Box>
-          </Button>
-
-          {(!props.isMini || props.displayToolButton) && (
-            <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
-              <Button color="primary" sx={{ maxWidth: 32, minWidth: 32 }} onClick={handleDeleteButton}>
-                <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
-              </Button>
-            </CardActions>
-          )}
-        </Card>
-      </Box>
+      <div ref={props.isDraggable ? ref : undefined}>
+        <TaskRoutine
+          isMini={props.isMini}
+          displayToolButton={props.displayToolButton}
+          isChecked={props.task.isChecked}
+          title={props.task.title}
+          dragging={dragging}
+          handleChangeCheckbox={handleChangeCheckbox}
+          handleTitleButton={() => setIsOpenForm(true)}
+          handleDeleteButton={handleDeleteButton}
+        />
+      </div>
 
       {/* 詳細編集フォーム */}
       <EditTaskForm task={props.task} isOpen={isOpenForm} onClose={() => setIsOpenForm(false)} />

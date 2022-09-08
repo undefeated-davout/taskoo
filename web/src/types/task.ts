@@ -25,13 +25,13 @@ export type kanbanStatusType = {
 
 export const DnDItems = {
   Task: 'Task',
+  Routine: 'Routine',
 } as const;
 
 export type DnDItems = typeof DnDItems[keyof typeof DnDItems];
 
-export type DropResult = {
+export type DropTaskResult = {
   panelID: string;
   taskID: string;
   isSetNext: boolean;
-  kanbanTask: kanbanTaskStateType | null;
 };

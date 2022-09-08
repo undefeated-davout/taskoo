@@ -4,6 +4,10 @@ import { UserContext } from 'pages/_app';
 
 import AddTaskRoutineForm from 'components/molecules/tasks/AddTaskRoutineForm';
 
+import { addRoutineType } from 'types/routine';
+
+import { addRoutine } from 'lib/api/routine';
+
 type AddRoutineFormProps = {};
 
 const AddRoutineForm = (props: AddRoutineFormProps) => {
@@ -21,8 +25,11 @@ const AddRoutineForm = (props: AddRoutineFormProps) => {
 
     if (inputValue.trim() === '') return;
 
-    console.log('inputValue', inputValue);
+    const newRoutine: addRoutineType = {
+      title: inputValue.trim(),
+    };
 
+    addRoutine(user.uid, newRoutine);
     setInputValue('');
   };
 
