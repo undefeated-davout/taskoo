@@ -61,7 +61,12 @@ const KanbanPanel = (props: KanbanPanelProps) => {
       {isOpenAddForm && (
         <>
           <Box sx={{ mt: 2 }} />
-          <AddTaskForm kanbanStatusID={props.kanbanStatus.id} isMini={true} onBlur={() => setIsOpenAddForm(false)} />
+          <AddTaskForm
+            kanbanStatusID={props.kanbanStatus.id}
+            isMini={true}
+            autoFocus={true}
+            onBlur={() => setIsOpenAddForm(false)}
+          />
         </>
       )}
 

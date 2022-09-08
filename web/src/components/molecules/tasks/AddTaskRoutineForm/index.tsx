@@ -3,8 +3,9 @@ import TextField from '@mui/material/TextField';
 type AddTaskRoutineFormProps = {
   title: string;
   isMini?: boolean;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  autoFocus?: boolean;
   inputValue: string;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
   handleTextFieldChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 };
@@ -16,7 +17,7 @@ const AddTaskRoutineForm = (props: AddTaskRoutineFormProps) => {
       variant="outlined"
       fullWidth
       autoComplete="off"
-      autoFocus
+      autoFocus={props.autoFocus}
       size={props.isMini ? 'small' : 'medium'}
       value={props.inputValue}
       onChange={props.handleTextFieldChange}

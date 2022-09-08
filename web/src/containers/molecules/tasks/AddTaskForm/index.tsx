@@ -12,6 +12,7 @@ import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 type AddTaskFormProps = {
   kanbanStatusID: string;
   isMini?: boolean;
+  autoFocus?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 };
 
@@ -46,6 +47,7 @@ const AddTaskForm = (props: AddTaskFormProps) => {
   return (
     <AddTaskRoutineForm
       title="ENTER YOUR TASK"
+      autoFocus={props.autoFocus}
       onBlur={props.onBlur}
       inputValue={inputValue}
       handleTextFieldChange={handleTextFieldChange}
