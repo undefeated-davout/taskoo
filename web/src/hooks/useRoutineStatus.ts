@@ -5,6 +5,7 @@ import { UserContext } from 'pages/_app';
 import { getRoutines } from 'lib/api/routine';
 import { getRoutineOrder } from 'lib/api/routine_order';
 import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
+import { sortRoutines } from 'lib/models/routine';
 
 export const useRoutineStatus = () => {
   const { user } = useContext(UserContext);
@@ -26,11 +27,12 @@ export const useRoutineStatus = () => {
   // routines, routineOrder情報をもとに、statusIDごとのソート済みroutinesを作成
   useEffect(() => {
     if (routines === undefined || routineOrder === undefined) return;
-    // const sortedStatusIDRoutines = sortStatusIDRoutines(routines, routineOrder);
-    // if (sortedStatusIDRoutines === null) return;
+
+    const sortedRoutines = sortRoutines(routines, routineOrder);
+
     setRoutineStatus({
       routineOrderID: routineOrder?.id ?? '',
-      sortedRoutines: routines ?? [],
+      sortedRoutines: sortedRoutines,
     });
   }, [routineOrder, routines, setRoutineStatus]);
 

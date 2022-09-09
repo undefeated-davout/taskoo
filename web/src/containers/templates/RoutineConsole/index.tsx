@@ -1,37 +1,20 @@
-import { useContext, useEffect, useState } from 'react';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import { useTheme } from '@mui/material/styles';
 
-import { UserContext } from 'pages/_app';
+import { useRoutineStatus } from 'hooks/useRoutineStatus';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
 
 import AddRoutineForm from 'containers/molecules/tasks/AddRoutineForm';
 import RoutineList from 'containers/organisms/tasks/RoutineList';
 
-import { routineType } from 'types/routine';
-
-import { getRoutines } from 'lib/api/routine';
-
 type RoutineConsoleProps = {};
 
 const RoutineConsole = (props: RoutineConsoleProps) => {
   const theme = useTheme();
-  const { user } = useContext(UserContext);
-  const [routines, setRoutines] = useState<routineType[] | undefined>(undefined);
-
-  const userID = user!.uid;
-
-  useEffect(() => {
-    const routinesUnsubscribe = getRoutines(userID, setRoutines);
-    return () => {
-      routinesUnsubscribe();
-    };
-  }, [setRoutines, userID]);
-
-  if (routines === undefined) return <></>;
+  const routineStatus = useRoutineStatus();
+  if (routineStatus === null) return <></>;
 
   return (
     <HorizontalCenterContainerBox>
@@ -49,8 +32,8 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
         <AddRoutineForm />
         <Box sx={{ mt: 1 }} />
 
-        <Box sx={{ mt: routines.length === 0 ? 0 : 3 }} />
-        <RoutineList routines={routines} />
+        <Box sx={{ mt: routineStatus.sortedRoutines.length === 0 ? 0 : 3 }} />
+        <RoutineList routines={routineStatus.sortedRoutines} />
       </Card>
     </HorizontalCenterContainerBox>
   );

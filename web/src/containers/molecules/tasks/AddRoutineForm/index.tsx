@@ -6,15 +6,18 @@ import AddTaskRoutineForm from 'components/molecules/tasks/AddTaskRoutineForm';
 
 import { addRoutineType } from 'types/routine';
 
-import { addRoutine } from 'lib/api/routine';
+import { addRoutineWithOrder } from 'lib/api/routine';
+import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 
 type AddRoutineFormProps = {};
 
 const AddRoutineForm = (props: AddRoutineFormProps) => {
   const { user } = useContext(UserContext);
+  const { routineStatus } = useContext(RoutineContext);
   const [inputValue, setInputValue] = useState('');
 
   if (user === null) return <></>;
+  if (routineStatus === null) return <></>;
 
   const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -29,7 +32,7 @@ const AddRoutineForm = (props: AddRoutineFormProps) => {
       title: inputValue.trim(),
     };
 
-    addRoutine(user.uid, newRoutine);
+    addRoutineWithOrder(user.uid, newRoutine, routineStatus?.routineOrderID, routineStatus.sortedRoutines);
     setInputValue('');
   };
 

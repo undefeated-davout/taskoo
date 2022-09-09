@@ -9,7 +9,7 @@ import { DropRoutineResult } from 'types/routine';
 import { routineType } from 'types/routine';
 import { DnDItems } from 'types/task';
 
-import { deleteRoutine } from 'lib/api/routine';
+import { deleteRoutineWithOrder } from 'lib/api/routine';
 
 type RoutineProps = {
   routine: routineType;
@@ -55,7 +55,7 @@ const Routine = (props: RoutineProps) => {
 
   // 削除ボタン押下時
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    deleteRoutine(userID, props.routine.id);
+    // deleteRoutine(userID, props.routine.id);
   };
 
   return (
