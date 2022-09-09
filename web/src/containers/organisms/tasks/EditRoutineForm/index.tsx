@@ -8,25 +8,25 @@ import TextField from '@mui/material/TextField';
 
 import { UserContext } from 'pages/_app';
 
-import { taskType, updateTaskType } from 'types/task';
+import { routineType, updateRoutineType } from 'types/routine';
 
-import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
-import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
+import { deleteRoutineWithOrder, updateRoutine } from 'lib/api/routine';
+import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 
-type EditTaskFormProps = {
-  task: taskType;
+type EditRoutineFormProps = {
+  routine: routineType;
   isOpen: boolean;
   onClose: VoidFunction;
 };
 
-const EditTaskForm = (props: EditTaskFormProps) => {
+const EditRoutineForm = (props: EditRoutineFormProps) => {
   const { user } = useContext(UserContext);
-  const { setTasks, setTaskOrder, kanbanTask, setKanbanTask } = useContext(KanbanTaskContext);
+  const { setRoutines, setRoutineOrder, routineStatus } = useContext(RoutineContext);
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
-    setInputValue(props.task.title.trim());
-  }, [props.isOpen, props.task.title]);
+    setInputValue(props.routine.title.trim());
+  }, [props.isOpen, props.routine.title]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.nativeEvent.isComposing || e.key !== 'Escape') return;
@@ -38,20 +38,22 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   };
 
   const handleClose = () => {
-    if (kanbanTask === null) return;
+    if (routineStatus === null) return;
     if (inputValue.trim() === '') return;
 
-    const updatedTask: updateTaskType = { title: inputValue.trim() };
-    updateTask(user!.uid, props.task.id, updatedTask);
+    const updatedRoutine: updateRoutineType = { title: inputValue.trim() };
+
+    setRoutines(undefined);
+    updateRoutine(user!.uid, props.routine.id, updatedRoutine);
 
     props.onClose();
   };
 
   const handleDelete = () => {
-    if (kanbanTask === null) return;
-    setTasks(undefined);
-    setTaskOrder(undefined);
-    deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
+    if (routineStatus === null) return;
+    setRoutines(undefined);
+    setRoutineOrder(undefined);
+    deleteRoutineWithOrder(user!.uid, props.routine.id, routineStatus.routineOrderID, routineStatus.sortedRoutines);
     props.onClose();
   };
 
@@ -80,4 +82,4 @@ const EditTaskForm = (props: EditTaskFormProps) => {
   );
 };
 
-export default EditTaskForm;
+export default EditRoutineForm;

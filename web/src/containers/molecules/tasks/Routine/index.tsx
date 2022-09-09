@@ -5,6 +5,8 @@ import { UserContext } from 'pages/_app';
 
 import TaskRoutine from 'components/molecules/tasks/TaskRoutine';
 
+import EditRoutineForm from 'containers/organisms/tasks/EditRoutineForm';
+
 import { DropRoutineResult } from 'types/routine';
 import { routineType } from 'types/routine';
 import { DnDItems } from 'types/task';
@@ -18,7 +20,7 @@ type RoutineProps = {
 
 const Routine = (props: RoutineProps) => {
   const { user } = useContext(UserContext);
-  const { setRoutines, routineOrder, setRoutineOrder, routineStatus } = useContext(RoutineContext);
+  const { setRoutines, setRoutineOrder, routineStatus } = useContext(RoutineContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
 
@@ -78,7 +80,7 @@ const Routine = (props: RoutineProps) => {
       </div>
 
       {/* 詳細編集フォーム */}
-      {/* <EditTaskForm task={props.task} isOpen={isOpenForm} onClose={() => setIsOpenForm(false)} /> */}
+      <EditRoutineForm routine={props.routine} isOpen={isOpenForm} onClose={() => setIsOpenForm(false)} />
     </>
   );
 };
