@@ -91,16 +91,16 @@ export const updateRoutineTx = (tx: Transaction, userID: string, routineID: stri
 export const updateRoutineWithOrder = async (
   userID: string,
   routineID: string,
-  routine: updateRoutineType,
+  updatedRoutine: updateRoutineType,
   routineOrderID: string,
   newRoutines: routineType[],
 ) => {
   try {
     await runTransaction(db, async (tx) => {
-      updateRoutineTx(tx, userID, routineID, routine);
+      updateRoutineTx(tx, userID, routineID, updatedRoutine);
 
       // --- routineOrder ---
-      const routineOrder: updateRoutineOrderType = { order: newRoutines.join(',') };
+      const routineOrder: updateRoutineOrderType = { order: newRoutines.map((routine) => routine.id).join(',') };
       if (routineOrderID === '') {
         addRoutineOrderTx(tx, userID, routineOrder);
       } else {

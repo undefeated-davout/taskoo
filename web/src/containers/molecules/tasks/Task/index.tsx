@@ -36,22 +36,22 @@ const Task = (props: TaskProps) => {
       type: DnDItems.Task,
       collect: (monitor) => ({ dragging: monitor.isDragging() }),
       end: (_, monitor) => {
-        const DropTaskResult = monitor.getDropResult() as DropTaskResult;
-        if (!DropTaskResult || !kanbanTask) return;
+        const dropResult = monitor.getDropResult() as DropTaskResult;
+        if (!dropResult || !kanbanTask) return;
         let updatedTask: updateTaskType = {};
-        if (DropTaskResult.panelID !== props.task.statusID) {
+        if (dropResult.panelID !== props.task.statusID) {
           // パネル間移動
-          updatedTask = { statusID: DropTaskResult.panelID };
+          updatedTask = { statusID: dropResult.panelID };
           updatedTask =
-            DropTaskResult.panelID === kanbanStatusConst.done
+            dropResult.panelID === kanbanStatusConst.done
               ? { isChecked: true, ...updatedTask }
               : { isChecked: false, ...updatedTask };
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
-          DropTaskResult.taskID ?? '',
-          DropTaskResult.isSetNext,
-          DropTaskResult.panelID,
+          dropResult.taskID ?? '',
+          dropResult.isSetNext,
+          dropResult.panelID,
           props.task.statusID,
           updatedTask,
           kanbanTask.statusIDTasks,
