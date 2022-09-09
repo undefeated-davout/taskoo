@@ -10,6 +10,7 @@ import { routineType } from 'types/routine';
 import { DnDItems } from 'types/task';
 
 import { deleteRoutineWithOrder } from 'lib/api/routine';
+import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 
 type RoutineProps = {
   routine: routineType;
@@ -17,6 +18,7 @@ type RoutineProps = {
 
 const Routine = (props: RoutineProps) => {
   const { user } = useContext(UserContext);
+  const { setRoutines, routineOrder, setRoutineOrder, routineStatus } = useContext(RoutineContext);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const ref = useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
 
@@ -55,7 +57,10 @@ const Routine = (props: RoutineProps) => {
 
   // 削除ボタン押下時
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // deleteRoutine(userID, props.routine.id);
+    if (routineStatus === null) return;
+    setRoutines(undefined);
+    setRoutineOrder(undefined);
+    deleteRoutineWithOrder(userID, props.routine.id, routineStatus.routineOrderID, routineStatus.sortedRoutines);
   };
 
   return (

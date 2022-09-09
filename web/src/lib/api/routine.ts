@@ -125,15 +125,20 @@ const deleteRoutineTx = (tx: Transaction, userID: string, routineID: string) => 
 
 export const deleteRoutineWithOrder = async (
   userID: string,
-  routine: routineType,
+  routineID: string,
   routineOrderID: string,
-  newRoutines: routineType[],
+  routines: routineType[],
 ) => {
   try {
     await runTransaction(db, async (tx) => {
-      deleteRoutineTx(tx, userID, routine.id);
+      deleteRoutineTx(tx, userID, routineID);
 
-      const routineOrder: updateRoutineOrderType = { order: newRoutines.join(',') };
+      const routineOrder: updateRoutineOrderType = {
+        order: routines
+          .filter((routine) => routine.id !== routineID)
+          .map((routine) => routine.id)
+          .join(','),
+      };
       updateRoutineOrderTx(tx, userID, routineOrderID, routineOrder);
     });
   } catch (e) {
