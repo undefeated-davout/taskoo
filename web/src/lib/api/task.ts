@@ -65,22 +65,24 @@ export const addTaskWithOrder = async (
       const newTaskIDs = newTaskRefs.map((ref) => ref.id);
 
       // statusIDごとのtaskIDリスト作成
-      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-      for (const statusID in statusIDTasks) {
-        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-        newStatusIDTaskIDs[statusID] = taskIDs;
-      }
+      const newStatusIDTaskIDs = Object.keys(statusIDTasks).reduce(
+        (dict: { [statusID: string]: string[] }, statusID) => {
+          let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+          dict[statusID] = taskIDs;
+          return dict;
+        },
+        {},
+      );
 
       // INSERTしたtaskIDを追加上記リストに追加
-      newStatusIDTaskIDs[statusID]
-        ? newStatusIDTaskIDs[statusID].concat(newTaskIDs)
-        : (newStatusIDTaskIDs[statusID] = newTaskIDs);
+      newStatusIDTaskIDs[statusID] = newStatusIDTaskIDs[statusID]?.concat(newTaskIDs) || newTaskIDs;
 
-      let taskOrder: updateTaskOrderType = { orderDict: {} };
-      // 書き込み用のorderDictを作成
-      for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
-      }
+      const taskOrder: updateTaskOrderType = {
+        orderDict: Object.keys(newStatusIDTaskIDs).reduce((dict: { [statusID: string]: string }, statusID) => {
+          dict[statusID] = newStatusIDTaskIDs[statusID].join(',');
+          return dict;
+        }, {}),
+      };
       if (taskOrderID === '') {
         addTaskOrderTx(tx, userID, taskOrder);
       } else {
@@ -124,11 +126,12 @@ export const updateTaskWithOrder = async (
     await runTransaction(db, async (tx) => {
       updateTaskTx(tx, userID, taskID, task);
       // --- taskOrder ---
-      let taskOrder: updateTaskOrderType = { orderDict: {} };
-      // 書き込み用のorderDictを作成
-      for (const statusID in newStatusIDTasks) {
-        taskOrder['orderDict'][statusID] = newStatusIDTasks[statusID].map((t) => t.id).join(',');
-      }
+      const taskOrder: updateTaskOrderType = {
+        orderDict: Object.keys(newStatusIDTasks).reduce((dict: { [statusID: string]: string }, statusID) => {
+          dict[statusID] = newStatusIDTasks[statusID].map((t) => t.id).join(',');
+          return dict;
+        }, {}),
+      };
       if (taskOrderID === '') {
         addTaskOrderTx(tx, userID, taskOrder);
       } else {
@@ -162,22 +165,27 @@ export const deleteTaskWithOrder = async (
       deleteTaskTx(tx, userID, task.id);
 
       // statusIDごとのtaskIDリスト作成
-      let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
-      for (const statusID in statusIDTasks) {
-        let taskIDs = statusIDTasks[statusID].map((task) => task.id);
-        newStatusIDTaskIDs[statusID] = taskIDs;
-      }
+      const newStatusIDTaskIDs = Object.keys(statusIDTasks).reduce(
+        (dict: { [statusID: string]: string[] }, statusID) => {
+          let taskIDs = statusIDTasks[statusID].map((task) => task.id);
+          dict[statusID] = taskIDs;
+          return dict;
+        },
+        {},
+      );
 
       // DELETEしたtaskIDを追加上記リストから除去
       if (newStatusIDTaskIDs[task.statusID]) {
         newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[task.statusID].filter((id) => task.id !== id);
       }
 
-      let taskOrder: updateTaskOrderType = { orderDict: {} };
-      // 書き込み用のorderDictを作成
-      for (const statusID in newStatusIDTaskIDs) {
-        taskOrder['orderDict'][statusID] = newStatusIDTaskIDs[statusID].join(',');
-      }
+      const taskOrder: updateTaskOrderType = {
+        orderDict: Object.keys(newStatusIDTaskIDs).reduce((dict: { [statusID: string]: string }, statusID) => {
+          dict[statusID] = newStatusIDTaskIDs[statusID].join(',');
+          return dict;
+        }, {}),
+      };
+
       updateTaskOrderTx(tx, userID, taskOrderID, taskOrder);
     });
   } catch (e) {
