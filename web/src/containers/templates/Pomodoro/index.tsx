@@ -52,9 +52,9 @@ const Pomodoro = (props: PomodoroProps) => {
     }
   };
 
-  const endAt = (seconds: number) => {
+  const endAt = (remainSeconds: number) => {
     const nowSeconds = Math.floor(new Date().getTime() / 1000);
-    const endTimestamp = new Timestamp(nowSeconds + seconds, 0);
+    const endTimestamp = new Timestamp(nowSeconds + remainSeconds, 0);
     return endTimestamp;
   };
 
@@ -85,6 +85,7 @@ const Pomodoro = (props: PomodoroProps) => {
     updateTimer(user!.uid, timer!.id, {
       status: timerStatusConst.working,
       passedSeconds: null,
+      endAt: endAt(remainSeconds()),
     });
   };
 
