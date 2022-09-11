@@ -7,7 +7,7 @@ import TaskRoutine from 'components/molecules/tasks/TaskRoutine';
 
 import EditTaskForm from 'containers/organisms/tasks/EditTaskForm';
 
-import { DnDItems, DropTaskResult, statusIDTasksType } from 'types/task';
+import { DnDItems, DropTaskResult } from 'types/task';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
@@ -60,9 +60,9 @@ const Task = (props: TaskProps) => {
           taskOrderID: kanbanTask.taskOrderID,
           statusIDTasks: newStatusIDTasks,
         });
+        updateTaskWithOrder(userID, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
         setTasks(undefined);
         setTaskOrder(undefined);
-        updateTaskWithOrder(userID, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
       },
     }),
     [kanbanTask],
@@ -101,11 +101,11 @@ const Task = (props: TaskProps) => {
       updatedTask,
       kanbanTask.statusIDTasks,
     );
-    updateTaskWithOrder(user!.uid, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
     setKanbanTask({
       taskOrderID: kanbanTask.taskOrderID,
       statusIDTasks: newStatusIDTasks,
     });
+    updateTaskWithOrder(user!.uid, props.task.id, updatedTask, kanbanTask.taskOrderID, newStatusIDTasks);
     setTasks(undefined);
     setTaskOrder(undefined);
   };
@@ -114,17 +114,6 @@ const Task = (props: TaskProps) => {
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (kanbanTask === null) return;
     deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
-    const newStatusIDTasks: statusIDTasksType = Object.keys(kanbanTask.statusIDTasks).reduce(
-      (dict: { [statusID: string]: taskType[] }, statusID) => {
-        dict[statusID] = kanbanTask.statusIDTasks[statusID].filter((task) => task.id !== props.task.id);
-        return dict;
-      },
-      {},
-    );
-    setKanbanTask({
-      taskOrderID: kanbanTask.taskOrderID,
-      statusIDTasks: newStatusIDTasks,
-    });
     setTasks(undefined);
     setTaskOrder(undefined);
   };

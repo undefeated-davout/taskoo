@@ -43,12 +43,12 @@ const Routine = (props: RoutineProps) => {
           updatedRoutine,
           routineStatus.sortedRoutines,
         );
-        updateRoutineWithOrder(userID, props.routine.id, updatedRoutine, routineStatus.routineOrderID, newRoutines);
         setRoutineStatus((prev) => ({
           routineOrderID: routineStatus.routineOrderID,
           sortedRoutines: newRoutines,
           checkedIDs: prev?.checkedIDs ?? [],
         }));
+        updateRoutineWithOrder(userID, props.routine.id, updatedRoutine, routineStatus.routineOrderID, newRoutines);
         setRoutines(undefined);
         setRoutineOrder(undefined);
       },
@@ -79,12 +79,6 @@ const Routine = (props: RoutineProps) => {
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (routineStatus === null) return;
     deleteRoutineWithOrder(userID, props.routine.id, routineStatus.routineOrderID, routineStatus.sortedRoutines);
-    const newRoutines = routineStatus.sortedRoutines.filter((routine) => routine.id !== props.routine.id);
-    setRoutineStatus((prev) => ({
-      routineOrderID: routineStatus.routineOrderID,
-      sortedRoutines: newRoutines,
-      checkedIDs: prev?.checkedIDs ?? [],
-    }));
     setRoutines(undefined);
     setRoutineOrder(undefined);
   };
