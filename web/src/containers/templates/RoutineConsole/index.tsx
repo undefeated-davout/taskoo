@@ -18,11 +18,7 @@ import MessageDialog from 'containers/organisms/common/MessageDialog';
 import RoutineCopyDialog from 'containers/organisms/tasks/RoutineCopyDialog';
 import RoutineList from 'containers/organisms/tasks/RoutineList';
 
-import { routineType } from 'types/routine';
-import { addTaskType } from 'types/task';
-
-import { addTaskWithOrder } from 'lib/api/task';
-import { kanbanStatusConst } from 'lib/constants/kanban';
+import { copyRoutines } from 'lib/models/routine';
 
 type RoutineConsoleProps = {};
 
@@ -43,37 +39,13 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
       setStateMessageDialog({ content: 'CHECK ON ROUTINES TO COPY.', isOpen: true });
       return;
     }
-    const routineIDRoutineDict = routineStatus.sortedRoutines.reduce(
-      (dict: { [key: string]: routineType }, routine) => {
-        dict[routine.id] = routine;
-        return dict;
-      },
-      {},
+    copyRoutines(
+      routineStatus.sortedRoutines,
+      routineStatus.checkedIDs,
+      kanbanTask.statusIDTasks,
+      userID,
+      kanbanTask.taskOrderID,
     );
-    const registerdRoutineIDs = Object.keys(kanbanTask.statusIDTasks).reduce((ids: string[], statusID) => {
-      const routinIDs = kanbanTask.statusIDTasks[statusID]
-        .filter((task) => task.routineID !== undefined)
-        .map((task) => task.routineID) as string[];
-      ids = ids.concat(routinIDs);
-      return ids;
-    }, []);
-    // IDsをソート
-    let sortedCheckedRoutines: routineType[] = [];
-    routineStatus.sortedRoutines.forEach((routine) => {
-      if (!routineStatus.checkedIDs.includes(routine.id)) return; // チェックOFFは除外
-      if (registerdRoutineIDs.includes(routine.id)) return; // 登録済みのidは除外
-      sortedCheckedRoutines.push(routineIDRoutineDict[routine.id]);
-    });
-
-    // 登録するタスクリストを作成
-    const newTasks: addTaskType[] = sortedCheckedRoutines.map((routine) => ({
-      statusID: kanbanStatusConst.doing,
-      title: routine.title,
-      isChecked: false,
-      routineID: routine.id,
-    }));
-    // 登録
-    await addTaskWithOrder(userID, kanbanStatusConst.doing, newTasks, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
   };
 
   return (
