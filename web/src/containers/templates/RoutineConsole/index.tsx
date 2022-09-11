@@ -12,6 +12,7 @@ import { useKanbanTask } from 'hooks/useKanbanTask';
 import { useRoutineStatus } from 'hooks/useRoutineStatus';
 
 import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterContainerBox';
+import CtmSnackbar from 'components/molecules/common/CtmSnackbar';
 
 import AddRoutineForm from 'containers/molecules/tasks/AddRoutineForm';
 import MessageDialog from 'containers/organisms/common/MessageDialog';
@@ -29,6 +30,7 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
   const { setRoutineStatus } = useContext(RoutineContext);
   const [isOpenCopyForm, setIsOpenCopyForm] = useState(false);
   const [stateMessageDialog, setStateMessageDialog] = useState({ content: '', isOpen: false });
+  const [stateSnackbar, setStateSnackbar] = useState({ content: '', isOpen: false });
   const routineStatus = useRoutineStatus();
   const kanbanTask = useKanbanTask();
   if (routineStatus === null || kanbanTask === null) return <></>;
@@ -46,19 +48,20 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
     });
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     // 選択なしならばエラーメッセージ表示
     if (routineStatus.checkedIDs.length === 0) {
       setStateMessageDialog({ content: 'CHECK ON ROUTINES TO COPY.', isOpen: true });
       return;
     }
-    copyRoutines(
+    await copyRoutines(
       routineStatus.sortedRoutines,
       routineStatus.checkedIDs,
       kanbanTask.statusIDTasks,
       userID,
       kanbanTask.taskOrderID,
     );
+    setStateSnackbar({ content: 'REGISTERD', isOpen: true });
   };
 
   return (
@@ -103,6 +106,11 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
         content={stateMessageDialog.content}
         isOpen={stateMessageDialog.isOpen}
         onClose={() => setStateMessageDialog({ content: '', isOpen: false })}
+      />
+      <CtmSnackbar
+        content={stateSnackbar.content}
+        open={stateSnackbar.isOpen}
+        onClose={() => setStateSnackbar({ content: '', isOpen: false })}
       />
     </>
   );

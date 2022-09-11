@@ -35,7 +35,7 @@ export const calcRoutines = (
   return newRoutines;
 };
 
-export const copyRoutines = (
+export const copyRoutines = async (
   sortedRoutines: routineType[],
   checkedIDs: string[],
   statusIDTasks: statusIDTasksType,
