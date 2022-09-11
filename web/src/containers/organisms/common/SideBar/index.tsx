@@ -116,6 +116,7 @@ const SideBar = (props: SideBarProps) => {
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown, false);
+    return () => removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
   return (
