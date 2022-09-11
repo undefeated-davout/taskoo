@@ -14,7 +14,5 @@ export const timeNow = () => {
     ':' +
     ('0' + date.getSeconds()).slice(-2);
 
-  console.log('time', time);
-
   return time;
 };

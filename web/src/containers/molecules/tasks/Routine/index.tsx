@@ -99,12 +99,17 @@ const Routine = (props: RoutineProps) => {
     });
   };
 
+  const isChecked = (): boolean => {
+    return routineStatus?.checkedIDs.includes(props.routine.id) ?? false;
+  };
+
   return (
     <>
       {/* タスク要素 */}
       <div ref={ref}>
         <TaskRoutine
           displayToolButton={true}
+          isChecked={isChecked()}
           title={props.routine.title}
           dragging={dragging}
           handleChangeCheckbox={handleChangeCheckbox}

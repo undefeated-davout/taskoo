@@ -18,6 +18,7 @@ import MessageDialog from 'containers/organisms/common/MessageDialog';
 import RoutineCopyDialog from 'containers/organisms/tasks/RoutineCopyDialog';
 import RoutineList from 'containers/organisms/tasks/RoutineList';
 
+import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 import { copyRoutines } from 'lib/models/routine';
 
 type RoutineConsoleProps = {};
@@ -25,6 +26,7 @@ type RoutineConsoleProps = {};
 const RoutineConsole = (props: RoutineConsoleProps) => {
   const theme = useTheme();
   const { user } = useContext(UserContext);
+  const { setRoutineStatus } = useContext(RoutineContext);
   const [isOpenCopyForm, setIsOpenCopyForm] = useState(false);
   const [stateMessageDialog, setStateMessageDialog] = useState({ content: '', isOpen: false });
   const routineStatus = useRoutineStatus();
@@ -33,7 +35,18 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
 
   const userID = user!.uid;
 
-  const handleCopy = async () => {
+  const handleCheckAll = (isOn: boolean) => {
+    setRoutineStatus((prev) => {
+      const sortedRoutines = prev?.sortedRoutines ?? [];
+      return {
+        routineOrderID: prev?.routineOrderID ?? '',
+        sortedRoutines: sortedRoutines,
+        checkedIDs: isOn ? sortedRoutines.map((routine) => routine.id) : [],
+      };
+    });
+  };
+
+  const handleCopy = () => {
     // 選択なしならばエラーメッセージ表示
     if (routineStatus.checkedIDs.length === 0) {
       setStateMessageDialog({ content: 'CHECK ON ROUTINES TO COPY.', isOpen: true });
@@ -52,9 +65,16 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
     <>
       <HorizontalCenterContainerBox>
         <Box sx={{ width: '100%', maxWidth: 600 }}>
-          {/* コピーボタン */}
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" onClick={() => setIsOpenCopyForm(true)}>
+            {/* 全選択ボタン */}
+            <Button variant="contained" onClick={() => handleCheckAll(true)}>
+              ALL ON
+            </Button>
+            <Button variant="contained" onClick={() => handleCheckAll(false)} sx={{ ml: 1 }}>
+              ALL OFF
+            </Button>
+            {/* コピーボタン */}
+            <Button variant="contained" onClick={() => setIsOpenCopyForm(true)} sx={{ ml: 1 }}>
               <FileCopyOutlinedIcon />
             </Button>
           </Box>
