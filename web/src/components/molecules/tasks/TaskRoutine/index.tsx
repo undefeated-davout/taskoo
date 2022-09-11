@@ -25,7 +25,7 @@ const TaskRoutine = (props: TaskProps) => {
       <Box sx={{ pt: 1 }}>
         <Card
           sx={{
-            height: '100%',
+            height: 36,
             display: 'flex',
             alignItems: 'center',
             opacity: props.dragging ? 0.3 : 1,
@@ -56,7 +56,7 @@ const TaskRoutine = (props: TaskProps) => {
               <Typography
                 sx={{
                   height: '100%',
-                  fontSize: props.isMini ? 15 : 18,
+                  fontSize: 16,
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
