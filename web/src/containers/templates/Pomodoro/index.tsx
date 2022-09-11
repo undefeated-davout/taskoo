@@ -111,9 +111,9 @@ const Pomodoro = (props: PomodoroProps) => {
   useEffect(() => {
     // タイマーが動作中に、指定時間以上経過したら対象
     if (!(status === timerStatusConst.working && passedSeconds >= timerSeconds)) return;
+    if (passedSeconds === timerSeconds) playAlerm();
     clearInterval(timerRef.current);
     setStatus(timerStatusConst.done);
-    playAlerm();
     deleteTimer(user!.uid, timer!.id);
   }, [timerSeconds, passedSeconds, status, timer, user]);
 
