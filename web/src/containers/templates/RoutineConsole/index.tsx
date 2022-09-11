@@ -50,10 +50,18 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
       },
       {},
     );
+    const registerdRoutineIDs = Object.keys(kanbanTask.statusIDTasks).reduce((ids: string[], statusID) => {
+      const routinIDs = kanbanTask.statusIDTasks[statusID]
+        .filter((task) => task.routineID !== undefined)
+        .map((task) => task.routineID) as string[];
+      ids = ids.concat(routinIDs);
+      return ids;
+    }, []);
     // IDsをソート
     let sortedCheckedRoutines: routineType[] = [];
     routineStatus.sortedRoutines.forEach((routine) => {
-      if (!routineStatus.checkedIDs.includes(routine.id)) return;
+      if (!routineStatus.checkedIDs.includes(routine.id)) return; // チェックOFFは除外
+      if (registerdRoutineIDs.includes(routine.id)) return; // 登録済みのidは除外
       sortedCheckedRoutines.push(routineIDRoutineDict[routine.id]);
     });
 
@@ -62,10 +70,10 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
       statusID: kanbanStatusConst.doing,
       title: routine.title,
       isChecked: false,
+      routineID: routine.id,
     }));
     // 登録
     await addTaskWithOrder(userID, kanbanStatusConst.doing, newTasks, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
-    setStateMessageDialog({ content: 'REGISTERD.', isOpen: true });
   };
 
   return (

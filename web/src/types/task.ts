@@ -4,6 +4,7 @@ export type addTaskType = {
   statusID: string;
   title: string;
   isChecked: boolean;
+  routineID?: string;
 };
 
 export type updateTaskType = Partial<addTaskType>;
