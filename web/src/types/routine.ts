@@ -11,6 +11,7 @@ export type routineType = addRoutineType & modelBaseType;
 export type routineStatusType = {
   routineOrderID: string;
   sortedRoutines: routineType[];
+  checkedIDs: string[];
 };
 
 export type DropRoutineResult = {

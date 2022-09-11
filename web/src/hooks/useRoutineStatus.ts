@@ -2,6 +2,8 @@ import { useContext, useEffect } from 'react';
 
 import { UserContext } from 'pages/_app';
 
+import { routineType } from 'types/routine';
+
 import { getRoutines } from 'lib/api/routine';
 import { getRoutineOrder } from 'lib/api/routine_order';
 import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
@@ -30,11 +32,22 @@ export const useRoutineStatus = () => {
 
     const sortedRoutines = sortRoutines(routines, routineOrder);
 
-    setRoutineStatus({
-      routineOrderID: routineOrder?.id ?? '',
-      sortedRoutines: sortedRoutines,
+    setRoutineStatus((prev) => {
+      const newCheckedIDs = calcCheckedIDs(prev?.checkedIDs ?? [], sortedRoutines);
+      return {
+        routineOrderID: routineOrder?.id ?? '',
+        sortedRoutines: sortedRoutines,
+        checkedIDs: newCheckedIDs,
+      };
     });
   }, [routineOrder, routines, setRoutineStatus]);
 
   return routineStatus;
+};
+
+const calcCheckedIDs = (checkedIDs: string[], routines: routineType[]): string[] => {
+  // 削除されたIDはチェックONリストから除外しておく
+  const routineIDs = routines.map((routine) => routine.id);
+  const newCheckedIDs = checkedIDs.filter((id) => routineIDs.includes(id));
+  return newCheckedIDs;
 };

@@ -43,10 +43,11 @@ const Routine = (props: RoutineProps) => {
           updatedRoutine,
           routineStatus.sortedRoutines,
         );
-        setRoutineStatus({
+        setRoutineStatus((prev) => ({
           routineOrderID: routineStatus.routineOrderID,
           sortedRoutines: newRoutines,
-        });
+          checkedIDs: prev?.checkedIDs ?? [],
+        }));
         setRoutines(undefined);
         setRoutineOrder(undefined);
         updateRoutineWithOrder(userID, props.routine.id, updatedRoutine, routineStatus.routineOrderID, newRoutines);
@@ -82,6 +83,22 @@ const Routine = (props: RoutineProps) => {
     deleteRoutineWithOrder(userID, props.routine.id, routineStatus.routineOrderID, routineStatus.sortedRoutines);
   };
 
+  // チェックボックス変更時処理
+  const handleChangeCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRoutineStatus((prev) => {
+      const prevCheckedIDs = prev?.checkedIDs ?? [];
+      let newCheckedIDs: string[];
+      newCheckedIDs = event.target.checked
+        ? [...prevCheckedIDs, props.routine.id]
+        : prevCheckedIDs.filter((id) => id !== props.routine.id);
+      return {
+        routineOrderID: prev?.routineOrderID ?? '',
+        sortedRoutines: prev?.sortedRoutines ?? [],
+        checkedIDs: newCheckedIDs,
+      };
+    });
+  };
+
   return (
     <>
       {/* タスク要素 */}
@@ -90,7 +107,7 @@ const Routine = (props: RoutineProps) => {
           displayToolButton={true}
           title={props.routine.title}
           dragging={dragging}
-          handleChangeCheckbox={() => {}}
+          handleChangeCheckbox={handleChangeCheckbox}
           handleTitleButton={() => setIsOpenForm(true)}
           handleDeleteButton={handleDeleteButton}
         />

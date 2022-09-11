@@ -1,4 +1,13 @@
-import { QueryConstraint, Transaction, collection, doc, runTransaction, updateDoc } from 'firebase/firestore';
+import {
+  DocumentData,
+  DocumentReference,
+  QueryConstraint,
+  Transaction,
+  collection,
+  doc,
+  runTransaction,
+  updateDoc,
+} from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
 import { query } from 'firebase/firestore';
 import { Dispatch, SetStateAction } from 'react';
@@ -43,14 +52,18 @@ const addTaskTx = (tx: Transaction, userID: string, task: addTaskType) => {
 
 export const addTaskWithOrder = async (
   userID: string,
-  newTask: addTaskType,
+  statusID: string,
+  newTasks: addTaskType[],
   taskOrderID: string,
   statusIDTasks: statusIDTasksType,
 ) => {
   try {
     await runTransaction(db, async (tx) => {
-      const taskRef = addTaskTx(tx, userID, newTask);
-      if (taskRef === undefined) return;
+      const newTaskRefsRaw = newTasks.map((newTask) => addTaskTx(tx, userID, newTask));
+      if (newTaskRefsRaw.includes(undefined)) return;
+      const newTaskRefs = newTaskRefsRaw as DocumentReference<DocumentData>[];
+      const newTaskIDs = newTaskRefs.map((ref) => ref.id);
+
       // statusIDごとのtaskIDリスト作成
       let newStatusIDTaskIDs: { [statusID: string]: string[] } = {};
       for (const statusID in statusIDTasks) {
@@ -59,9 +72,9 @@ export const addTaskWithOrder = async (
       }
 
       // INSERTしたtaskIDを追加上記リストに追加
-      newStatusIDTaskIDs[newTask.statusID]
-        ? newStatusIDTaskIDs[newTask.statusID].push(taskRef.id)
-        : (newStatusIDTaskIDs[newTask.statusID] = [taskRef.id]);
+      newStatusIDTaskIDs[statusID]
+        ? newStatusIDTaskIDs[statusID].concat(newTaskIDs)
+        : (newStatusIDTaskIDs[statusID] = newTaskIDs);
 
       let taskOrder: updateTaskOrderType = { orderDict: {} };
       // 書き込み用のorderDictを作成

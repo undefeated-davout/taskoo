@@ -32,7 +32,7 @@ const AddRoutineForm = (props: AddRoutineFormProps) => {
       title: inputValue.trim(),
     };
 
-    addRoutineWithOrder(user.uid, newRoutine, routineStatus?.routineOrderID, routineStatus.sortedRoutines);
+    addRoutineWithOrder(user.uid, [newRoutine], routineStatus?.routineOrderID, routineStatus.sortedRoutines);
     setInputValue('');
   };
 
