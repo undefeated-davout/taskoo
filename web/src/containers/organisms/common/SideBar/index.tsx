@@ -99,12 +99,12 @@ const SideBar = (props: SideBarProps) => {
   // 上下キーでメニューを遷移する
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'ArrowDown') {
+      if ((event.key === 'ArrowDown' || event.code === 'KeyN') && event.altKey) {
         const nowIndex = firstMenuList.findIndex((menu) => menu.key === pageKey);
         nowIndex < firstMenuList.length - 1
           ? router.push(firstMenuList[nowIndex + 1].key)
           : router.push(firstMenuList[0].key);
-      } else if (event.key === 'ArrowUp') {
+      } else if ((event.key === 'ArrowUp' || event.code === 'KeyP') && event.altKey) {
         const nowIndex = firstMenuList.findIndex((menu) => menu.key === pageKey);
         nowIndex > 0
           ? router.push(firstMenuList[nowIndex - 1].key)
