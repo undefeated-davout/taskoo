@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
@@ -12,6 +13,7 @@ type TaskProps = {
   displayToolButton: boolean;
   isChecked?: boolean;
   title: string;
+  isRoutine: boolean;
   dragging: boolean;
   handleChangeCheckbox: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleButton: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,6 +21,8 @@ type TaskProps = {
 };
 
 const TaskRoutine = (props: TaskProps) => {
+  const theme = useTheme();
+
   return (
     <>
       {/* タスク要素 */}
@@ -28,6 +32,7 @@ const TaskRoutine = (props: TaskProps) => {
             height: 36,
             display: 'flex',
             alignItems: 'center',
+            outline: props.isRoutine ? `2px solid ${theme.palette.success.main}` : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },
           }}

@@ -127,6 +127,7 @@ const Task = (props: TaskProps) => {
           displayToolButton={props.displayToolButton}
           isChecked={props.task.isChecked}
           title={props.task.title}
+          isRoutine={props.task.routineID !== undefined}
           dragging={dragging}
           handleChangeCheckbox={handleChangeCheckbox}
           handleTitleButton={() => setIsOpenForm(true)}

@@ -111,6 +111,7 @@ const Routine = (props: RoutineProps) => {
           displayToolButton={true}
           isChecked={isChecked()}
           title={props.routine.title}
+          isRoutine={false}
           dragging={dragging}
           handleChangeCheckbox={handleChangeCheckbox}
           handleTitleButton={() => setIsOpenForm(true)}
