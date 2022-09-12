@@ -16,7 +16,7 @@ import { UserContext } from 'pages/_app';
 import BaseButton from 'components/atoms/BaseButton';
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
-import { timerType } from 'types/timer';
+import { timerStatusType, timerType } from 'types/timer';
 
 import { addTimer, deleteTimer, getTimer, updateTimer } from 'lib/api/timer';
 import { timerStatusConst } from 'lib/constants/timer';
@@ -29,7 +29,7 @@ const timerMinutesList = [5, 10, 15, 25];
 const Pomodoro = (props: PomodoroProps) => {
   const { user } = useContext(UserContext);
 
-  const [status, setStatus] = useState(timerStatusConst.unset);
+  const [status, setStatus] = useState<timerStatusType>(timerStatusConst.unset);
   const [timerSeconds, setTimerSeconds] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
   const [timer, setTimer] = useState<timerType | null | undefined>(undefined);
