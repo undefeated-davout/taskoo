@@ -78,9 +78,9 @@ const SideBar = (props: SideBarProps) => {
     (): menuType[] => [
       { key: 'focus', icon: <FilterCenterFocusIcon /> },
       { key: 'doing', icon: <FormatListBulletedOutlinedIcon /> },
-      { key: 'routine', icon: <RepeatOutlinedIcon /> },
       { key: 'kanban', icon: <ViewKanbanOutlinedIcon /> },
       { key: 'pomodoro', icon: <TimerOutlinedIcon /> },
+      { key: 'routine', icon: <RepeatOutlinedIcon /> },
     ],
     [],
   );
