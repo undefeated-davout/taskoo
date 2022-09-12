@@ -1,3 +1,5 @@
+import { taskRoutineTypeConst } from 'lib/constants/task';
+
 import { modelBaseType } from './common';
 
 export type addTaskType = {
@@ -36,3 +38,5 @@ export type DropTaskResult = {
   taskID: string;
   isSetNext: boolean;
 };
+
+export type taskRoutineType = keyof typeof taskRoutineTypeConst;

@@ -11,7 +11,7 @@ import { DnDItems, DropTaskResult } from 'types/task';
 import { taskType, updateTaskType } from 'types/task';
 
 import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
-import { kanbanStatusConst } from 'lib/constants/kanban';
+import { kanbanStatusConst, taskRoutineTypeConst } from 'lib/constants/task';
 import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 import { calcStatusIDTasks } from 'lib/models/task';
 
@@ -127,7 +127,9 @@ const Task = (props: TaskProps) => {
           displayToolButton={props.displayToolButton}
           isChecked={props.task.isChecked}
           title={props.task.title}
-          isRoutine={props.task.routineID !== undefined}
+          taskRoutineType={
+            props.task.routineID === undefined ? taskRoutineTypeConst.task : taskRoutineTypeConst.routineTask
+          }
           dragging={dragging}
           handleChangeCheckbox={handleChangeCheckbox}
           handleTitleButton={() => setIsOpenForm(true)}

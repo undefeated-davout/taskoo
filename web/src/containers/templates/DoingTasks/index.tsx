@@ -9,7 +9,7 @@ import HorizontalCenterContainerBox from 'components/atoms/HorizontalCenterConta
 import AddTaskForm from 'containers/molecules/tasks/AddTaskForm';
 import TaskList from 'containers/organisms/tasks/TaskList';
 
-import { kanbanStatusConst } from 'lib/constants/kanban';
+import { kanbanStatusConst } from 'lib/constants/task';
 
 type DoingTasksProps = {};
 

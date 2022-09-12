@@ -12,6 +12,7 @@ import { routineType } from 'types/routine';
 import { DnDItems } from 'types/task';
 
 import { deleteRoutineWithOrder, updateRoutineWithOrder } from 'lib/api/routine';
+import { taskRoutineTypeConst } from 'lib/constants/task';
 import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 import { calcRoutines } from 'lib/models/routine';
 
@@ -111,7 +112,7 @@ const Routine = (props: RoutineProps) => {
           displayToolButton={true}
           isChecked={isChecked()}
           title={props.routine.title}
-          isRoutine={false}
+          taskRoutineType={taskRoutineTypeConst.routine}
           dragging={dragging}
           handleChangeCheckbox={handleChangeCheckbox}
           handleTitleButton={() => setIsOpenForm(true)}

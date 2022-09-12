@@ -8,12 +8,16 @@ import { useTheme } from '@mui/material/styles';
 
 import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
+import { taskRoutineType } from 'types/task';
+
+import { taskRoutineTypeConst } from 'lib/constants/task';
+
 type TaskProps = {
   isMini?: boolean;
   displayToolButton: boolean;
-  isChecked?: boolean;
+  isChecked: boolean;
   title: string;
-  isRoutine: boolean;
+  taskRoutineType: taskRoutineType;
   dragging: boolean;
   handleChangeCheckbox: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleTitleButton: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -22,6 +26,14 @@ type TaskProps = {
 
 const TaskRoutine = (props: TaskProps) => {
   const theme = useTheme();
+
+  const isInconspicuous = (): boolean => {
+    return (
+      props.isChecked &&
+      (props.taskRoutineType === taskRoutineTypeConst.task ||
+        props.taskRoutineType === taskRoutineTypeConst.routineTask)
+    );
+  };
 
   return (
     <>
@@ -32,7 +44,10 @@ const TaskRoutine = (props: TaskProps) => {
             height: 36,
             display: 'flex',
             alignItems: 'center',
-            outline: props.isRoutine ? `1.5px solid ${theme.palette.success.main}` : undefined,
+            outline:
+              props.taskRoutineType === taskRoutineTypeConst.routineTask
+                ? `1.5px solid ${theme.palette.success.main}`
+                : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },
           }}
@@ -65,6 +80,7 @@ const TaskRoutine = (props: TaskProps) => {
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
+                  color: isInconspicuous() ? theme.palette.action.disabled : undefined,
                 }}
               >
                 {props.title}

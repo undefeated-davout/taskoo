@@ -9,7 +9,7 @@ import CenterContainerBox from 'components/atoms/CenterContainerBox';
 
 import Task from 'containers/molecules/tasks/Task';
 
-import { kanbanStatusConst } from 'lib/constants/kanban';
+import { kanbanStatusConst } from 'lib/constants/task';
 
 type FocusProps = {};
 

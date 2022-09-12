@@ -3,7 +3,7 @@ import { routineOrderType } from 'types/routine_order';
 import { addTaskType, statusIDTasksType } from 'types/task';
 
 import { addTaskWithOrder } from 'lib/api/task';
-import { kanbanStatusConst } from 'lib/constants/kanban';
+import { kanbanStatusConst } from 'lib/constants/task';
 
 export const sortRoutines = (routines: routineType[], routineOrder: routineOrderType | null): routineType[] => {
   if (routineOrder === null) return routines;
