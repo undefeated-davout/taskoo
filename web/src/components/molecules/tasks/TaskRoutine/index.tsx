@@ -32,7 +32,7 @@ const TaskRoutine = (props: TaskProps) => {
             height: 36,
             display: 'flex',
             alignItems: 'center',
-            outline: props.isRoutine ? `2px solid ${theme.palette.success.main}` : undefined,
+            outline: props.isRoutine ? `1.5px solid ${theme.palette.success.main}` : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },
           }}
