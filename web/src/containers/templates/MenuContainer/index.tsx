@@ -30,10 +30,7 @@ const MenuContainer = (props: MenuContainerProps) => {
         <Box
           sx={{
             p: 1,
-            height: `calc(100% - ${theme.spacing(7)})`,
-            [theme.breakpoints.up('sm')]: {
-              height: `calc(100% - ${theme.spacing(8)})`,
-            },
+            height: `calc(100% - ${theme.spacing(8)})`,
             backgroundColor: theme.palette.background.default,
             color: theme.palette.text.primary,
           }}

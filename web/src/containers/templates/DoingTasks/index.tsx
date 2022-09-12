@@ -27,7 +27,7 @@ const DoingTasks = (props: DoingTasksProps) => {
         sx={{
           mt: 4,
           p: 2,
-          maxWidth: 375,
+          maxWidth: 359,
           width: '100%',
           backgroundColor: theme.palette.action.disabledBackground,
         }}

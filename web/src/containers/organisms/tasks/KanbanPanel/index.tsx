@@ -43,7 +43,16 @@ const KanbanPanel = (props: KanbanPanelProps) => {
   if (kanbanTask === null) return <></>;
 
   return (
-    <Card ref={drop} sx={{ width: 280, minHeight: 86, p: 1, backgroundColor: theme.palette.action.disabledBackground }}>
+    <Card
+      ref={drop}
+      sx={{
+        width: 300,
+        [theme.breakpoints.down('sm')]: { width: 359 },
+        minHeight: 86,
+        p: 1,
+        backgroundColor: theme.palette.action.disabledBackground,
+      }}
+    >
       <CardHeader
         action={
           !isOpenAddForm && (

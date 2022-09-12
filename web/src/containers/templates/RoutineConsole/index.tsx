@@ -67,7 +67,7 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
   return (
     <>
       <HorizontalCenterContainerBox>
-        <Box sx={{ width: '100%', maxWidth: 375 }}>
+        <Box sx={{ width: '100%', maxWidth: 359 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             {/* 全選択ボタン */}
             <Button variant="contained" onClick={() => handleCheckAll(true)}>

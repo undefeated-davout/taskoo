@@ -26,7 +26,7 @@ const Focus = (props: FocusProps) => {
       <Card
         sx={{
           p: 2,
-          maxWidth: 375,
+          maxWidth: 359,
           width: '100%',
           backgroundColor: theme.palette.action.disabledBackground,
         }}
