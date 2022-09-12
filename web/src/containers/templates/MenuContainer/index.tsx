@@ -31,6 +31,7 @@ const MenuContainer = (props: MenuContainerProps) => {
           sx={{
             p: 1,
             height: `calc(100% - ${theme.spacing(8)})`,
+            [theme.breakpoints.down('sm')]: { height: `calc(100% - ${theme.spacing(7)})` },
             backgroundColor: theme.palette.background.default,
             color: theme.palette.text.primary,
           }}
