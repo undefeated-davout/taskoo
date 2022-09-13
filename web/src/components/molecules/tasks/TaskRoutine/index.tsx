@@ -35,6 +35,8 @@ const TaskRoutine = (props: TaskProps) => {
     );
   };
 
+  const disableColorJudge = () => (isInconspicuous() ? theme.palette.action.disabled : undefined);
+
   return (
     <>
       {/* タスク要素 */}
@@ -44,9 +46,10 @@ const TaskRoutine = (props: TaskProps) => {
             height: 36,
             display: 'flex',
             alignItems: 'center',
+            backgroundColor: isInconspicuous() ? theme.palette.action.disabledBackground : undefined,
             outline:
               props.taskRoutineType === taskRoutineTypeConst.routineTask
-                ? `1.5px solid ${theme.palette.success.main}`
+                ? `1.5px solid ${isInconspicuous() ? '#2E7D32' : theme.palette.success.main}`
                 : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },
@@ -54,7 +57,10 @@ const TaskRoutine = (props: TaskProps) => {
         >
           {(!props.isMini || props.displayToolButton) && (
             <BaseCheckbox
-              sx={{ p: props.isMini ? '4px' : undefined }}
+              sx={{
+                p: props.isMini ? '4px' : undefined,
+                color: disableColorJudge(),
+              }}
               checked={props.isChecked}
               onChange={props.handleChangeCheckbox}
             />
@@ -80,7 +86,7 @@ const TaskRoutine = (props: TaskProps) => {
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
                   textOverflow: 'ellipsis',
-                  color: isInconspicuous() ? theme.palette.action.disabled : undefined,
+                  color: disableColorJudge(),
                 }}
               >
                 {props.title}
@@ -91,7 +97,7 @@ const TaskRoutine = (props: TaskProps) => {
           {(!props.isMini || props.displayToolButton) && (
             <CardActions sx={{ p: props.isMini ? 0 : undefined }}>
               <Button color="primary" sx={{ maxWidth: 32, minWidth: 32 }} onClick={props.handleDeleteButton}>
-                <DeleteOutlineIcon fontSize="small" sx={{ m: 0 }} />
+                <DeleteOutlineIcon fontSize="small" sx={{ m: 0, color: disableColorJudge() }} />
               </Button>
             </CardActions>
           )}
