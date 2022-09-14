@@ -20,6 +20,8 @@ const DoingTasks = (props: DoingTasksProps) => {
   if (kanbanTask === null) return <></>;
 
   const doingTasks = kanbanTask.statusIDTasks[kanbanStatusConst.doing] ?? [];
+  const doingUnCheckedTasks = doingTasks.filter((task) => !task.isChecked);
+  const doingCheckedTasks = doingTasks.filter((task) => task.isChecked);
 
   return (
     <HorizontalCenterContainerBox>
@@ -36,8 +38,11 @@ const DoingTasks = (props: DoingTasksProps) => {
         <AddTaskForm kanbanStatusID={kanbanStatusConst.doing} />
         <Box sx={{ mt: 1 }} />
 
-        <Box sx={{ mt: doingTasks.length === 0 ? 0 : 3 }} />
-        <TaskList displayToolButton={true} tasks={doingTasks} />
+        <Box sx={{ mt: doingUnCheckedTasks.length === 0 ? 0 : 3 }} />
+        <TaskList displayToolButton={true} tasks={doingUnCheckedTasks} />
+
+        <Box sx={{ mt: doingCheckedTasks.length === 0 ? 0 : 3 }} />
+        <TaskList displayToolButton={true} tasks={doingCheckedTasks} />
       </Card>
     </HorizontalCenterContainerBox>
   );
