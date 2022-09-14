@@ -70,7 +70,6 @@ const TaskRoutine = (props: TaskProps) => {
             disableRipple
             sx={{
               p: props.displayToolButton ? 0 : undefined,
-              height: '100%',
               width: '100%',
               justifyContent: 'flex-start',
               textTransform: 'none',
@@ -78,10 +77,9 @@ const TaskRoutine = (props: TaskProps) => {
             }}
             onClick={props.handleTitleButton}
           >
-            <Box sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: props.isMini ? '100%' : '107%', display: 'flex', alignItems: 'center' }}>
               <Typography
                 sx={{
-                  height: '100%',
                   fontSize: 16,
                   overflow: 'hidden',
                   whiteSpace: 'nowrap',
