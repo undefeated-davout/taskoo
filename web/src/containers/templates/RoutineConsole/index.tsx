@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react';
 
-import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import DeselectIcon from '@mui/icons-material/Deselect';
+import SelectAllIcon from '@mui/icons-material/SelectAll';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -71,14 +73,15 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             {/* 全選択ボタン */}
             <Button variant="contained" onClick={() => handleCheckAll(true)}>
-              ALL ON
+              <SelectAllIcon />
             </Button>
             <Button variant="contained" onClick={() => handleCheckAll(false)} sx={{ ml: 1 }}>
-              ALL OFF
+              <DeselectIcon />
             </Button>
             {/* コピーボタン */}
-            <Button variant="contained" onClick={() => setIsOpenCopyForm(true)} sx={{ ml: 1 }}>
-              <FileCopyOutlinedIcon />
+            <Button variant="contained" onClick={() => setIsOpenCopyForm(true)} sx={{ ml: 1, pl: 1.4 }}>
+              <ArrowRightAltIcon />
+              DOING
             </Button>
           </Box>
 
