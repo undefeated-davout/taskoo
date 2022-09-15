@@ -42,10 +42,11 @@ const Task = (props: TaskProps) => {
         if (dropResult.panelID !== props.task.statusID) {
           // パネル間移動
           updatedTask = { statusID: dropResult.panelID };
-          updatedTask =
-            dropResult.panelID === kanbanStatusConst.done
-              ? { isChecked: true, ...updatedTask }
-              : { isChecked: false, ...updatedTask };
+          if (dropResult.panelID === kanbanStatusConst.done) {
+            updatedTask = { isChecked: true, ...updatedTask }; // 移動先がDONEのとき
+          } else if (props.task.statusID === kanbanStatusConst.done) {
+            updatedTask = { isChecked: false, ...updatedTask }; // DONEから取り出されたとき
+          }
         }
         const newStatusIDTasks = calcStatusIDTasks(
           props.task.id,
