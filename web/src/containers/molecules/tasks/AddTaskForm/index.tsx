@@ -40,7 +40,14 @@ const AddTaskForm = (props: AddTaskFormProps) => {
       isChecked: false,
     };
 
-    addTaskWithOrder(user.uid, props.kanbanStatusID, [newTask], kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
+    addTaskWithOrder(
+      user.uid,
+      props.kanbanStatusID,
+      [newTask],
+      kanbanTask.taskOrderID,
+      kanbanTask.statusIDTasks,
+      false,
+    );
     setInputValue('');
   };
 

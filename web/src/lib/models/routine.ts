@@ -62,5 +62,5 @@ export const copyRoutines = async (
     routineID: routine.id,
   }));
   // 登録
-  addTaskWithOrder(userID, kanbanStatusConst.doing, newTasks, taskOrderID, statusIDTasks);
+  addTaskWithOrder(userID, kanbanStatusConst.doing, newTasks, taskOrderID, statusIDTasks, true);
 };
