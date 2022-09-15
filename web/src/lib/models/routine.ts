@@ -42,10 +42,6 @@ export const copyRoutines = async (
   userID: string,
   taskOrderID: string,
 ) => {
-  const routineIDRoutineDict = sortedRoutines.reduce((dict: { [key: string]: routineType }, routine) => {
-    dict[routine.id] = routine;
-    return dict;
-  }, {});
   const registerdRoutineIDs = Object.keys(statusIDTasks).reduce((ids: string[], statusID) => {
     const routinIDs = statusIDTasks[statusID]
       .filter((task) => task.routineID !== undefined)
@@ -54,12 +50,9 @@ export const copyRoutines = async (
     return ids;
   }, []);
   // IDsをソート
-  let sortedCheckedRoutines: routineType[] = [];
-  sortedRoutines.forEach((routine) => {
-    if (!checkedIDs.includes(routine.id)) return; // チェックOFFは除外
-    if (registerdRoutineIDs.includes(routine.id)) return; // 登録済みのidは除外
-    sortedCheckedRoutines.push(routineIDRoutineDict[routine.id]);
-  });
+  let sortedCheckedRoutines: routineType[] = sortedRoutines.filter(
+    (routine) => checkedIDs.includes(routine.id) && !registerdRoutineIDs.includes(routine.id),
+  );
 
   // 登録するタスクリストを作成
   const newTasks: addTaskType[] = sortedCheckedRoutines.map((routine) => ({

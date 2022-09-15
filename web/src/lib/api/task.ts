@@ -74,8 +74,8 @@ export const addTaskWithOrder = async (
         {},
       );
 
-      // INSERTしたtaskIDを追加上記リストに追加
-      newStatusIDTaskIDs[statusID] = newStatusIDTaskIDs[statusID]?.concat(newTaskIDs) || newTaskIDs;
+      // INSERTしたtaskIDを追加上記リストの先頭に追加
+      newStatusIDTaskIDs[statusID] = newTaskIDs.concat(newStatusIDTaskIDs[statusID]) || newTaskIDs;
 
       const taskOrder: updateTaskOrderType = {
         orderDict: Object.keys(newStatusIDTaskIDs).reduce((dict: { [statusID: string]: string }, statusID) => {
