@@ -75,10 +75,14 @@ export const addTaskWithOrder = async (
         {},
       );
 
-      // INSERTしたtaskIDを追加上記リストの先頭に追加
-      newStatusIDTaskIDs[statusID] = pushTop
-        ? newTaskIDs.concat(newStatusIDTaskIDs[statusID]) || newTaskIDs
-        : newStatusIDTaskIDs[statusID]?.concat(newTaskIDs) || newTaskIDs;
+      // INSERTしたtaskIDを追加上記リストに追加
+      if (newStatusIDTaskIDs[statusID] === undefined) {
+        newStatusIDTaskIDs[statusID] = newTaskIDs;
+      } else {
+        newStatusIDTaskIDs[statusID] = pushTop
+          ? newTaskIDs.concat(newStatusIDTaskIDs[statusID])
+          : newStatusIDTaskIDs[statusID].concat(newTaskIDs);
+      }
 
       const taskOrder: updateTaskOrderType = {
         orderDict: Object.keys(newStatusIDTaskIDs).reduce((dict: { [statusID: string]: string }, statusID) => {
