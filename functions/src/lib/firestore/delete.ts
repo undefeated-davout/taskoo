@@ -7,11 +7,7 @@ import { firestore } from 'firebase-admin';
  * @param {number} batchSize
  * @return {Promise<unknown>}
  */
-export const deleteCollection = (
-  db: firestore.Firestore,
-  collectionPath: string,
-  batchSize: number,
-) => {
+export const deleteCollection = (db: firestore.Firestore, collectionPath: string, batchSize: number) => {
   const collectionRef = db.collection(collectionPath);
   const query = collectionRef.orderBy('__name__').limit(batchSize);
   return new Promise((resolve, reject) => {
@@ -26,11 +22,7 @@ export const deleteCollection = (
  * @param {any} resolve
  * @return {Promise<void>}
  */
-async function deleteQueryBatch(
-  db: firestore.Firestore,
-  query: firestore.Query<firestore.DocumentData>,
-  resolve: any,
-) {
+async function deleteQueryBatch(db: firestore.Firestore, query: firestore.Query<firestore.DocumentData>, resolve: any) {
   const snapshot = await query.get();
 
   const batchSize = snapshot.size;
