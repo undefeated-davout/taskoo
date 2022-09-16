@@ -42,6 +42,7 @@ export const deleteUser = defaultFunctions.auth.user().onDelete(async (user: adm
     await deleteCollection(db, db.collection('users').doc(user.uid).collection('tasks').path, 500);
     await deleteCollection(db, db.collection('users').doc(user.uid).collection('routine_orders').path, 500);
     await deleteCollection(db, db.collection('users').doc(user.uid).collection('routines').path, 500);
+    await deleteCollection(db, db.collection('users').doc(user.uid).collection('timers').path, 500);
     // 最後にユーザ削除
     await db.collection('users').doc(user.uid).delete();
     return true;
