@@ -25,9 +25,9 @@ const Focus = (props: FocusProps) => {
     setTaskCondition((event.target as HTMLInputElement).value);
 
   if (kanbanTask === null) return <></>;
-  const doingActiveTasks =
+
+  const doingTasks =
     kanbanTask.statusIDTasks[kanbanStatusConst.doing]?.filter((task) => {
-      if (task.isChecked) return false;
       if (
         taskCondition === 'all' ||
         (taskCondition === 'tasks' && task.routineID === undefined) ||
@@ -37,6 +37,8 @@ const Focus = (props: FocusProps) => {
       }
       return false;
     }) ?? [];
+
+  const doingActiveTasks = doingTasks.filter((task) => !task.isChecked);
 
   return (
     <CenterContainerBox>
@@ -59,7 +61,7 @@ const Focus = (props: FocusProps) => {
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
               FOCUS ON THE TASK.
               <br />
-              REMAINING: {doingActiveTasks.length}
+              REMAINING: {doingActiveTasks.length} / {doingTasks.length}
             </Typography>
           )}
 
