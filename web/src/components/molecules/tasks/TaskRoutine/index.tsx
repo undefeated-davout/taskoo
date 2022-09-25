@@ -46,6 +46,7 @@ const TaskRoutine = (props: TaskProps) => {
             height: 36,
             display: 'flex',
             alignItems: 'center',
+            boxShadow: 3,
             backgroundColor: isInconspicuous() ? theme.palette.action.disabledBackground : undefined,
             outline:
               props.taskRoutineType === taskRoutineTypeConst.routineTask
