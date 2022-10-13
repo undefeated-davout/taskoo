@@ -4,6 +4,10 @@
 
 [![Test & Deploy Functions](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml/badge.svg)](https://github.com/undefeated-davout/taskoo/actions/workflows/test-deploy-functions.yml)
 
+## 準備
+
+- ./web/.env.localファイルを用意（内容は./web/.env.sampleを参考）
+
 ## 起動
 
 ```bash
