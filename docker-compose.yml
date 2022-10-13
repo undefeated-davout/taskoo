@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  taskoo.web:
+  web:
     build: ./infrastructure/docker/web/
     container_name: taskoo.web
     tty: true

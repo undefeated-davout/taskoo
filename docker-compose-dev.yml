@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  taskoo.web:
+  web:
     build: ./infrastructure/docker/web/
     container_name: taskoo.web
     tty: true
@@ -17,12 +17,14 @@ services:
       - ./.gitignore:/opt/app/src/.gitignore
       - ./web:/opt/app/src/web
 
-  taskoo.firebase:
+  firebase:
     build: ./infrastructure/docker/firebase/
     container_name: taskoo.firebase
     tty: true
     ports:
       - 4000:4000
+      - 4400:4400
+      - 4500:4500
       - 5001:5001
       - 8080:8080
       - 9005:9005

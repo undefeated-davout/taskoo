@@ -28,6 +28,14 @@
     "rules": "infrastructure/firebase/storage.rules"
   },
   "emulators": {
+    "hub": {
+      "host": "0.0.0.0",
+      "port": 4400
+    },
+    "logging": {
+      "host": "0.0.0.0",
+      "port": 4500
+    },
     "auth": {
       "host": "0.0.0.0",
       "port": 9099
@@ -40,7 +48,7 @@
       "host": "0.0.0.0",
       "port": 8080
     },
-    "#hosting": {
+    "hosting": {
       "host": "0.0.0.0",
       "port": 5000
     },
@@ -52,7 +60,7 @@
       "host": "0.0.0.0",
       "port": 9199
     },
-    "#eventarc": {
+    "eventarc": {
       "host": "0.0.0.0",
       "port": 9299
     },
