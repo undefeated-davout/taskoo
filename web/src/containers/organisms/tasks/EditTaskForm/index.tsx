@@ -10,7 +10,7 @@ import { UserContext } from 'pages/_app';
 
 import { taskType, updateTaskType } from 'types/task';
 
-import { deleteTaskWithOrder, updateTask } from 'lib/api/task';
+import { bulkDeleteTaskWithOrder, updateTask } from 'lib/api/task';
 import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 
 type EditTaskFormProps = {
@@ -51,7 +51,7 @@ const EditTaskForm = (props: EditTaskFormProps) => {
     if (kanbanTask === null) return;
     setTasks(undefined);
     setTaskOrder(undefined);
-    deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
+    bulkDeleteTaskWithOrder(user!.uid, [props.task], kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
     props.onClose();
   };
 

@@ -10,7 +10,7 @@ import EditTaskForm from 'containers/organisms/tasks/EditTaskForm';
 import { DnDItems, DropTaskResult } from 'types/task';
 import { taskType, updateTaskType } from 'types/task';
 
-import { deleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
+import { bulkDeleteTaskWithOrder, updateTaskWithOrder } from 'lib/api/task';
 import { kanbanStatusConst, taskRoutineTypeConst } from 'lib/constants/task';
 import { KanbanTaskContext } from 'lib/contexts/KanbanTaskContextProvider';
 import { calcStatusIDTasks } from 'lib/models/task';
@@ -114,7 +114,7 @@ const Task = (props: TaskProps) => {
   // 削除ボタン押下時
   const handleDeleteButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (kanbanTask === null) return;
-    deleteTaskWithOrder(user!.uid, props.task, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
+    bulkDeleteTaskWithOrder(user!.uid, [props.task], kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
     setTasks(undefined);
     setTaskOrder(undefined);
   };

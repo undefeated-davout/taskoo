@@ -6,20 +6,32 @@ import DialogContent from '@mui/material/DialogContent';
 type MessageDialogProps = {
   content: string;
   isOpen: boolean;
-  onClose: VoidFunction;
+  onClickOK: VoidFunction;
+  onCancel?: VoidFunction;
 };
 
 const MessageDialog = (props: MessageDialogProps) => {
   const handleOK = () => {
-    props.onClose();
+    props.onClickOK();
+    if (props.onCancel) {
+      props.onCancel();
+    }
+  };
+  const handleClose = () => {
+    if (props.onCancel) {
+      props.onCancel();
+    } else {
+      props.onClickOK();
+    }
   };
 
   return (
     <div>
-      <Dialog open={props.isOpen} onClose={props.onClose}>
+      <Dialog open={props.isOpen} onClose={handleClose}>
         <DialogContent sx={{ width: 500, maxWidth: '100%' }}>{props.content}</DialogContent>
 
         <DialogActions sx={{ mr: 2, mb: 1 }}>
+          {props.onCancel && <Button onClick={handleClose}>CANCEL</Button>}
           <Button variant="contained" onClick={handleOK}>
             OK
           </Button>

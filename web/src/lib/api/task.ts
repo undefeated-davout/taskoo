@@ -161,15 +161,15 @@ const deleteTaskTx = (tx: Transaction, userID: string, taskID: string) => {
   }
 };
 
-export const deleteTaskWithOrder = async (
+export const bulkDeleteTaskWithOrder = async (
   userID: string,
-  task: taskType,
+  tasks: taskType[],
   taskOrderID: string,
   statusIDTasks: statusIDTasksType,
 ) => {
   try {
     await runTransaction(db, async (tx) => {
-      deleteTaskTx(tx, userID, task.id);
+      tasks.forEach((task) => deleteTaskTx(tx, userID, task.id));
 
       // statusIDごとのtaskIDリスト作成
       const newStatusIDTaskIDs = Object.keys(statusIDTasks).reduce(
@@ -181,9 +181,14 @@ export const deleteTaskWithOrder = async (
         {},
       );
 
+      const firstTask = tasks[0];
       // DELETEしたtaskIDを追加上記リストから除去
-      if (newStatusIDTaskIDs[task.statusID]) {
-        newStatusIDTaskIDs[task.statusID] = newStatusIDTaskIDs[task.statusID].filter((id) => task.id !== id);
+      if (newStatusIDTaskIDs[firstTask.statusID]) {
+        tasks.forEach((task) => {
+          newStatusIDTaskIDs[firstTask.statusID] = newStatusIDTaskIDs[firstTask.statusID].filter(
+            (id) => task.id !== id,
+          );
+        });
       }
 
       const taskOrder: updateTaskOrderType = {

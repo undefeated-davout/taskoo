@@ -18,7 +18,6 @@ import CtmSnackbar from 'components/molecules/common/CtmSnackbar';
 
 import AddRoutineForm from 'containers/molecules/tasks/AddRoutineForm';
 import MessageDialog from 'containers/organisms/common/MessageDialog';
-import RoutineCopyDialog from 'containers/organisms/tasks/RoutineCopyDialog';
 import RoutineList from 'containers/organisms/tasks/RoutineList';
 
 import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
@@ -104,11 +103,18 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
         </Box>
       </HorizontalCenterContainerBox>
 
-      <RoutineCopyDialog isOpen={isOpenCopyForm} onCopy={handleCopy} onClose={() => setIsOpenCopyForm(false)} />
+      {/* DOINGコピー確認用ダイアログ */}
+      <MessageDialog
+        content={`COPY CHECKED CARDS TO "DOING"?`}
+        isOpen={isOpenCopyForm}
+        onClickOK={handleCopy}
+        onCancel={() => setIsOpenCopyForm(false)}
+      />
+      {/* OKのみメッセージボックス表示 */}
       <MessageDialog
         content={stateMessageDialog.content}
         isOpen={stateMessageDialog.isOpen}
-        onClose={() => setStateMessageDialog({ content: '', isOpen: false })}
+        onClickOK={() => setStateMessageDialog({ content: '', isOpen: false })}
       />
       <CtmSnackbar
         content={stateSnackbar.content}
