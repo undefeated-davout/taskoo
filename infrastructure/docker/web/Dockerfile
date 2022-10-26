@@ -1,4 +1,4 @@
-FROM node:18.11.0-bullseye-slim
+FROM node:16.18.0-bullseye-slim
 
 RUN apt update && apt install -y \
   git \
