@@ -29,7 +29,7 @@ const HeaderBar = (props: HeaderBarProps) => {
         )}
 
         <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 100, fontFamily: 'Helvetica' }}>
-          TASKOO
+          T4SK00
         </Typography>
       </Toolbar>
     </AppBar>
