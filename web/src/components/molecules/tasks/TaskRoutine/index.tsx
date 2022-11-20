@@ -50,7 +50,7 @@ const TaskRoutine = (props: TaskProps) => {
             backgroundColor: isInconspicuous() ? theme.palette.action.disabledBackground : undefined,
             outline:
               props.taskRoutineType === taskRoutineTypeConst.routineTask
-                ? `1.5px solid ${isInconspicuous() ? '#2E7D32' : theme.palette.success.main}`
+                ? `1.5px solid ${isInconspicuous() ? '#008080' : '#0CDCDC'}`
                 : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },

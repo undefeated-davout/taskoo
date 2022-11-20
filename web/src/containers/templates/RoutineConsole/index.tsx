@@ -90,7 +90,7 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
               mt: 1,
               p: 2,
               backgroundColor: theme.palette.action.disabledBackground,
-              outline: `2px solid ${theme.palette.success.main}`,
+              outline: `2px solid #0CDCDC`,
             }}
           >
             <Box sx={{ mt: 1 }} />
