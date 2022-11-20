@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-echo 'yarnインストール'
+echo 'yarn install'
 yarn
 
-echo '保存時のコード成形（常駐）'
+echo 'run code formatter'
 yarn prettier-watch &
 
-echo 'Storybook起動（常駐）'
+echo 'run Storybook'
 yarn storybook &
 
-echo 'Webサーバ起動（開発）'
+echo 'run Web server(dev)'
 yarn dev

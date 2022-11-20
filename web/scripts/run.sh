@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-echo 'yarnインストール'
+echo 'yarn install'
 yarn
 
-echo 'Webサーバビルド'
+echo 'build Web server'
 yarn build
 
-echo 'Webサーバ起動（本番）'
+echo 'run Web server(prod)'
 yarn start
