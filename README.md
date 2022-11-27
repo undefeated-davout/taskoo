@@ -22,6 +22,7 @@ firebase login
 docker compose -f ./docker-compose-dev.yml up -d firebase; docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_emulators.sh
 
 # webサーバ起動
+cd web/
 ./scripts/run_dev.sh
 
 // http://0.0.0.0:5001/taskoo-davout-v1/asia-northeast1/helloWorld

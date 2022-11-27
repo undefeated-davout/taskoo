@@ -2,8 +2,8 @@ import { Timestamp } from 'firebase/firestore';
 import { useContext, useEffect, useRef, useState } from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import PlayCircleOutlineOutlinedIcon from '@mui/icons-material/PlayCircleOutlineOutlined';
-import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined';
 import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -62,7 +62,7 @@ const Pomodoro = (props: PomodoroProps) => {
     setTimerSeconds(seconds);
     setPassedSeconds(0);
     setStatus(timerStatusConst.working);
-    playAlerm();
+    // playAlerm();
     addTimer(user!.uid, {
       timerSeconds: seconds,
       status: timerStatusConst.working,
@@ -70,7 +70,7 @@ const Pomodoro = (props: PomodoroProps) => {
     });
   };
 
-  const stopTimer = () => {
+  const pauseTimer = () => {
     clearInterval(timerRef.current);
     setStatus(timerStatusConst.stopped);
     updateTimer(user!.uid, timer!.id, {
@@ -166,8 +166,8 @@ const Pomodoro = (props: PomodoroProps) => {
             {status === timerStatusConst.working || status === timerStatusConst.stopped ? (
               <>
                 {status === timerStatusConst.working ? (
-                  <BaseButton color="error" onClick={() => stopTimer()}>
-                    <StopCircleOutlinedIcon />
+                  <BaseButton color="error" onClick={() => pauseTimer()}>
+                    <PauseCircleOutlineIcon />
                   </BaseButton>
                 ) : (
                   <BaseButton color="success" onClick={() => resumeTimer()}>
