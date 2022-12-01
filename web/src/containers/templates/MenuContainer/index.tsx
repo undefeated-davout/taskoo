@@ -16,7 +16,7 @@ type MenuContainerProps = {
 const MenuContainer = (props: MenuContainerProps) => {
   const theme = useTheme();
   const [cookies, setCookie, _] = useCookies(['isOpenMenu']);
-  const [isMenuOpen, setIsMenuOpen] = useState(cookies.isOpenMenu === 'true');
+  const [isMenuOpen, setIsMenuOpen] = useState(cookies.isOpenMenu !== 'false');
   const toggleSideBarOpen = () => {
     setCookie('isOpenMenu', !isMenuOpen);
     setIsMenuOpen(!isMenuOpen);
