@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,8 +8,6 @@ import { useTheme } from '@mui/material/styles';
 import HeaderBar from 'containers/organisms/common/HeaderBar';
 import SideBar, { DrawerHeader } from 'containers/organisms/common/SideBar';
 
-import { UtilContext } from 'lib/contexts/UtilContextProvider';
-
 type MenuContainerProps = {
   children: React.ReactNode;
   isLoggedIn: boolean;
@@ -16,8 +15,12 @@ type MenuContainerProps = {
 
 const MenuContainer = (props: MenuContainerProps) => {
   const theme = useTheme();
-  const { isMenuOpen, setIsMenuOpen } = useContext(UtilContext);
-  const toggleSideBarOpen = () => setIsMenuOpen(!isMenuOpen);
+  const [cookies, setCookie, _] = useCookies(['isOpenMenu']);
+  const [isMenuOpen, setIsMenuOpen] = useState(cookies.isOpenMenu === 'true');
+  const toggleSideBarOpen = () => {
+    setCookie('isOpenMenu', !isMenuOpen);
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>

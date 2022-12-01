@@ -12,7 +12,6 @@ import LoggedOut from 'containers/templates/LoggedOut';
 import { getUser } from 'lib/api/user';
 import KanbanTaskContextProvider from 'lib/contexts/KanbanTaskContextProvider';
 import RoutineContextProvider from 'lib/contexts/RoutineContextProvider';
-import UtilContextProvider from 'lib/contexts/UtilContextProvider';
 import UtilThemeProvider from 'lib/contexts/UtilThemeProvider';
 
 export const UserContext = createContext<{ user: User | null }>({ user: null });
@@ -43,22 +42,20 @@ const UtilApp = ({ Component, pageProps, router }: AppProps) => {
     <>
       <UtilThemeProvider>
         <DndProvider backend={HTML5Backend}>
-          <UtilContextProvider>
-            <UserContext.Provider value={{ user }}>
-              <KanbanTaskContextProvider>
-                <RoutineContextProvider>
-                  <GlobalStyle />
-                  {isReady ? (
-                    <Component {...pageProps} />
-                  ) : (
-                    <LoggedOut>
-                      <LoadingCircular />
-                    </LoggedOut>
-                  )}
-                </RoutineContextProvider>
-              </KanbanTaskContextProvider>
-            </UserContext.Provider>
-          </UtilContextProvider>
+          <UserContext.Provider value={{ user }}>
+            <KanbanTaskContextProvider>
+              <RoutineContextProvider>
+                <GlobalStyle />
+                {isReady ? (
+                  <Component {...pageProps} />
+                ) : (
+                  <LoggedOut>
+                    <LoadingCircular />
+                  </LoggedOut>
+                )}
+              </RoutineContextProvider>
+            </KanbanTaskContextProvider>
+          </UserContext.Provider>
         </DndProvider>
       </UtilThemeProvider>
     </>
