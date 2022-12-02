@@ -56,7 +56,7 @@ const Focus = (props: FocusProps) => {
         >
           {doingActiveTasks.length === 0 ? (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
-              {doingTasks.length === 0 ? 'NO TASKS IN "DOING".' : 'ALL TASKS COMPLETED.'}
+              {doingTasks.length === 0 ? 'NO TASKS IN "DOING"' : 'ALL TASKS COMPLETED'}
             </Typography>
           ) : (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
