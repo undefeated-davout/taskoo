@@ -8,6 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { useKanbanTask } from 'hooks/useKanbanTask';
 
 import CenterContainerBox from 'components/atoms/CenterContainerBox';
+import CircularStatic from 'components/atoms/CircularStatic';
 
 import Task from 'containers/molecules/tasks/Task';
 import TaskFilterRadioButton from 'containers/molecules/tasks/TaskFilterRadioButton';
@@ -55,13 +56,24 @@ const Focus = (props: FocusProps) => {
         >
           {doingActiveTasks.length === 0 ? (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
-              {'NO TASKS IN "DOING".'}
+              {doingTasks.length === 0 ? 'NO TASKS IN "DOING".' : 'ALL TASKS COMPLETED.'}
             </Typography>
           ) : (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
-              FOCUS ON THE TASK.
-              <br />
-              REMAINING: {doingActiveTasks.length} / {doingTasks.length}
+              <Box sx={{ float: 'left' }}>
+                FOCUS ON THE TASK.
+                <br />
+                REMAINING: {doingActiveTasks.length} / {doingTasks.length}
+              </Box>
+              <CircularStatic
+                progress={
+                  doingTasks.length === 0
+                    ? 100
+                    : ((doingTasks.length - doingActiveTasks.length) * 100) / doingTasks.length
+                }
+                sx={{ float: 'right' }}
+              />
+              <Box sx={{ clear: 'both' }}></Box>
             </Typography>
           )}
 
