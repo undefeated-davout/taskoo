@@ -19,11 +19,10 @@ docker exec -it taskoo.firebase
 firebase login
 
 # Firebase Emulator Suite起動（自動起動するとシャットダウン時のexport機能が動作しないため手動起動）
-docker compose -f ./docker-compose-dev.yml up -d firebase; docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_emulators.sh
+cd ~/data/repo/github.com/undefeated-davout/taskoo/ && docker compose -f ./docker-compose-dev.yml up -d firebase; docker exec -it taskoo.firebase ./infrastructure/firebase/scripts/run_firebase_emulators.sh
 
 # webサーバ起動
-cd web/
-./scripts/run_dev.sh
+cd ~/data/repo/github.com/undefeated-davout/taskoo/web && ./scripts/run_dev.sh
 
 // http://0.0.0.0:5001/taskoo-davout-v1/asia-northeast1/helloWorld
 // https://asia-northeast1-taskoo-davout-v1.cloudfunctions.net/helloWorld

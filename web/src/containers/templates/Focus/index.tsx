@@ -55,9 +55,21 @@ const Focus = (props: FocusProps) => {
           }}
         >
           {doingActiveTasks.length === 0 ? (
-            <Typography variant="h6" sx={{ fontWeight: 100 }}>
-              {doingTasks.length === 0 ? 'NO TASKS IN "DOING"' : 'ALL TASKS COMPLETED'}
-            </Typography>
+            <>
+              {doingTasks.length === 0 ? (
+                <Typography variant="h6" sx={{ fontWeight: 100 }}>
+                  {'NO TASKS IN "DOING"'}
+                </Typography>
+              ) : (
+                <>
+                  <Typography variant="h6" sx={{ fontWeight: 100, mt: 2, float: 'left' }}>
+                    {'ALL TASKS COMPLETED!!'}
+                  </Typography>
+                  <CircularStatic progress={100} sx={{ float: 'right' }} />
+                  <Box sx={{ clear: 'both' }}></Box>
+                </>
+              )}
+            </>
           ) : (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
               <Box sx={{ float: 'left' }}>
