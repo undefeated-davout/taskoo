@@ -73,7 +73,7 @@ const Focus = (props: FocusProps) => {
           ) : (
             <Typography variant="h6" sx={{ fontWeight: 100 }}>
               <Box sx={{ float: 'left' }}>
-                FOCUS ON THE TASK.
+                FOCUS ON THE TASK
                 <br />
                 REMAINING: {doingActiveTasks.length} / {doingTasks.length}
               </Box>
