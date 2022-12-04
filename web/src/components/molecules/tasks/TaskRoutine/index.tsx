@@ -48,7 +48,7 @@ const TaskRoutine = (props: TaskProps) => {
             alignItems: 'center',
             boxShadow: 3,
             backgroundColor: isInconspicuous() ? theme.palette.action.disabledBackground : undefined,
-            outline:
+            border:
               props.taskRoutineType === taskRoutineTypeConst.routineTask
                 ? `1.5px solid ${isInconspicuous() ? '#008080' : '#0CDCDC'}`
                 : undefined,
