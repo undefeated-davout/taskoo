@@ -9,9 +9,9 @@ type CircularStaticProps = {
   sx?: SxProps<Theme>;
 };
 
-const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; wrapSx?: SxProps<Theme> }) => {
+const CircularProgressWithLabel = (props: CircularProgressProps & { value: number; wrapsx?: SxProps<Theme> }) => {
   return (
-    <Box sx={props.wrapSx}>
+    <Box sx={props.wrapsx}>
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         <CircularProgress variant="determinate" color="success" size="4rem" {...props} />
         <Box
@@ -36,7 +36,7 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
 };
 
 const CircularStatic = (props: CircularStaticProps) => {
-  return <CircularProgressWithLabel value={props.progress} wrapSx={props.sx} />;
+  return <CircularProgressWithLabel value={props.progress} wrapsx={props.sx} />;
 };
 
 export default CircularStatic;
