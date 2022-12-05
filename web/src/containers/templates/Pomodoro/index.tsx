@@ -1,5 +1,5 @@
 import { Timestamp } from 'firebase/firestore';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
@@ -30,43 +30,36 @@ const Pomodoro = (props: PomodoroProps) => {
   const { user } = useContext(UserContext);
 
   const [status, setStatus] = useState<timerStatusType>(timerStatusConst.unset);
-  const [timerSeconds, setTimerSeconds] = useState(0);
   const [passedSeconds, setPassedSeconds] = useState(0);
   const [timer, setTimer] = useState<timerType | null | undefined>(undefined);
   const timerRef = useRef<NodeJS.Timer>();
 
   const progress = (timerSeconds: number, passedSeconds: number) =>
     timerSeconds === 0 ? 100 : (passedSeconds * 100) / timerSeconds;
-  const remainSeconds = () => timerSeconds - passedSeconds;
 
   const title = (timerStatus: number) => {
     const minutes = (seconds: number) => Math.floor(seconds / 60);
     const timeFormat = (seconds: number) => (seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`);
 
-    if (timerStatus === timerStatusConst.unset) {
+    if (timerStatus === timerStatusConst.unset || timer == null) {
       return 'SELECT TIMER';
-    } else if (timerStatus === timerStatusConst.working || timerStatus === timerStatusConst.stopped) {
-      return timeFormat(remainSeconds());
     } else {
-      return `${timeFormat(timerSeconds)} OVER`;
+      return timeFormat(timer!.timerSeconds - passedSeconds);
     }
   };
 
-  const endAt = (remainSeconds: number) => {
-    const nowSeconds = Math.floor(new Date().getTime() / 1000);
-    const endTimestamp = new Timestamp(nowSeconds + remainSeconds, 0);
-    return endTimestamp;
-  };
+  const nowDate = () => new Date();
+  const getSeconds = (date: Date) => Math.floor(date.getTime() / 1000);
+  const nowSeconds = useCallback(() => getSeconds(nowDate()), []);
+  const calcTimestamp = (date: Date, plusSeconds: number) => new Timestamp(getSeconds(date) + plusSeconds, 0);
 
   const startTimer = (seconds: number) => {
-    setTimerSeconds(seconds);
     setPassedSeconds(0);
     setStatus(timerStatusConst.working);
-    // playAlerm();
     addTimer(user!.uid, {
       timerSeconds: seconds,
       status: timerStatusConst.working,
-      endAt: endAt(seconds),
+      endAt: calcTimestamp(nowDate(), seconds),
     });
   };
 
@@ -85,62 +78,60 @@ const Pomodoro = (props: PomodoroProps) => {
     updateTimer(user!.uid, timer!.id, {
       status: timerStatusConst.working,
       passedSeconds: null,
-      endAt: endAt(remainSeconds()),
+      endAt: calcTimestamp(nowDate(), timer!.timerSeconds - timer!.passedSeconds!),
     });
   };
 
   const discardTimer = () => {
     clearInterval(timerRef.current);
-    setTimerSeconds(0);
+    setTimer(null);
     setPassedSeconds(0);
     setStatus(timerStatusConst.unset);
     deleteTimer(user!.uid, timer!.id);
   };
 
-  // タイマーがセットされたかを監視
-  useEffect(() => {
-    // タイマー分が指定されているか、動作中ならタイマーをセットする
-    if (timerSeconds === 0 || status !== timerStatusConst.working) return;
-    timerRef.current = setInterval(() => {
-      setPassedSeconds((prev) => (prev < timerSeconds ? prev + 1 : prev));
-    }, 1000);
-    return () => clearInterval(timerRef.current);
-  }, [timerSeconds, status]);
-
-  // タイマー動作中監視
-  useEffect(() => {
-    // タイマーが動作中に、指定時間以上経過したら対象
-    if (!(status === timerStatusConst.working && passedSeconds >= timerSeconds)) return;
-    if (passedSeconds === timerSeconds) playAlerm();
-    clearInterval(timerRef.current);
-    setStatus(timerStatusConst.done);
-    deleteTimer(user!.uid, timer!.id);
-  }, [timerSeconds, passedSeconds, status, timer, user]);
-
+  // 画面ロード時
   useEffect(() => {
     const unsubscribe = getTimer(user!.uid, setTimer);
     return () => unsubscribe();
   }, [user]);
 
+  // タイマーがセットされたかを監視
   useEffect(() => {
-    if (timer === undefined) return;
-    if (timer === null) {
+    // タイマー分が指定されているか、動作中ならタイマーをセットする
+    if (status !== timerStatusConst.working) return;
+    timerRef.current = setInterval(() => {
+      // 経過時間 = タイマー時間 - 残り時間（終了時間 - 現在時間）
+      const passed = timer!.timerSeconds - (getSeconds(timer!.endAt!.toDate()) - nowSeconds());
+      setPassedSeconds(passed);
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [status, nowSeconds, timer]);
+
+  // タイマー動作中監視
+  useEffect(() => {
+    // タイマーが動作中に、指定時間以上経過したら対象
+    if (timer == null) return;
+    if (!(status === timerStatusConst.working && passedSeconds >= timer?.timerSeconds)) return;
+    if (passedSeconds === timer!.timerSeconds) playAlerm();
+    clearInterval(timerRef.current);
+    setStatus(timerStatusConst.done);
+    deleteTimer(user!.uid, timer!.id);
+  }, [passedSeconds, status, timer, user]);
+
+  useEffect(() => {
+    if (timer === undefined || timer === null) {
       setStatus(timerStatusConst.unset);
-      setTimerSeconds(0);
       setPassedSeconds(0);
     } else {
       setStatus(timer.status);
-      setTimerSeconds(timer.timerSeconds);
       if (timer.status === timerStatusConst.working) {
-        const nowSeconds = Math.floor(new Date().getTime() / 1000);
-        const remainSeconds = timer.endAt!.seconds - nowSeconds;
-        const passedSeconds = timer.timerSeconds - remainSeconds;
-        setPassedSeconds(passedSeconds);
+        setPassedSeconds(timer.timerSeconds - (timer.endAt!.seconds - nowSeconds()));
       } else {
         setPassedSeconds(timer.passedSeconds!);
       }
     }
-  }, [timer]);
+  }, [nowSeconds, timer]);
 
   if (timer === undefined) return <></>;
 
@@ -157,7 +148,7 @@ const Pomodoro = (props: PomodoroProps) => {
                 variant="determinate"
                 size="12rem"
                 color={status === timerStatusConst.working ? 'success' : 'secondary'}
-                value={progress(timerSeconds, passedSeconds)}
+                value={progress(timer?.timerSeconds ?? 0, passedSeconds)}
               />
             </Box>
           </CardContent>
