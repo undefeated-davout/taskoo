@@ -1,6 +1,7 @@
 import CheckBoxOutlineBlankOutlinedIcon from '@mui/icons-material/CheckBoxOutlineBlankOutlined';
 import Checkbox from '@mui/material/Checkbox';
-import { SxProps, Theme, useTheme } from '@mui/material/styles';
+import { Theme, useTheme } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 
 type BaseCheckboxProps = {
   sx?: SxProps<Theme>;
