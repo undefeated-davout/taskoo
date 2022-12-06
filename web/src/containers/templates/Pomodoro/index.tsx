@@ -19,7 +19,7 @@ import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import { timerStatusType, timerType } from 'types/timer';
 
 import { addTimer, deleteTimer, getTimer, updateTimer } from 'lib/api/timer';
-import { themeColorConst, themeDisabledColorConst, themeInactiveColorConst } from 'lib/constants/color';
+import { themeColorConst, themeDisabledColorConst } from 'lib/constants/color';
 import { timerStatusConst } from 'lib/constants/timer';
 import { playAlerm } from 'lib/util/audio';
 
