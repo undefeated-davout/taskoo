@@ -165,7 +165,7 @@ const Pomodoro = (props: PomodoroProps) => {
                   <BaseButton
                     sx={{
                       'background-color': themeColorConst,
-                      '&:hover': { 'background-color': themeInactiveColorConst },
+                      '&:hover': { 'background-color': themeColorConst },
                     }}
                     onClick={() => resumeTimer()}
                   >
