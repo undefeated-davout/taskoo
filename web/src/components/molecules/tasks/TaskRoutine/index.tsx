@@ -10,6 +10,7 @@ import BaseCheckbox from 'components/atoms/BaseCheckbox';
 
 import { taskRoutineType } from 'types/task';
 
+import { themeColorConst, themeInactiveColorConst } from 'lib/constants/color';
 import { taskRoutineTypeConst } from 'lib/constants/task';
 
 type TaskProps = {
@@ -50,7 +51,7 @@ const TaskRoutine = (props: TaskProps) => {
             backgroundColor: isInconspicuous() ? theme.palette.action.disabledBackground : undefined,
             border:
               props.taskRoutineType === taskRoutineTypeConst.routineTask
-                ? `1.5px solid ${isInconspicuous() ? '#008080' : '#0CDCDC'}`
+                ? `1.5px solid ${isInconspicuous() ? themeInactiveColorConst : themeColorConst}`
                 : undefined,
             opacity: props.dragging ? 0.3 : 1,
             '&:hover': { cursor: 'pointer' },

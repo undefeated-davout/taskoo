@@ -19,6 +19,7 @@ import CenterContainerBox from 'components/atoms/CenterContainerBox';
 import { timerStatusType, timerType } from 'types/timer';
 
 import { addTimer, deleteTimer, getTimer, updateTimer } from 'lib/api/timer';
+import { themeColorConst, themeDisabledColorConst } from 'lib/constants/color';
 import { timerStatusConst } from 'lib/constants/timer';
 import { playAlerm } from 'lib/util/audio';
 
@@ -147,7 +148,7 @@ const Pomodoro = (props: PomodoroProps) => {
               <CircularProgress
                 variant="determinate"
                 size="12rem"
-                color={status === timerStatusConst.working ? 'success' : 'secondary'}
+                style={{ color: status === timerStatusConst.working ? themeColorConst : themeDisabledColorConst }}
                 value={progress(timer?.timerSeconds ?? 0, passedSeconds)}
               />
             </Box>

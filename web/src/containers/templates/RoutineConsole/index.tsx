@@ -20,6 +20,7 @@ import AddRoutineForm from 'containers/molecules/tasks/AddRoutineForm';
 import MessageDialog from 'containers/organisms/common/MessageDialog';
 import RoutineList from 'containers/organisms/tasks/RoutineList';
 
+import { themeColorConst } from 'lib/constants/color';
 import { RoutineContext } from 'lib/contexts/RoutineContextProvider';
 import { copyRoutines } from 'lib/models/routine';
 
@@ -90,7 +91,7 @@ const RoutineConsole = (props: RoutineConsoleProps) => {
               mt: 1,
               p: 2,
               backgroundColor: theme.palette.action.disabledBackground,
-              border: `2px solid #0CDCDC`,
+              border: `2px solid ${themeColorConst}`,
             }}
           >
             <Box sx={{ mt: 1 }} />

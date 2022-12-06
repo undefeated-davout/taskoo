@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system';
 
+import { themeColorConst } from 'lib/constants/color';
+
 type CircularStaticProps = {
   progress: number;
   sx?: SxProps<Theme>;
@@ -13,7 +15,7 @@ const CircularProgressWithLabel = (props: CircularProgressProps & { value: numbe
   return (
     <Box sx={props.wrapsx}>
       <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" color="success" size="4rem" {...props} />
+        <CircularProgress variant="determinate" size="4rem" {...props} style={{ color: themeColorConst }} />
         <Box
           sx={{
             top: 0,
