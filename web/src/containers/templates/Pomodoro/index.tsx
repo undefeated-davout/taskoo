@@ -43,7 +43,7 @@ const Pomodoro = (props: PomodoroProps) => {
     const timeFormat = (seconds: number) => (seconds <= 60 ? `${seconds} sec` : `${minutes(seconds)} min`);
 
     if (timerStatus === timerStatusConst.unset || timer == null) {
-      return 'SELECT TIMER';
+      return 'SELECT A TIMER';
     } else {
       return timeFormat(timer!.timerSeconds - passedSeconds);
     }
