@@ -51,7 +51,7 @@ const DoingTasks = (props: DoingTasksProps) => {
             {/* ルーティン全削除ボタン */}
             <Button
               variant="contained"
-              onClick={() => setStateMessageDialog({ content: 'DO YOU DELETE ALL ROUTINE TASKS?', isOpen: true })}
+              onClick={() => setStateMessageDialog({ content: 'DELETE ALL ROUTINE TASKS?', isOpen: true })}
             >
               DELETE ROUTINES
             </Button>
