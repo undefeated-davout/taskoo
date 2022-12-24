@@ -95,12 +95,11 @@ const Pomodoro = (props: PomodoroProps) => {
     deleteTimer(user!.uid, timer!.id);
   };
 
+  // for clocker
   useEffect(() => {
     const timeoutId = setTimeout(() => updateClocker(Date.now()), 1000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [clocker, user]);
+    return () => clearTimeout(timeoutId);
+  }, [clocker]);
 
   // 画面ロード時
   useEffect(() => {
