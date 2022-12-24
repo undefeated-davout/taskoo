@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Timestamp } from 'firebase/firestore';
 import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
@@ -29,6 +30,9 @@ const timerMinutesList = [5, 10, 15, 25];
 
 const Pomodoro = (props: PomodoroProps) => {
   const { user } = useContext(UserContext);
+
+  // clock
+  const [clocker, updateClocker] = useState(Date.now());
 
   const [status, setStatus] = useState<timerStatusType>(timerStatusConst.unset);
   const [passedSeconds, setPassedSeconds] = useState(0);
@@ -91,6 +95,13 @@ const Pomodoro = (props: PomodoroProps) => {
     deleteTimer(user!.uid, timer!.id);
   };
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => updateClocker(Date.now()), 1000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [clocker, user]);
+
   // 画面ロード時
   useEffect(() => {
     const unsubscribe = getTimer(user!.uid, setTimer);
@@ -141,6 +152,10 @@ const Pomodoro = (props: PomodoroProps) => {
       <Box sx={{ maxWidth: 359, width: '100%' }}>
         <Card sx={{ p: 2 }}>
           <CardContent>
+            <Typography variant="h6" component="div" align="center">
+              {dayjs(clocker).format('hh:mm A')}
+            </Typography>
+            <Box sx={{ mt: 1 }}></Box>
             <Typography variant="h5" component="div" align="center">
               {title(status)}
             </Typography>
