@@ -19,7 +19,6 @@ const kanbanStatuses: kanbanStatusType[] = [
   { id: '2', orderNum: 2, name: 'TODO' },
   { id: '3', orderNum: 3, name: 'IDEA' },
   { id: '4', orderNum: 4, name: 'CONDITIONAL' },
-  { id: '80', orderNum: 5, name: 'DONE' },
 ];
 
 const Kanban = (props: KanbanProps) => {
