@@ -14,9 +14,7 @@ type MessageDialogProps = {
 const MessageDialog = (props: MessageDialogProps) => {
   const handleOK = () => {
     props.onClickOK();
-    if (props.onCancel) {
-      props.onCancel();
-    }
+    handleClose();
   };
   const handleClose = () => {
     if (props.onCancel) {
