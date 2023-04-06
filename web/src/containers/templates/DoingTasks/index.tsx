@@ -38,7 +38,6 @@ const DoingTasks = (props: DoingTasksProps) => {
 
   const handleDeleteRoutines = () => {
     const routines = doingTasks.filter((task) => task.routineID);
-    console.log('routines', routines);
     bulkDeleteTaskWithOrder(userID, routines, kanbanTask.taskOrderID, kanbanTask.statusIDTasks);
     setStateSnackbar({ content: 'DELETED', isOpen: true });
   };
