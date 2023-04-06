@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,9 +26,15 @@ const MessageDialog = (props: MessageDialogProps) => {
     }
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      handleOK();
+    }
+  };
+
   return (
     <div>
-      <Dialog open={props.isOpen} onClose={handleClose}>
+      <Dialog open={props.isOpen} onClose={handleClose} onKeyDown={handleKeyDown}>
         <DialogContent sx={{ width: 500, maxWidth: '100%' }}>{props.content}</DialogContent>
 
         <DialogActions sx={{ mr: 2, mb: 1 }}>
