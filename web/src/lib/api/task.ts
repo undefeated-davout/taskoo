@@ -169,6 +169,9 @@ export const bulkDeleteTaskWithOrder = async (
 ) => {
   try {
     await runTransaction(db, async (tx) => {
+      // タスクがない場合は何もしない
+      if (tasks.length === 0) return;
+
       tasks.forEach((task) => deleteTaskTx(tx, userID, task.id));
 
       // statusIDごとのtaskIDリスト作成
