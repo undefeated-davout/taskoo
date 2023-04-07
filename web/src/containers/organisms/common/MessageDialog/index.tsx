@@ -1,4 +1,5 @@
 import { KeyboardEvent } from 'react';
+
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -26,6 +27,7 @@ const MessageDialog = (props: MessageDialogProps) => {
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
+      event.preventDefault(); // デフォルトのアクションを無効化
       handleOK();
     }
   };
